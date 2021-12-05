@@ -3,7 +3,9 @@ An Online food ordering web application made using React + Django
 
 ## Installation
 
-### Settup Backend
+Split the terminal in two and follow the below steps in different terminals
+
+### Setup Backend
 1. `cd backend` to go in that directory
 2. Download python if not installed from https://www.python.org/downloads/
 3. Run `pip install -r requirements.txt` to install the dependencies
