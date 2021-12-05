@@ -1,30 +1,32 @@
+// AuthContext for the restaurant app (partner-with-us)
+
 import { createContext, useState, useEffect } from 'react'
 import jwt_decode from "jwt-decode";
 import { useHistory } from 'react-router-dom'
 
-const AuthContext = createContext()
+const RestaurantAuthContext = createContext()
 
-export default AuthContext;
+export default RestaurantAuthContext;
 
 
-export const AuthProvider = ({children}) => {
+export const RestaurantAuthProvider = ({children}) => {
 
     // Get the value of authToken from local storage. If the local storage contains authTokens, then parse the token(get the value back) , else set that to null
     // Callback function sets the value only once on inital load 
     let [authTokens, setAuthTokens] = useState(()=> localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null)
     // If the local storage contains authTokens, then decode the token, else set that to null
-    let [user, setUser] = useState(()=> localStorage.getItem('authTokens') ? jwt_decode(localStorage.getItem('authTokens')) : null)
+    let [restaurant, setRestaurant] = useState(()=> localStorage.getItem('authTokens') ? jwt_decode(localStorage.getItem('authTokens')) : null)
     let [loading, setLoading] = useState(true)
 
     const history = useHistory()
 
 
-    // Login User method
-    let loginUser = async (e )=> {
+    // Login Restaurant method
+    let loginRestaurant = async (e )=> {
         e.preventDefault()
 
-        // Make a post request to the api with the user's credentials.
-        let response = await fetch('http://127.0.0.1:8000/api/token/', {
+        // Make a post request to the api with the Restaurant's credentials.
+        let response = await fetch('http://127.0.0.1:8000/restaurant/api/token/', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -39,40 +41,40 @@ export const AuthProvider = ({children}) => {
             // Update the state with the logged in tokens
             setAuthTokens(data) 
             // Decode the access token and store the information
-            setUser(jwt_decode(data.access))
+            setRestaurant(jwt_decode(data.access))
             // Set the authTokens in the local storage
             localStorage.setItem('authTokens', JSON.stringify(data))
-            // Redirect user to home page
-            history.push('/')
+            // Redirect restaurant to home page
+            history.push('/partner-with-us')
         }else{
             alert('Something went wrong!')
         }
     }
 
     
-    // Logout User method
-    let logoutUser = () => {
+    // Logout Restaurant method
+    let logoutRestaurant = () => {
         // To logout, set 'setAuthTokens' and 'setUser' to null and remove the 'authTokens' from local storage
         setAuthTokens(null)
-        setUser(null)
+        setRestaurant(null)
         localStorage.removeItem('authTokens')
         //history.push('/login')
     }
 
 
 
-    // To register a usrer
-    let registerUser = async (e) => {
+    // To register a Restaurant
+    let registerRestaurant = async (e) => {
         e.preventDefault()
 
         // Make a post request to the api with the user's credentials.
-        let response = await fetch('http://127.0.0.1:8000/api/register/', {
+        let response = await fetch('http://127.0.0.1:8000/restaurant/register/', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
             },
             // 'e.target' is the form, '.username' gets the username field and '.password' gets the password field from wherever it is called (LoginPage.js here)
-            body:JSON.stringify({'username':e.target.username.value, 'password':e.target.password.value, 'confirmPassword':e.target.confirmPassword.value, 'email':e.target.email.value})
+            body:JSON.stringify({ 'email':e.target.email.value, 'password':e.target.password.value, 'confirmPassword':e.target.confirmPassword.value, 'name':e.target.name.value, 'address':e.target.address.value})
         })
         // Get the access and refresh tokens
         let data = await response.json()
@@ -88,14 +90,15 @@ export const AuthProvider = ({children}) => {
 
     }
 
+    
 
     // Context data for AuthContext so that it can be used in other pages
     let contextData = {
-        user:user,
+        restaurant:restaurant,
         authTokens:authTokens,
-        loginUser:loginUser,
-        logoutUser:logoutUser,
-        registerUser:registerUser,
+        loginRestaurant:loginRestaurant,
+        logoutRestaurant:logoutRestaurant,
+        registerRestaurant,registerRestaurant,
     }
 
 
@@ -106,13 +109,13 @@ export const AuthProvider = ({children}) => {
         // To update the access token
         let updateToken = async ()=> {
 
-            // If no authToken exists i.e. user is not logged in then return
+            // If no authToken exists i.e. restaurant is not logged in then return
             if(!authTokens){
                 setLoading(false)
                 return
             }
             // Make a post request to the api with the refresh token to update the access token
-            let response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
+            let response = await fetch('http://127.0.0.1:8000/restaurant/api/token/refresh/', {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'
@@ -123,12 +126,12 @@ export const AuthProvider = ({children}) => {
             let data = await response.json()
             
             if (response.status === 200){   
-                // Update the data as done similarly in the login user method
+                // Update the data as done similarly in the login restaurant method
                 setAuthTokens(data)
-                setUser(jwt_decode(data.access))
+                setRestaurant(jwt_decode(data.access))
                 localStorage.setItem('authTokens', JSON.stringify(data))
             }else{
-                logoutUser()
+                logoutRestaurant()
             }
 
             if(loading){
@@ -155,9 +158,9 @@ export const AuthProvider = ({children}) => {
     }, [authTokens, loading])
 
     return(
-        <AuthContext.Provider value={contextData} >
+        <RestaurantAuthContext.Provider value={contextData} >
             {/* Render children components only after AuthContext loading is complete */}
             {loading ? null : children}
-        </AuthContext.Provider>
+        </RestaurantAuthContext.Provider>
     )
 }

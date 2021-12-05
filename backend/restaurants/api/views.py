@@ -1,3 +1,5 @@
+from django.core.exceptions import ObjectDoesNotExist
+from django.db.utils import Error
 from django.http import JsonResponse
 from django.views.generic.base import RedirectView
 from rest_framework import permissions
@@ -10,9 +12,9 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from django.db import IntegrityError
 from rest_framework import status
+from restaurants.models import Restaurant, FoodItem, User
+from django.contrib.auth.models import Group
 
-from .serializers import NoteSerializer
-from eatit.models import Note, User
 from rest_framework.reverse import reverse
 
 
@@ -21,18 +23,19 @@ from rest_framework.reverse import reverse
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
+
     def get_token(cls, user):
         token = super().get_token(user)
 
         # Add custom claims
         token['username'] = user.username
-        
+
         if user.groups.filter(name="Restaurant").exists():
             token['group'] = "Restaurant"
         else:
             token['group'] = "None"
-        # ...
 
+        # ...
         return token
 
 
@@ -45,8 +48,9 @@ class MyTokenObtainPairView(TokenObtainPairView):
 # User registration logic
 @api_view(['GET', 'POST'])
 def register(request):
-    username = request.data["username"]
     email = request.data["email"]
+    name = request.data["name"]
+    address = request.data["address"]
 
     # Ensure password matches confirmation
     password = request.data["password"]
@@ -56,10 +60,26 @@ def register(request):
 
     # Attempt to create new user
     try:
-        user = User.objects.create_user(username, email, password)
+        # For restaurants, set their username as their email
+        user = User.objects.create_user(username=email, email=email, password=password)
         user.save()
     except IntegrityError:
-        return Response("ERROR: Username already taken", status=status.HTTP_406_NOT_ACCEPTABLE)
+        return Response("ERROR: Email already taken", status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+    # Associate user details with the Restaurant model. Store the address, name etc.
+    try:
+        user = User.objects.get(username=email)
+        restaurant = Restaurant.objects.create(user=user, name=name, address=address)
+        restaurant.save()
+    except IntegrityError:
+        return Response(IntegrityError)
+    
+    # Add it to the restaurants groups
+    group = Group.objects.get(name='Restaurant') 
+    group.user_set.add(user)
+
+
     return Response('Registered Successfully from backend')
 
 
@@ -73,13 +93,3 @@ def getRoutes(request):
     ]
 
     return Response(routes)
-
-
-@api_view(['GET'])
-# Requires user to be logged in. Checks if logged in through the authTokens provided from frontend
-@permission_classes([IsAuthenticated])
-def getNotes(request):
-    user = request.user
-    notes = user.note_set.all()
-    serializer = NoteSerializer(notes, many=True)
-    return Response(serializer.data)

@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     'eatit.apps.EatitConfig',
+    'restaurants.apps.RestaurantsConfig',
 
     'rest_framework',
     'rest_framework_simplejwt.token_blacklist',

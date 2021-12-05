@@ -1,12 +1,12 @@
 import React, {useState, useEffect, useContext} from 'react'
-import AuthContext from '../context/AuthContext'
-import Header from '../components/Header'
+import { Redirect } from 'react-router'
+import RestaurantAuthContext from '../context/RestaurantAuthContext'
+import RestaurantHeader from '../components/RestaurantHeader'
 
 
-const HomePage = () => {
+const RestaurantHomePage = () => {
     let [notes, setNotes] = useState([])
-    let {authTokens, logoutUser} = useContext(AuthContext)
-
+    let {restaurant, authTokens, logoutRestaurant} = useContext(RestaurantAuthContext)
 
     // call getNotes on load
     useEffect(()=> {
@@ -26,7 +26,7 @@ const HomePage = () => {
             if(response.status === 200){
                 setNotes(data)
             }else if(response.statusText === 'Unauthorized'){
-                logoutUser()
+                logoutRestaurant()
             }
             
         }
@@ -37,10 +37,14 @@ const HomePage = () => {
 
     }, [])
 
+    //if (restaurant.group === "None"){
+    //    return( <Redirect to="/" /> )
+    //}
 
     return (
         <div>
-            <Header/>
+            <RestaurantHeader/>
+            <p> Welcome restaurant! NAME: {restaurant.username} GROUP:{restaurant.group}</p>
             <p>You are logged to the home page!</p>
 
 
@@ -53,4 +57,4 @@ const HomePage = () => {
     )
 }
 
-export default HomePage
+export default RestaurantHomePage

@@ -26,7 +26,13 @@ const Header = () => {
             (
                 <Link to="/register" >Register</Link>
             )}
-                
+              
+            <span> | </span>
+            {user ? (null) : 
+            (
+                <Link to="/partner-with-us" >Partner With Us</Link>
+            )}
+
             {/* If user exists then display the username */}
             {user &&   <p>Hello {user.username}</p>}
            
