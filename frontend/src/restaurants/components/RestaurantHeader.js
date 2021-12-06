@@ -7,11 +7,12 @@ const RestaurantHeader = () => {
     let {restaurant, logoutRestaurant} = useContext(RestaurantAuthContext)
 
 
+    
     return (
         <div>
             <Link to="/partner-with-us" >Home</Link>
 
-            <span> | </span>
+            <span>  |  </span>
             {/* If user is logged in then show logout button else show login button */}
             {restaurant ? (
                 <Link to="">
@@ -21,17 +22,23 @@ const RestaurantHeader = () => {
                 <Link to="/partner-with-us/login" >Login</Link>
             )}
 
-            <span> | </span>
-            {restaurant ? (null) : 
-            (
+            <span>  |  </span>
+            {restaurant ? (
+                <Link to="/partner-with-us/manage-food-items"> Manage Food Items </Link>
+            ) 
+            : (
                 <Link to="/partner-with-us/register" >Register</Link>
             )}
 
-            <span> | </span>
-            {restaurant ? (null) : 
-            (
+            <span>  |  </span>
+            {restaurant ? (
+                <Link to="/partner-with-us/add-food-item"> Add Food Item </Link>
+            ) 
+            : (
                 <Link to="/" > Main Site </Link>
             )}
+
+
                 
            
         </div>

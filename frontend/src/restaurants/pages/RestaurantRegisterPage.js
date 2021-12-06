@@ -2,8 +2,6 @@ import React, {useContext} from 'react'
 import RestaurantAuthContext from '../context/RestaurantAuthContext'
 import RestaurantHeader from '../components/RestaurantHeader'
 
-<RestaurantHeader/>
-
 
 const RestaurantRegisterPage = () => {
 

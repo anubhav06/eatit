@@ -1,17 +1,18 @@
 import React, {useContext} from 'react'
-import { Redirect } from 'react-router'
 import RestaurantAuthContext from '../context/RestaurantAuthContext'
 import RestaurantHeader from '../components/RestaurantHeader'
-
-<RestaurantHeader/>
+import { Redirect } from 'react-router'
 
 
 const RestaurantLoginPage = () => {
 
     // Get the login user function from AuthContext 
-    let {loginRestaurant} = useContext(RestaurantAuthContext)
+    let {restaurant , loginRestaurant} = useContext(RestaurantAuthContext)
 
-    
+    if(restaurant){
+        return( <Redirect to="/partner-with-us" /> )
+    }
+
     //if (restaurant.group === "None"){
     //    return( <Redirect to="/" /> )
     //}

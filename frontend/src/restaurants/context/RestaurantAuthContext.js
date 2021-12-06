@@ -3,6 +3,7 @@
 import { createContext, useState, useEffect } from 'react'
 import jwt_decode from "jwt-decode";
 import { useHistory } from 'react-router-dom'
+import axios from "axios";
 
 const RestaurantAuthContext = createContext()
 
@@ -45,7 +46,7 @@ export const RestaurantAuthProvider = ({children}) => {
             // Set the authTokens in the local storage
             localStorage.setItem('authTokens', JSON.stringify(data))
             // Redirect restaurant to home page
-            history.push('/partner-with-us')
+            history.push('/partner-with-us/orders')
         }else{
             alert('Something went wrong!')
         }
@@ -73,7 +74,7 @@ export const RestaurantAuthProvider = ({children}) => {
             headers:{
                 'Content-Type':'application/json'
             },
-            // 'e.target' is the form, '.username' gets the username field and '.password' gets the password field from wherever it is called (LoginPage.js here)
+            // 'e.target' is the form, '.username' gets the username field and '.password' gets the password field from wherever it is called (RegisterPage.js here)
             body:JSON.stringify({ 'email':e.target.email.value, 'password':e.target.password.value, 'confirmPassword':e.target.confirmPassword.value, 'name':e.target.name.value, 'address':e.target.address.value})
         })
         // Get the access and refresh tokens
@@ -90,6 +91,34 @@ export const RestaurantAuthProvider = ({children}) => {
 
     }
 
+
+
+
+    // To add a new food item
+    let addFoodItem = async (e) => {
+        e.preventDefault()
+
+        // Reference: https://medium.com/@emeruchecole9/uploading-images-to-rest-api-backend-in-react-js-b931376b5833
+        let form_data = new FormData();
+        form_data.append('image', e.target.image.files[0]);
+        form_data.append('name', e.target.name.value);
+        form_data.append('description', e.target.description.value);
+        form_data.append('price', e.target.price.value);
+
+        let url = 'http://127.0.0.1:8000/restaurant/add-food-item/';
+        axios.post(url, form_data, {
+        headers: {
+            'content-type': 'multipart/form-data',
+            'Authorization':'Bearer ' + String(authTokens.access)
+        }
+        })
+        .then(res => {
+          alert(res.data);
+        })
+        .catch(err => alert(err))
+        
+    }
+
     
 
     // Context data for AuthContext so that it can be used in other pages
@@ -98,7 +127,8 @@ export const RestaurantAuthProvider = ({children}) => {
         authTokens:authTokens,
         loginRestaurant:loginRestaurant,
         logoutRestaurant:logoutRestaurant,
-        registerRestaurant,registerRestaurant,
+        registerRestaurant:registerRestaurant,
+        addFoodItem:addFoodItem
     }
 
 

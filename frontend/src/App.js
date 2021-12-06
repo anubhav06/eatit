@@ -8,13 +8,14 @@ import { RestaurantAuthProvider } from './restaurants/context/RestaurantAuthCont
 
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
-import Header from './components/Header'
 import RegisterPage from './pages/RegisterPage';
 
 import RestaurantHomePage from './restaurants/pages/RestaurantHomePage'
 import RestaurantLoginPage from './restaurants/pages/RestaurantLoginPage'
 import RestaurantRegisterPage from './restaurants/pages/RestaurantRegisterPage'
-import RestaurantHeader from './components/Header'
+import ManageFoodItems from './restaurants/pages/ManageFoodItems'
+import AddFoodItem from './restaurants/pages/AddFoodItem'
+import ManageOrders from './restaurants/pages/ManageOrders'
 
 function App() {
   return (
@@ -27,11 +28,13 @@ function App() {
         </AuthProvider>
 
         <RestaurantAuthProvider>
-          <RestaurantPrivateRoute component={RestaurantHomePage} path="/partner-with-us" exact />
           <Route component={RestaurantLoginPage} path="/partner-with-us/login"/>
           <Route component={RestaurantRegisterPage} path="/partner-with-us/register"/>
+          <RestaurantPrivateRoute component={RestaurantHomePage} path="/partner-with-us" exact />
+          <RestaurantPrivateRoute component={ManageFoodItems} path="/partner-with-us/manage-food-items" exact />
+          <RestaurantPrivateRoute component={AddFoodItem} path="/partner-with-us/add-food-item" exact />
+          <RestaurantPrivateRoute component={ManageOrders} path="/partner-with-us/orders" exact />
         </RestaurantAuthProvider>
-        
 
       </Router>
     </div>
