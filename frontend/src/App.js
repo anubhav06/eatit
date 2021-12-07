@@ -22,7 +22,7 @@ function App() {
     <div className="App">
       <Router>
         <AuthProvider>
-          <PrivateRoute comp={HomePage} path="/" exact/>
+          <PrivateRoute component={HomePage} path="/" exact/>
           <Route component={LoginPage} path="/login"/>
           <Route component={RegisterPage} path="/register"/>
         </AuthProvider>

@@ -15,7 +15,7 @@ const RestaurantHeader = () => {
             <span>  |  </span>
             {/* If user is logged in then show logout button else show login button */}
             {restaurant ? (
-                <Link to="">
+                <Link to="/partner-with-us">
                     <span onClick={logoutRestaurant}>Logout</span>
                 </Link>
             ): (

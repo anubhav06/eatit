@@ -59,7 +59,7 @@ export const RestaurantAuthProvider = ({children}) => {
         setAuthTokens(null)
         setRestaurant(null)
         localStorage.removeItem('authTokens')
-        //history.push('/login')
+        history.push('/partner-with-us')
     }
 
 
