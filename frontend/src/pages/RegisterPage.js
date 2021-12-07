@@ -8,6 +8,13 @@ const RegisterPage = () => {
 
     let {user, registerUser} = useContext(AuthContext)
 
+    // If a restaurant owner is logged in, then tell them to logout and login with a USER ACCOUNT to access the user's login
+    if(localStorage.getItem('restaurantAuthTokens') !== null){
+        return(  
+            <p> You need to logout from your RESTAURANT ACCOUNT to login with the USER ACCOUNT ! </p>
+        )
+    }
+
     // To not allow login route to a user who is logged in. Redirect to '/'
     if(user){
         return( <Redirect to="/" /> )

@@ -5,7 +5,7 @@ import RestaurantHeader from '../components/RestaurantHeader'
 
 const ManageFoodItems = () => {
     let [foodItems, setFoodItems] = useState([])
-    let {authTokens, logoutRestaurant} = useContext(RestaurantAuthContext)
+    let {restaurantAuthTokens, logoutRestaurant} = useContext(RestaurantAuthContext)
 
     // call getNotes on load
     useEffect(()=> {
@@ -17,7 +17,7 @@ const ManageFoodItems = () => {
                 headers:{
                     'Content-Type':'application/json',
                     // Provide the authToken when making API request to backend to access the protected route of that user
-                    'Authorization':'Bearer ' + String(authTokens.access)
+                    'Authorization':'Bearer ' + String(restaurantAuthTokens.access)
                 }
             })
             let data = await response.json()

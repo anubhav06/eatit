@@ -30,7 +30,7 @@ function App() {
         <RestaurantAuthProvider>
           <Route component={RestaurantLoginPage} path="/partner-with-us/login"/>
           <Route component={RestaurantRegisterPage} path="/partner-with-us/register"/>
-          <RestaurantPrivateRoute component={RestaurantHomePage} path="/partner-with-us" exact />
+          <Route component={RestaurantHomePage} path="/partner-with-us" exact />
           <RestaurantPrivateRoute component={ManageFoodItems} path="/partner-with-us/manage-food-items" exact />
           <RestaurantPrivateRoute component={AddFoodItem} path="/partner-with-us/add-food-item" exact />
           <RestaurantPrivateRoute component={ManageOrders} path="/partner-with-us/orders" exact />

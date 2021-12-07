@@ -14,9 +14,9 @@ export const RestaurantAuthProvider = ({children}) => {
 
     // Get the value of authToken from local storage. If the local storage contains authTokens, then parse the token(get the value back) , else set that to null
     // Callback function sets the value only once on inital load 
-    let [authTokens, setAuthTokens] = useState(()=> localStorage.getItem('authTokens') ? JSON.parse(localStorage.getItem('authTokens')) : null)
+    let [restaurantAuthTokens, setAuthTokens] = useState(()=> localStorage.getItem('restaurantAuthTokens') ? JSON.parse(localStorage.getItem('restaurantAuthTokens')) : null)
     // If the local storage contains authTokens, then decode the token, else set that to null
-    let [restaurant, setRestaurant] = useState(()=> localStorage.getItem('authTokens') ? jwt_decode(localStorage.getItem('authTokens')) : null)
+    let [restaurant, setRestaurant] = useState(()=> localStorage.getItem('restaurantAuthTokens') ? jwt_decode(localStorage.getItem('restaurantAuthTokens')) : null)
     let [loading, setLoading] = useState(true)
 
     const history = useHistory()
@@ -44,7 +44,7 @@ export const RestaurantAuthProvider = ({children}) => {
             // Decode the access token and store the information
             setRestaurant(jwt_decode(data.access))
             // Set the authTokens in the local storage
-            localStorage.setItem('authTokens', JSON.stringify(data))
+            localStorage.setItem('restaurantAuthTokens', JSON.stringify(data))
             // Redirect restaurant to home page
             history.push('/partner-with-us/orders')
         }else{
@@ -58,7 +58,7 @@ export const RestaurantAuthProvider = ({children}) => {
         // To logout, set 'setAuthTokens' and 'setUser' to null and remove the 'authTokens' from local storage
         setAuthTokens(null)
         setRestaurant(null)
-        localStorage.removeItem('authTokens')
+        localStorage.removeItem('restaurantAuthTokens')
         history.push('/partner-with-us')
     }
 
@@ -109,7 +109,7 @@ export const RestaurantAuthProvider = ({children}) => {
         axios.post(url, form_data, {
         headers: {
             'content-type': 'multipart/form-data',
-            'Authorization':'Bearer ' + String(authTokens.access)
+            'Authorization':'Bearer ' + String(restaurantAuthTokens.access)
         }
         })
         .then(res => {
@@ -124,7 +124,7 @@ export const RestaurantAuthProvider = ({children}) => {
     // Context data for AuthContext so that it can be used in other pages
     let contextData = {
         restaurant:restaurant,
-        authTokens:authTokens,
+        restaurantAuthTokens:restaurantAuthTokens,
         loginRestaurant:loginRestaurant,
         logoutRestaurant:logoutRestaurant,
         registerRestaurant:registerRestaurant,
@@ -140,7 +140,7 @@ export const RestaurantAuthProvider = ({children}) => {
         let updateToken = async ()=> {
 
             // If no authToken exists i.e. restaurant is not logged in then return
-            if(!authTokens){
+            if(!restaurantAuthTokens){
                 setLoading(false)
                 return
             }
@@ -151,7 +151,7 @@ export const RestaurantAuthProvider = ({children}) => {
                     'Content-Type':'application/json'
                 },
                 // Send the refresh token
-                body:JSON.stringify({'refresh':authTokens?.refresh})
+                body:JSON.stringify({'refresh':restaurantAuthTokens?.refresh})
             })
             let data = await response.json()
             
@@ -159,7 +159,7 @@ export const RestaurantAuthProvider = ({children}) => {
                 // Update the data as done similarly in the login restaurant method
                 setAuthTokens(data)
                 setRestaurant(jwt_decode(data.access))
-                localStorage.setItem('authTokens', JSON.stringify(data))
+                localStorage.setItem('restaurantAuthTokens', JSON.stringify(data))
             }else{
                 logoutRestaurant()
             }
@@ -178,14 +178,14 @@ export const RestaurantAuthProvider = ({children}) => {
         let fourMinutes = 1000 * 60 * 4
 
         let interval =  setInterval(()=> {
-            if(authTokens){
+            if(restaurantAuthTokens){
                 updateToken()
             }
         }, fourMinutes)
         // Clear the interval after firing preventing re-initializing every time, refer to docs for more details
         return ()=> clearInterval(interval)
 
-    }, [authTokens, loading])
+    }, [restaurantAuthTokens, loading])
 
     return(
         <RestaurantAuthContext.Provider value={contextData} >

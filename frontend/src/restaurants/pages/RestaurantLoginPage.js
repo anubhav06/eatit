@@ -9,13 +9,18 @@ const RestaurantLoginPage = () => {
     // Get the login user function from AuthContext 
     let {restaurant , loginRestaurant} = useContext(RestaurantAuthContext)
 
-    if(restaurant){
-        return( <Redirect to="/partner-with-us" /> )
+
+    // If a normal user is logged in, then tell them to logout with the normal account to access the restaurant login
+    if(localStorage.getItem('authTokens') !== null){
+        return(  
+            <p> You need to logout from your main account to login with the restaurant account ! </p>
+        )
     }
 
-    //if (restaurant.group === "None"){
-    //    return( <Redirect to="/" /> )
-    //}
+    // If a restaurant is already logged in
+    if(restaurant){
+        return( <Redirect to="/partner-with-us/orders" /> )
+    }
     
     return (
         <div>
