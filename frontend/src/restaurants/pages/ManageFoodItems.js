@@ -45,7 +45,6 @@ const ManageFoodItems = () => {
                 {foodItems.map(food => (   
                     <Link to={`/partner-with-us/manage-food-items/${food.id}`} key={food.id}> 
                         <li key={food.id} >
-                            ID: {food.id} <br/>
                             Name: {food.name} <br/>
                             Description: {food.description} <br/>
                             Price: {food.price} <br/>

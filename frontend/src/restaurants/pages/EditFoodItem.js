@@ -6,7 +6,7 @@ import RestaurantHeader from '../components/RestaurantHeader'
 const EditFoodItem = ({match}) => {
     let [foodItem, setFoodItem] = useState([])
     let [updateFood , updateFoodItem] = useState(null)
-    let { editFoodItem, restaurantAuthTokens} = useContext(RestaurantAuthContext)
+    let { editFoodItem, deleteFoodItem, restaurantAuthTokens} = useContext(RestaurantAuthContext)
 
     let foodId = match.params.id
 
@@ -38,7 +38,7 @@ const EditFoodItem = ({match}) => {
                 
                 <div key={food.id}>
 
-                    {/* Edit form */}
+                    {/* Form to edit the food item details */}
                     <form onSubmit={editFoodItem}>
                         <input type="hidden" name="id" defaultValue={food.id} />
                         <input type="text" name="name" defaultValue={food.name} onChange={(e) => {updateFoodItem({...updateFood, 'body': e.target.value})}} />
@@ -48,7 +48,11 @@ const EditFoodItem = ({match}) => {
                         
                         <input type="submit" value="Update"/>
                     </form>
-                    
+
+                    {/* Button to delete the food item */}
+                    <button onClick={deleteFoodItem} name="id" value={food.id}> 
+                        DELETE ITEM 
+                    </button>
                 </div>
             ))}
         

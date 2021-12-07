@@ -114,10 +114,12 @@ export const RestaurantAuthProvider = ({children}) => {
         })
         .then(res => {
           alert(res.data);
+          history.push('/partner-with-us/manage-food-items')
         })
         .catch(err => alert(err))
         
     }
+
 
     // To edit an exisiting food item
     let editFoodItem = async (e) => {
@@ -147,6 +149,21 @@ export const RestaurantAuthProvider = ({children}) => {
     }
 
     
+     // To delete a food item
+     let deleteFoodItem = async (e) => {
+        e.preventDefault()
+
+        let response = await fetch(`http://127.0.0.1:8000/restaurant/manage-food-items/${e.target.value}/delete`, {
+            method: 'DELETE',
+            headers: {
+                'content-type': 'multipart/form-data',
+                'Authorization':'Bearer ' + String(restaurantAuthTokens.access)
+            }
+        })
+        let data = await response.json()
+        alert(data)
+        history.push('/partner-with-us/manage-food-items')
+    }
 
     // Context data for AuthContext so that it can be used in other pages
     let contextData = {
@@ -156,7 +173,8 @@ export const RestaurantAuthProvider = ({children}) => {
         logoutRestaurant:logoutRestaurant,
         registerRestaurant:registerRestaurant,
         addFoodItem:addFoodItem,
-        editFoodItem:editFoodItem
+        editFoodItem:editFoodItem,
+        deleteFoodItem:deleteFoodItem
     }
 
 
