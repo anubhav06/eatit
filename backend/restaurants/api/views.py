@@ -61,6 +61,12 @@ def register(request):
     if password != confirmation:
         return Response("ERROR: Passwords don't match", status=status.HTTP_406_NOT_ACCEPTABLE)
 
+    # Input validation. Check if all data is provided
+    if not email or not name or not address or not password or not confirmation:
+        return Response('All data is required')
+    if len(name) >= 64 or len(address) >= 320:
+        return Response('Max size exceeded! Enter a smaller value')
+
     # Attempt to create new user
     try:
         # For restaurants, set their username as their email
@@ -106,23 +112,28 @@ def addFoodItem(request):
     description = request.data["description"]
     price = request.data["price"]
     image = request.data["image"]
-    print(image)
+
+    # Input validation. Check if all data is provided
+    if not name or not description or not price or image == 'undefined':
+        return Response('All data is required')
+    if len(name) >= 32 or len(description) >= 320 or len(str(price)) > 6:
+        return Response('Max size exceeded! Enter a smaller value')
 
     # Get the logged in user's restaurant
     try:
         restaurant = Restaurant.objects.get(user= request.user)
-        print(restaurant)
     except Error:
-        return Response('Error 1')
+        return Response('No restaurant is associated with the logged in user')
 
     # Save the details obtained from frontend about food item
     try:
         data = FoodItem(restaurant=restaurant, name=name, description=description, price=price, image=image)
         data.save()
     except Error:
-        return Response('Error 2')
+        return Response('Error while adding the food items')
 
     return Response('✅ Your food item has been succesfully added!')
+
 
 
 @api_view(['GET'])
@@ -136,18 +147,15 @@ def manageFoodItems(request):
 
 
 
-
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def editFoodItems(request, id):
 
-    print('Id: ', id)
     restaurant = Restaurant.objects.get(user= request.user)
-    print('Restaurant: ', restaurant)
     foodItems = FoodItem.objects.filter(pk=id, restaurant=restaurant)
-    print('FoodItems:', foodItems)
     serializer = FoodItemSerializer(foodItems, many=True)
     return Response(serializer.data)
+
 
 
 @api_view(['POST'])
@@ -162,7 +170,6 @@ def updateFoodItem(request, id):
     # Get the logged in user's restaurant
     try:
         restaurant = Restaurant.objects.get(user= request.user)
-        print(restaurant)
     except Error:
         return Response('Error 1')
 
@@ -181,6 +188,7 @@ def updateFoodItem(request, id):
 
     return Response('✅ Your food item has been succesfully updated!')
     
+
 
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])

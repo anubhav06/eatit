@@ -27,8 +27,8 @@ const RestaurantLoginPage = () => {
             <RestaurantHeader/>
             Restaurant Login Page <br/>
             <form onSubmit={loginRestaurant}>
-                <input type="text" name="username" placeholder="Enter Username" />
-                <input type="password" name="password" placeholder="Enter Password" />
+                <input type="text" name="username" placeholder="Enter Username" required/>
+                <input type="password" name="password" placeholder="Enter Password" required />
                 <input type="submit"/>
             </form>
         </div>

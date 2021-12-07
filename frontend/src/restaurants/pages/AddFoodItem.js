@@ -14,10 +14,10 @@ const AddFoodItem = () => {
             <br/>
             
             <form onSubmit={addFoodItem}>
-                <input type="text" name="name" placeholder="Food name" /> <br/>
-                <input type="text" name="description" placeholder="Food Description"/> <br/>
-                <input type="number" min="0" step="0.01" name="price" placeholder="Price"/> <br/>
-                <input type="file" accept="image/x-png,image/jpeg,image/jpg" name="image" placeholder="Food Image"/> <br/>
+                <input type="text" name="name" placeholder="Food name" required /> <br/>
+                <input type="text" name="description" placeholder="Food Description" required/> <br/>
+                <input type="number" min="0" step="0.01" name="price" placeholder="Price" required/> <br/>
+                <input type="file" accept="image/x-png,image/jpeg,image/jpg" name="image" placeholder="Food Image" required/> <br/>
                 
                 <input type="submit"/>
             </form>

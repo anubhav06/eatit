@@ -53,6 +53,10 @@ def register(request):
     confirmation = request.data["confirmPassword"]
     if password != confirmation:
         return Response("ERROR: Passwords don't match", status=status.HTTP_406_NOT_ACCEPTABLE)
+    
+    # Input validation. Check if all data is provided
+    if email or email or password or confirmation is None:
+        return Response('All data is required')
 
     # Attempt to create new user
     try:
