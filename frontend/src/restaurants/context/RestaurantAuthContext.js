@@ -119,6 +119,33 @@ export const RestaurantAuthProvider = ({children}) => {
         
     }
 
+    // To edit an exisiting food item
+    let editFoodItem = async (e) => {
+        e.preventDefault()
+
+        // Reference: https://medium.com/@emeruchecole9/uploading-images-to-rest-api-backend-in-react-js-b931376b5833
+        let form_data = new FormData();
+
+        form_data.append('image', e.target.image.files[0]);
+        form_data.append('name', e.target.name.value);
+        form_data.append('description', e.target.description.value);
+        form_data.append('price', e.target.price.value);
+        
+        let url = `http://127.0.0.1:8000/restaurant/manage-food-items/${e.target.id.value}/update`;
+        axios.post(url, form_data, {
+        headers: {
+            'content-type': 'multipart/form-data',
+            'Authorization':'Bearer ' + String(restaurantAuthTokens.access)
+        }
+        })
+        .then(res => {
+          alert(res.data);
+          history.push('/partner-with-us/manage-food-items')
+        })
+        .catch(err => alert(err))
+        
+    }
+
     
 
     // Context data for AuthContext so that it can be used in other pages
@@ -128,7 +155,8 @@ export const RestaurantAuthProvider = ({children}) => {
         loginRestaurant:loginRestaurant,
         logoutRestaurant:logoutRestaurant,
         registerRestaurant:registerRestaurant,
-        addFoodItem:addFoodItem
+        addFoodItem:addFoodItem,
+        editFoodItem:editFoodItem
     }
 
 

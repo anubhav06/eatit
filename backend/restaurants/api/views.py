@@ -107,9 +107,6 @@ def addFoodItem(request):
     price = request.data["price"]
     image = request.data["image"]
     print(image)
-    # Get the imageName from this URL which we get: C:\fakepath\<imageName.jpg>
-    #imageName = (image.split('\\')[2])
-    #imagePath = 'http://127.0.0.1:8000/images/' + imageName
 
     # Get the logged in user's restaurant
     try:
@@ -137,4 +134,50 @@ def manageFoodItems(request):
     serializer = FoodItemSerializer(foodItems, many=True)
     return Response(serializer.data)
 
+
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def editFoodItems(request, id):
+
+    print('Id: ', id)
+    restaurant = Restaurant.objects.get(user= request.user)
+    print('Restaurant: ', restaurant)
+    foodItems = FoodItem.objects.filter(pk=id, restaurant=restaurant)
+    print('FoodItems:', foodItems)
+    serializer = FoodItemSerializer(foodItems, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def updateFoodItem(request, id):
+    
+    name = request.data["name"]
+    description = request.data["description"]
+    price = request.data["price"]
+    image = request.data["image"]
+
+    # Get the logged in user's restaurant
+    try:
+        restaurant = Restaurant.objects.get(user= request.user)
+        print(restaurant)
+    except Error:
+        return Response('Error 1')
+
+    # Update the details obtained from frontend about food item
+    try:
+        foodItem = FoodItem.objects.get(id=id)
+        foodItem.name = name
+        foodItem.description = description
+        foodItem.price = price
+        # If an image is provided, then update the image, if not provided, then let the original one remain as it is
+        if image != 'undefined':
+            foodItem.image = image
+        foodItem.save()
+    except Error:
+        return Response('Error: ', Error)
+
+    return Response('✅ Your food item has been succesfully updated!')
     

@@ -16,6 +16,7 @@ import RestaurantRegisterPage from './restaurants/pages/RestaurantRegisterPage'
 import ManageFoodItems from './restaurants/pages/ManageFoodItems'
 import AddFoodItem from './restaurants/pages/AddFoodItem'
 import ManageOrders from './restaurants/pages/ManageOrders'
+import EditFoodItem from './restaurants/pages/EditFoodItem';
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
           <Route component={RestaurantRegisterPage} path="/partner-with-us/register"/>
           <Route component={RestaurantHomePage} path="/partner-with-us" exact />
           <RestaurantPrivateRoute component={ManageFoodItems} path="/partner-with-us/manage-food-items" exact />
+          <RestaurantPrivateRoute component={EditFoodItem} path="/partner-with-us/manage-food-items/:id" exact />
           <RestaurantPrivateRoute component={AddFoodItem} path="/partner-with-us/add-food-item" exact />
           <RestaurantPrivateRoute component={ManageOrders} path="/partner-with-us/orders" exact />
         </RestaurantAuthProvider>

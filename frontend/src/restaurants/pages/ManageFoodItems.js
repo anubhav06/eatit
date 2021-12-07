@@ -1,6 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react'
 import RestaurantAuthContext from '../context/RestaurantAuthContext'
 import RestaurantHeader from '../components/RestaurantHeader'
+import { Link } from 'react-router-dom'
 
 
 const ManageFoodItems = () => {
@@ -39,17 +40,18 @@ const ManageFoodItems = () => {
         <div>
             <RestaurantHeader/>
             <p> All your food items will show here: </p>
-
-
+            
             <ul>
-                {foodItems.map(food => (
-                    
-                    <li key={food.id} >
-                        Name: {food.name} <br/>
-                        Description: {food.description} <br/>
-                        Price: {food.price} <br/>
-                        <img src={`http://localhost:8000${food.image}`} alt='Food' height="150px"/> <br/><br/><br/>
-                    </li>
+                {foodItems.map(food => (   
+                    <Link to={`/partner-with-us/manage-food-items/${food.id}`} key={food.id}> 
+                        <li key={food.id} >
+                            ID: {food.id} <br/>
+                            Name: {food.name} <br/>
+                            Description: {food.description} <br/>
+                            Price: {food.price} <br/>
+                            <img src={`http://localhost:8000${food.image}`} alt='Food' height="150px"/> <br/><br/><br/>
+                        </li>    
+                    </Link>
                 ))}
             </ul>
         </div>
