@@ -181,3 +181,14 @@ def updateFoodItem(request, id):
 
     return Response('✅ Your food item has been succesfully updated!')
     
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def deleteFoodItem(request, id):
+    
+    restaurant = Restaurant.objects.get(user= request.user)
+    # Get the requested food item by its ID and delete that.
+    foodItem = FoodItem.objects.get(id=id, restaurant=restaurant)
+    foodItem.delete()
+    
+    return Response(' ✅ DELETED food item successfully! ')
