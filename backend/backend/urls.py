@@ -7,7 +7,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('eatit.api.urls')),
-    path('restaurant/', include('restaurants.api.urls')),
+    path('partner-with-us/', include('restaurants.api.urls')),
 ]
 
 # Add each uploaded image url. Format to access from frontend: localhost:8000/images/<nameOfUploadedImage>

@@ -27,7 +27,7 @@ export const RestaurantAuthProvider = ({children}) => {
         e.preventDefault()
 
         // Make a post request to the api with the Restaurant's credentials.
-        let response = await fetch('http://127.0.0.1:8000/restaurant/api/token/', {
+        let response = await fetch('http://127.0.0.1:8000/partner-with-us/api/token/', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -39,6 +39,13 @@ export const RestaurantAuthProvider = ({children}) => {
         let data = await response.json()
 
         if(response.status === 200){
+
+
+            // If a simple user tries to login, the return without allocating the authTokens
+            if(jwt_decode(data.access)['group'] == 'None'){
+                alert('You need to login with a restaurant account')
+                return 
+            }
             // Update the state with the logged in tokens
             setAuthTokens(data) 
             // Decode the access token and store the information
@@ -46,7 +53,7 @@ export const RestaurantAuthProvider = ({children}) => {
             // Set the authTokens in the local storage
             localStorage.setItem('restaurantAuthTokens', JSON.stringify(data))
             // Redirect restaurant to home page
-            history.push('/partner-with-us/orders')
+            //history.push('/partner-with-us')
         }else{
             alert('Something went wrong!')
         }
@@ -69,7 +76,7 @@ export const RestaurantAuthProvider = ({children}) => {
         e.preventDefault()
 
         // Make a post request to the api with the user's credentials.
-        let response = await fetch('http://127.0.0.1:8000/restaurant/register/', {
+        let response = await fetch('http://127.0.0.1:8000/partner-with-us/register/', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -105,7 +112,7 @@ export const RestaurantAuthProvider = ({children}) => {
         form_data.append('description', e.target.description.value);
         form_data.append('price', e.target.price.value);
 
-        let url = 'http://127.0.0.1:8000/restaurant/add-food-item/';
+        let url = 'http://127.0.0.1:8000/partner-with-us/add-food-item/';
         axios.post(url, form_data, {
         headers: {
             'content-type': 'multipart/form-data',
@@ -133,7 +140,7 @@ export const RestaurantAuthProvider = ({children}) => {
         form_data.append('description', e.target.description.value);
         form_data.append('price', e.target.price.value);
         
-        let url = `http://127.0.0.1:8000/restaurant/manage-food-items/${e.target.id.value}/update`;
+        let url = `http://127.0.0.1:8000/partner-with-us/manage-food-items/${e.target.id.value}/update`;
         axios.post(url, form_data, {
         headers: {
             'content-type': 'multipart/form-data',
@@ -153,7 +160,7 @@ export const RestaurantAuthProvider = ({children}) => {
      let deleteFoodItem = async (e) => {
         e.preventDefault()
 
-        let response = await fetch(`http://127.0.0.1:8000/restaurant/manage-food-items/${e.target.value}/delete`, {
+        let response = await fetch(`http://127.0.0.1:8000/partner-with-us/manage-food-items/${e.target.value}/delete`, {
             method: 'DELETE',
             headers: {
                 'content-type': 'multipart/form-data',
@@ -191,7 +198,7 @@ export const RestaurantAuthProvider = ({children}) => {
                 return
             }
             // Make a post request to the api with the refresh token to update the access token
-            let response = await fetch('http://127.0.0.1:8000/restaurant/api/token/refresh/', {
+            let response = await fetch('http://127.0.0.1:8000/partner-with-us/api/token/refresh/', {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'

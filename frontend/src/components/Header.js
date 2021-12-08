@@ -1,5 +1,6 @@
 import React, {useContext} from 'react'
 import { Link } from 'react-router-dom'
+import { Redirect } from 'react-router'
 import AuthContext from '../context/AuthContext'
 
 const Header = () => {

@@ -22,7 +22,6 @@ export const AuthProvider = ({children}) => {
     // Login User method
     let loginUser = async (e )=> {
         e.preventDefault()
-
         // Make a post request to the api with the user's credentials.
         let response = await fetch('http://127.0.0.1:8000/api/token/', {
             method:'POST',
@@ -36,6 +35,13 @@ export const AuthProvider = ({children}) => {
         let data = await response.json()
 
         if(response.status === 200){
+
+            // If a restaurant owner tries to login, the return without allocating the authTokens
+            if(jwt_decode(data.access)['group'] === 'Restaurant'){
+                alert('You need to login with a user account')
+                return 
+            }
+
             // Update the state with the logged in tokens
             setAuthTokens(data) 
             // Decode the access token and store the information

@@ -13,7 +13,7 @@ const ManageFoodItems = () => {
         
         // To fetch the notes of a user
         let getFoodItems = async() =>{
-            let response = await fetch('http://127.0.0.1:8000/restaurant/manage-food-items/', {
+            let response = await fetch('http://127.0.0.1:8000/partner-with-us/manage-food-items/', {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
