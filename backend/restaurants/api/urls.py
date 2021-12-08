@@ -19,6 +19,8 @@ urlpatterns = [
     path('manage-food-items/<int:id>/update', views.updateFoodItem, name="updateFoodItem"),
     path('manage-food-items/<int:id>/delete', views.deleteFoodItem, name="deleteFoodItem"),
 
+    #path('restaurants/', views.restaurants, name="restaurants"),
+
     path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

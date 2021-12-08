@@ -90,7 +90,7 @@ export const RestaurantAuthProvider = ({children}) => {
         if(response.status === 200){
             console.log('Registered Successfully')
             alert(data)
-            history.push('/')
+            history.push('/restaurants')
         }else{
             console.log(data)
             alert(data)

@@ -35,7 +35,7 @@ const RestaurantHeader = () => {
                 <Link to="/partner-with-us/add-food-item"> Add Food Item </Link>
             ) 
             : (
-                <Link to="/" > Main Site </Link>
+                <Link to="/restaurants" > Main Site </Link>
             )}
 
 

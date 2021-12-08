@@ -17,7 +17,7 @@ const RegisterPage = () => {
 
     // To not allow login route to a user who is logged in. Redirect to '/'
     if(user){
-        return( <Redirect to="/" /> )
+        return( <Redirect to="/restaurants" /> )
     }
 
     return (

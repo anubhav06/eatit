@@ -49,7 +49,7 @@ export const AuthProvider = ({children}) => {
             // Set the authTokens in the local storage
             localStorage.setItem('authTokens', JSON.stringify(data))
             // Redirect user to home page
-            history.push('/')
+            history.push('/restaurants')
         }else{
             alert('Something went wrong!')
         }
@@ -86,7 +86,7 @@ export const AuthProvider = ({children}) => {
         if(response.status === 200){
             console.log('Registered Successfully')
             alert(data)
-            history.push('/')
+            history.push('/restaurants')
         }else{
             console.log(data)
             alert(data)

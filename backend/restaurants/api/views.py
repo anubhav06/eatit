@@ -16,7 +16,7 @@ from rest_framework import status
 from restaurants.api import serializers
 from restaurants.models import Restaurant, FoodItem, User
 from django.contrib.auth.models import Group
-from .serializers import FoodItemSerializer
+from .serializers import FoodItemSerializer, RestaurantSerializer
 
 from rest_framework.reverse import reverse
 
@@ -200,3 +200,13 @@ def deleteFoodItem(request, id):
     foodItem.delete()
     
     return Response(' ✅ DELETED food item successfully! ')
+
+
+
+#@api_view(['GET'])
+#def restaurants(request):
+    
+#    restaurants = Restaurant.objects.all()
+#    serializer = RestaurantSerializer(restaurants, many=True)
+#    return Response(serializer.data)
+    

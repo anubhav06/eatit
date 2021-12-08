@@ -1,3 +1,4 @@
+from django.db.utils import Error
 from django.http import JsonResponse
 from django.views.generic.base import RedirectView
 from rest_framework import permissions
@@ -11,9 +12,12 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from django.db import IntegrityError
 from rest_framework import status
 
-from .serializers import NoteSerializer
 from eatit.models import Note, User
 from rest_framework.reverse import reverse
+
+from restaurants.models import Restaurant, FoodItem
+from restaurants.api.serializers import RestaurantSerializer, FoodItemSerializer
+
 
 
 # For customizing the token claims: (whatever value we want)
@@ -79,11 +83,34 @@ def getRoutes(request):
     return Response(routes)
 
 
+#@api_view(['GET'])
+## Requires user to be logged in. Checks if logged in through the authTokens provided from frontend
+#@permission_classes([IsAuthenticated])
+#def getNotes(request):
+#    user = request.user
+#    notes = user.note_set.all()
+#    serializer = NoteSerializer(notes, many=True)
+#    return Response(serializer.data)
+
+
+# To view all the available/registered restaurants
 @api_view(['GET'])
-# Requires user to be logged in. Checks if logged in through the authTokens provided from frontend
-@permission_classes([IsAuthenticated])
-def getNotes(request):
-    user = request.user
-    notes = user.note_set.all()
-    serializer = NoteSerializer(notes, many=True)
+def restaurants(request):
+    
+    # Uses the restaurant model from the 'restaurants' app
+    restaurants = Restaurant.objects.all()
+    serializer = RestaurantSerializer(restaurants, many=True)
+    return Response(serializer.data)
+    
+
+@api_view(['GET'])
+def restaurantsFood(request, id):
+
+    try:
+        restaurant = Restaurant.objects.get(id=id)
+        restaurantsFood = FoodItem.objects.filter(restaurant = restaurant)
+    except :
+        return Response('Not found')
+    
+    serializer = FoodItemSerializer(restaurantsFood, many=True)
     return Response(serializer.data)

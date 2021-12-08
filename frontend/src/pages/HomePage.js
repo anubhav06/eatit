@@ -1,10 +1,12 @@
 import React, {useState, useEffect, useContext} from 'react'
 import AuthContext from '../context/AuthContext'
 import Header from '../components/Header'
+import { Link } from 'react-router-dom'
 
 
 const HomePage = () => {
     let [notes, setNotes] = useState([])
+    let [restaurants, setRestaurants] = useState([])
     let {authTokens, logoutUser} = useContext(AuthContext)
 
 
@@ -12,28 +14,26 @@ const HomePage = () => {
     useEffect(()=> {
         
         // To fetch the notes of a user
-        let getNotes = async() =>{
-            let response = await fetch('http://127.0.0.1:8000/api/notes/', {
+        let getRestaurants = async() =>{
+            let response = await fetch('http://127.0.0.1:8000/api/restaurants/', {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
-                    // Provide the authToken when making API request to backend to access the protected route of that user
-                    'Authorization':'Bearer ' + String(authTokens.access)
                 }
             })
             let data = await response.json()
 
             if(response.status === 200){
-                setNotes(data)
+                setRestaurants(data)
             }else if(response.statusText === 'Unauthorized'){
                 logoutUser()
             }
             
         }
 
-        getNotes()
+        
 
-        // eslint-disable-next-line react-hooks/exhaustive-deps
+        getRestaurants()
 
     }, [])
 
@@ -41,14 +41,19 @@ const HomePage = () => {
     return (
         <div>
             <Header/>
-            <p>You are logged to the home page!</p>
-
 
             <ul>
-                {notes.map(note => (
-                    <li key={note.id} >{note.body}</li>
+                {restaurants.map(restaurant => (
+                    <Link to={`/restaurants/${restaurant.id}`} key={restaurant.id}>
+                        <li key={restaurant.id} >
+                            <p> ID: {restaurant.id} </p>
+                            <p> NAME: {restaurant.name} </p>
+                            <p> ADDRESS: {restaurant.address} </p>
+                        </li>
+                    </Link>
                 ))}
             </ul>
+
         </div>
     )
 }

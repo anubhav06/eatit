@@ -17,15 +17,19 @@ import ManageFoodItems from './restaurants/pages/ManageFoodItems'
 import AddFoodItem from './restaurants/pages/AddFoodItem'
 import ManageOrders from './restaurants/pages/ManageOrders'
 import EditFoodItem from './restaurants/pages/EditFoodItem';
+import LandingPage from './pages/LandingPage';
+import ViewFoodItems from './pages/ViewFoodItems';
 
 function App() {
   return (
     <div className="App">
       <Router>
         <AuthProvider>
-          <PrivateRoute component={HomePage} path="/" exact/>
           <Route component={LoginPage} path="/login"/>
           <Route component={RegisterPage} path="/register"/>
+          <Route component={LandingPage} path="/" exact />
+          <Route component={HomePage} path="/restaurants" exact/>
+          <Route component={ViewFoodItems} path="/restaurants/:id" exact/>
         </AuthProvider>
 
         <RestaurantAuthProvider>

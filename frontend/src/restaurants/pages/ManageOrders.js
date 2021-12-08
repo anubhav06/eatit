@@ -10,7 +10,7 @@ const ManageOrders = () => {
     
     // If a normal user visits (With group=None), then redirect to normal users page
     if(restaurant?.group === 'None'){
-        return( < Redirect to="/" /> )
+        return( < Redirect to="/restaurants" /> )
     }
 
     return (
