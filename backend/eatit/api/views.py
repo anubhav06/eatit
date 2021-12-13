@@ -1,7 +1,7 @@
 from django.db.utils import Error
 from django.http import JsonResponse
 from django.views.generic.base import RedirectView
-from rest_framework import permissions
+from rest_framework import permissions, serializers
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -83,15 +83,6 @@ def getRoutes(request):
     return Response(routes)
 
 
-#@api_view(['GET'])
-## Requires user to be logged in. Checks if logged in through the authTokens provided from frontend
-#@permission_classes([IsAuthenticated])
-#def getNotes(request):
-#    user = request.user
-#    notes = user.note_set.all()
-#    serializer = NoteSerializer(notes, many=True)
-#    return Response(serializer.data)
-
 
 # To view all the available/registered restaurants
 @api_view(['GET'])
@@ -103,6 +94,7 @@ def restaurants(request):
     return Response(serializer.data)
     
 
+# To get the food items of the requested restaurant
 @api_view(['GET'])
 def restaurantsFood(request, id):
 
@@ -113,4 +105,17 @@ def restaurantsFood(request, id):
         return Response('Not found')
     
     serializer = FoodItemSerializer(restaurantsFood, many=True)
+    return Response(serializer.data)
+
+
+# To get the info of the requested restaurant
+@api_view(['GET'])
+def restaurantsInfo(request, id):
+
+    try:
+        restaurant = Restaurant.objects.filter(id=id)
+    except KeyError:
+        return Response('Not found')
+
+    serializer = RestaurantSerializer(restaurant, many=True)
     return Response(serializer.data)
