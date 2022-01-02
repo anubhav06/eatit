@@ -20,6 +20,7 @@ urlpatterns = [
 
     path('get-cart-items/', views.getCartItems, name="getCartItems"),
     path('add-to-cart/<int:id>', views.addToCart, name="addToCart"),
+    path('remove-from-cart/<int:id>', views.removeFromCart, name="removeFromCart"),
 
 
     # For user authentication

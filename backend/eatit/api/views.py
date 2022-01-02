@@ -160,7 +160,7 @@ def addToCart(request, id):
             addItem.save()
             
         # Get all the cart items of the requested user (for passing to serializer)
-        cart = Cart.objects.get(user=request.user, id=id)
+        cart = Cart.objects.get(user=request.user, food=id)
     
     # If a request is made with an invalid food ID, i.e food item doesn't exist, then return error
     except KeyError:
@@ -170,3 +170,36 @@ def addToCart(request, id):
     serializer = CartSerializer(cart)
     return Response(serializer.data)
     
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def removeFromCart(request, id):
+    print('REMOVE FROM')
+    # Remove the food item from the user's cart
+    try:
+        # Get the requested foodItem
+        food = FoodItem.objects.get(id=id)
+
+        # If the user's cart contains the requested food item, then decrease it's quantity by 1
+        try:
+            getFood =  Cart.objects.get(food=food)
+
+            getFood.qty -= 1
+            getFood.save()
+
+            print('GET FOOD QTY: ', getFood.qty)
+            # If food qty is already 0, then return
+            if getFood.qty == 0:
+                getFood.delete()
+                return Response('Food already removed from cart')
+
+        # If the cart doesn't contain the food, then return
+        except ObjectDoesNotExist :
+            return Response('Food is not present in the cart')
+            
+    
+    # If a request is made with an invalid food ID, i.e food item doesn't exist, then return error
+    except KeyError:
+        return Response('Not found')
+    
+    return Response('Removed from cart')

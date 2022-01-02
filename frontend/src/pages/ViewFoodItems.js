@@ -124,6 +124,40 @@ const ViewFoodItems = ({match}) => {
     }
 
 
+     // To remove an item from cart
+     let removeFromCart = async(food) =>{
+        let response = await fetch(`http://127.0.0.1:8000/api/remove-from-cart/${food.id}`, {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json',
+                // Provide the authToken when making API request to backend to access the protected route of that user
+                'Authorization':'Bearer ' + String(authTokens.access)
+            }
+        })
+        
+
+        if(response.status === 200){
+            
+            const exist = cartItems.find((x) => x.food == food.id);
+
+            // If the food item's qty is 1, then delete the item from cart
+            if(exist.qty == 1) {
+                setCartItems(cartItems.filter( cart => cart.food !== food.id ))
+            }
+            // If the food item already exists in cart, then decrease its quantity
+            else{
+                setCartItems(cartItems.map( (x) => (
+                    x.food === food.id ? {...exist, qty : parseInt(exist.qty) - 1} : x
+                )))
+            }
+
+        } else {
+            alert('ERROR: Adding Item to cart ')
+            console.log('ERROR: ', response)
+        }
+    }
+
+
 
     console.log('FOOD ITEMS: ', foodItems)
     console.log('CART ITEMS: ', cartItems)
@@ -157,7 +191,7 @@ const ViewFoodItems = ({match}) => {
                     {cartItems.find(cart => cart.food == food.id) 
                     // If food is already added in cart, then display buttons to increase/decrease the quantity 
                     ?   <div key={food.id}>
-                            <button name='remove' onClick={ () => addToCart(food) }> - </button>
+                            <button name='remove' onClick={ () => removeFromCart(food) }> - </button>
                             {cartItems.find(cart => cart.food == food.id).qty}
                             <button name='add' onClick={ () => addToCart(food) }> + </button> <br/><br/><br/>
                         </div> 
@@ -178,7 +212,7 @@ const ViewFoodItems = ({match}) => {
                 {cartItems.map((cart) => (
                     <div key={cart.id}>
                         {foodItems.find(food => food.id == cart.food)?.name}
-                        <button name='remove' onClick={ () => addToCart(foodItems.find(food => food.id == cart.food)) }> - </button>
+                        <button name='remove' onClick={ () => removeFromCart(foodItems.find(food => food.id == cart.food)) }> - </button>
                         {cart.qty}  
                         <button name='add' onClick={ () => addToCart(foodItems.find(food => food.id == cart.food)) }> + </button> <br/><br/><br/>
                     
