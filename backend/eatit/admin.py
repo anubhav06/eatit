@@ -1,6 +1,5 @@
 from django.contrib import admin
+from .models import Cart
 
-# Register your models here.
-
-from .models import Note
-admin.site.register(Note)
+# For admin view
+admin.site.register(Cart)

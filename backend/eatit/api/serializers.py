@@ -1,9 +1,10 @@
 from rest_framework.serializers import ModelSerializer
-from eatit.models import Note
+from eatit.models import Cart
 
 
 # Creates JSON objects out of the Python objects
-class NoteSerializer(ModelSerializer):
+class CartSerializer(ModelSerializer):
+
     class Meta:
-        model = Note
+        model = Cart
         fields = '__all__'

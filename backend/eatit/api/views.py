@@ -1,5 +1,6 @@
+import re
+from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import Error
-from django.http import JsonResponse
 from django.views.generic.base import RedirectView
 from rest_framework import permissions, serializers
 from rest_framework.response import Response
@@ -11,8 +12,10 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 
 from django.db import IntegrityError
 from rest_framework import status
+from eatit.api.serializers import CartSerializer
+from eatit.models import Cart
 
-from eatit.models import Note, User
+from eatit.models import User
 from rest_framework.reverse import reverse
 
 from restaurants.models import Restaurant, FoodItem
@@ -99,7 +102,9 @@ def restaurants(request):
 def restaurantsFood(request, id):
 
     try:
+        # Get the requested restaurant
         restaurant = Restaurant.objects.get(id=id)
+        # Get the food items of the above restaurant
         restaurantsFood = FoodItem.objects.filter(restaurant = restaurant)
     except :
         return Response('Not found')
@@ -113,9 +118,55 @@ def restaurantsFood(request, id):
 def restaurantsInfo(request, id):
 
     try:
+        # Get the requested restaurant
         restaurant = Restaurant.objects.filter(id=id)
     except KeyError:
         return Response('Not found')
 
     serializer = RestaurantSerializer(restaurant, many=True)
     return Response(serializer.data)
+
+
+
+# To get the items in the cart of the requested user
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getCartItems(request):
+    
+    cart = Cart.objects.filter(user=request.user)
+    serializer = CartSerializer(cart, many=True)
+
+    return Response(serializer.data)
+    
+
+# To add a food item to cart
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def addToCart(request, id):
+    
+    # Add the food item to the user's cart
+    try:
+        # Get the requested foodItem
+        food = FoodItem.objects.get(id=id)
+
+        # If the user's cart contains the requested food item, then increase it's quantity by 1
+        try:
+            getFood =  Cart.objects.get(food=food)
+            getFood.qty += 1
+            getFood.save()
+        # If the cart doesn't contain the food, then add it to cart and set quantity to 1
+        except ObjectDoesNotExist :
+            addItem = Cart(user=request.user, food=food, qty=1)
+            addItem.save()
+            
+        # Get all the cart items of the requested user (for passing to serializer)
+        cart = Cart.objects.get(user=request.user, id=id)
+    
+    # If a request is made with an invalid food ID, i.e food item doesn't exist, then return error
+    except KeyError:
+        return Response('Not found')
+    
+    # Serialize the cart for sending to frontend in appropriate format
+    serializer = CartSerializer(cart)
+    return Response(serializer.data)
+    
