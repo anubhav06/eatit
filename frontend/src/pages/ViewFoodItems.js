@@ -30,7 +30,6 @@ const ViewFoodItems = ({match}) => {
             let data = await response.json()
 
             if(response.status === 200){
-                console.log('FOOD DATA: ',data)
                 setFoodItems(data)
 
             }else {
@@ -70,9 +69,10 @@ const ViewFoodItems = ({match}) => {
             })
             let data = await response.json()
 
+
             if(response.status === 200){
                 setCartItems(data)
-
+                console.log('SET CART ITEMS DATA: ', data)
                 // If the user's cart is not empty, then get the cart's total amount from backend and store it
                 if (data[0]?.totalAmount !== undefined){
                     var newTotalAmount = parseFloat(data[0]?.totalAmount)
@@ -110,20 +110,20 @@ const ViewFoodItems = ({match}) => {
 
         if(response.status === 200){
             
-            const exist = cartItems.find((x) => x.food === food.id);
+            const exist = cartItems.find((x) => x.food.id === food.id);
 
             // If the food item already exists in cart, then increase its quantity
             if(exist) {
                 setCartItems(cartItems.map( (x) => (
-                    x.food === food.id 
-                    ? {...exist, qty : parseInt(exist.qty) + 1, amount : parseFloat(exist.amount) + parseFloat(food.price)} 
+                    x.food.id === food.id 
+                    ? {...exist, qty : parseInt(exist.qty) + 1, amount : parseFloat(exist.amount) + parseFloat(exist.food.price)} 
                     : x
                 )))
                 
             }
             // If the food item is not already in cart (a new food is added to cart), then add the food details with quantity=1
             else{
-                setCartItems([...cartItems, { id: data.id, qty:1, user: data.user, food: data.food, amount: parseFloat(food.price) }] )
+                setCartItems([...cartItems, { id: data.id, qty:1, user: data.user, food: data.food, amount: parseFloat(data.food.price) }] )
             }
 
             //Update the user's cart's total amount by adding the added food item's price to the total amount
@@ -151,27 +151,29 @@ const ViewFoodItems = ({match}) => {
 
         if(response.status === 200){
             
-            const exist = cartItems.find((x) => x.food == food.id);
+            const exist = cartItems.find((x) => x.food.id == food.id);
 
             // If the food item's qty is 1, then delete the item from cart
-            if(exist.qty == 1) {
-                setCartItems(cartItems.filter( cart => cart.food !== food.id ))
+            if(exist.qty === 1) {
+                console.log('QTY 0')
+                setCartItems(cartItems.filter( cart => cart.food.id !== food.id ))
             }
             // If the food item already exists in cart, then decrease its quantity
             else{
                 setCartItems(cartItems.map( (x) => (
-                    x.food === food.id 
-                    ? {...exist, qty : parseInt(exist.qty) - 1, amount : parseFloat(exist.amount) - parseFloat(food.price)} 
+                    x.food.id === food.id 
+                    ? {...exist, qty : parseInt(exist.qty) - 1, amount : parseFloat(exist.amount) - parseFloat(exist.food.price)} 
                     : x
                 )))
             }
 
             //Update the user's cart's total amount by subtracting the removed food item's price from total amount
             var newTotalAmount = parseFloat(totalAmount) - parseFloat(food.price)
+            console.log("NEW TOTAL AMOUNT: ", newTotalAmount)
             setTotalAmount(parseFloat(newTotalAmount))
 
         } else {
-            alert('ERROR: Adding Item to cart ')
+            alert('ERROR: Removing Item to cart ')
             console.log('ERROR: ', response)
         }
     }
@@ -212,11 +214,11 @@ const ViewFoodItems = ({match}) => {
                             Price: {food.price} <br/>
                             <img src={`http://localhost:8000${food.image}`} alt='Food' height="150px"/> <br/>
                         
-                            {cartItems.find(cart => cart.food == food.id) 
+                            {cartItems.find(cart => cart.food.id === food.id) 
                             // If food is already added in cart, then display buttons to increase/decrease the quantity 
                             ?   <div key={food.id}>
                                     <button name='remove' onClick={ () => removeFromCart(food) }> - </button>
-                                    {cartItems.find(cart => cart.food == food.id).qty}
+                                    {cartItems.find(cart => cart.food.id == food.id).qty}
                                     <button name='add' onClick={ () => addToCart(food) }> + </button> <br/><br/><br/>
                                 </div> 
                             // Else if item is not in cart, then display an add to cart button
@@ -238,13 +240,13 @@ const ViewFoodItems = ({match}) => {
                     {cartItems.map((cart) => (
                         <div key={cart.id}>
                             
-                            {foodItems.find(food => food.id == cart.food)?.name}
+                            {cart.food.name}
 
-                            <button name='remove' onClick={ () => removeFromCart(foodItems.find(food => food.id == cart.food)) }> - </button>
+                            <button name='remove' onClick={ () => removeFromCart(cart.food) }> - </button>
                             {cart.qty}  
-                            <button name='add' onClick={ () => addToCart(foodItems.find(food => food.id == cart.food)) }> + </button><br/>
+                            <button name='add' onClick={ () => addToCart(cart.food) }> + </button><br/>
                             
-                            AMOUNT: {foodItems.find(food => food.id == cart.food)?.price * cart.qty} 
+                            AMOUNT: {cart.amount}
                             <br/><br/>
                         </div>
                     ))}

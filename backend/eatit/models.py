@@ -13,5 +13,20 @@ class Cart(models.Model):
     amount = models.DecimalField(max_digits=6, decimal_places=2)
     totalAmount = models.DecimalField(max_digits=7, decimal_places=2, default=0)
 
+    def serializer(self):
+        return {
+            "id" : self.id,
+            "user" : self.food.id,
+            "food" : {
+                "id" :  self.food.id,
+                "restaurant" : self.food.restaurant.id,
+                "name" : self.food.name,
+                "price" : self.food.price,
+            },
+            "qty" : self.qty,
+            "amount" : self.amount,
+            "totalAmount" : self.totalAmount,
+        }
+
     def __str__(self):
         return f"{self.user} added {self.food} X {self.qty}"

@@ -134,9 +134,7 @@ def restaurantsInfo(request, id):
 def getCartItems(request):
     
     cart = Cart.objects.filter(user=request.user)
-    serializer = CartSerializer(cart, many=True)
-
-    return Response(serializer.data)
+    return Response([cart.serializer() for cart in cart])
     
 
 # To add a food item to cart
@@ -157,7 +155,7 @@ def addToCart(request, id):
             # Check if the restaurant's ID of item in cart is not same as the requested food item to add.
             if food.restaurant != presentCartFood.restaurant:
                 return Response({'You already have items added to cart from another restaurant'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
-        except ObjectDoesNotExist:
+        except AttributeError:
             pass
 
 
@@ -187,7 +185,7 @@ def addToCart(request, id):
     
     # Serialize the cart for sending to frontend in appropriate format
     serializer = CartSerializer(cart)
-    return Response(serializer.data)
+    return Response(cart.serializer())
     
 
 @api_view(['POST'])
@@ -202,26 +200,31 @@ def removeFromCart(request, id):
         try:
             getFood =  Cart.objects.get(food=food)
 
-            getFood.qty -= 1
-            # Update the amount of the food items removed from cart in accordance with its quantity
-            getFood.amount =  food.price * getFood.qty
-            getFood.save()
-
-            print('GET FOOD QTY: ', getFood.qty)
-            # If food qty is already 0, then return
-            if getFood.qty == 0:
+            # If the item's quantity is more than 1, then decrease it's quantity
+            if getFood.qty > 1:
+                getFood.qty -= 1
+                # Update the amount of the food items removed from cart in accordance with its quantity
+                getFood.amount = food.price * getFood.qty
+                getFood.save()
+            # If the item's quantity is 1 i.e the last item, then delete the item
+            elif getFood.qty == 1:
                 getFood.delete()
+            # Else throw an error if qty is less than 1
+            else :
+                # If food qty is already 0, then return
                 return Response('Food already removed from cart')
+                
 
         # If the cart doesn't contain the food, then return
         except ObjectDoesNotExist :
             return Response('Food is not present in the cart')
             
-        
-        # Update the cart's totalAmount by subtracting the current food item's price
-        oldTotalAmount = Cart.objects.filter(user=request.user).first().totalAmount
-        Cart.objects.filter(user=request.user).update(totalAmount = float(oldTotalAmount-food.price))
-        
+        try:
+            # Update the cart's totalAmount by subtracting the current food item's price
+            oldTotalAmount = Cart.objects.filter(user=request.user).first().totalAmount
+            Cart.objects.filter(user=request.user).update(totalAmount = float(oldTotalAmount-food.price))
+        except AttributeError:
+            pass    
 
     # If a request is made with an invalid food ID, i.e food item doesn't exist, then return error
     except KeyError:
