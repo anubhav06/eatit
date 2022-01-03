@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext, setState} from 'react'
 import Header from '../components/Header'
 import AuthContext from '../context/AuthContext'
-
+import './ViewFoodItems.css'
 
 const ViewFoodItems = ({match}) => {
 
@@ -131,8 +131,8 @@ const ViewFoodItems = ({match}) => {
             setTotalAmount(parseFloat(newTotalAmount))
 
         } else {
-            alert('ERROR: Adding Item to cart ')
-            console.log('ERROR: ', response)
+            alert(data)
+            console.log('ERROR: ', data)
         }
     }
 
@@ -198,52 +198,68 @@ const ViewFoodItems = ({match}) => {
             <hr/>
             <br/><br/>
                 
-            
-            {foodItems.map(food => ( 
-                <div key={food.id} >
-                    
-                    Name: {food.name} <br/>
-                    Description: {food.description} <br/>
-                    Price: {food.price} <br/>
-                    <img src={`http://localhost:8000${food.image}`} alt='Food' height="150px"/> <br/>
+            <div className='row'>
                 
-                    {cartItems.find(cart => cart.food == food.id) 
-                    // If food is already added in cart, then display buttons to increase/decrease the quantity 
-                    ?   <div key={food.id}>
-                            <button name='remove' onClick={ () => removeFromCart(food) }> - </button>
-                            {cartItems.find(cart => cart.food == food.id).qty}
-                            <button name='add' onClick={ () => addToCart(food) }> + </button> <br/><br/><br/>
-                        </div> 
-                    // Else if item is not in cart, then display an add to cart button
-                    :   <div key={food.id}>
-                            <button name='add' onClick={ () => addToCart(food)}> Add To Cart </button> <br/><br/><br/>
+                <div className='left'> TODO </div>
+
+                <div className='middle'>
+                    
+                    {foodItems.map(food => ( 
+                        <div key={food.id} >
+                            
+                            Name: {food.name} <br/>
+                            Description: {food.description} <br/>
+                            Price: {food.price} <br/>
+                            <img src={`http://localhost:8000${food.image}`} alt='Food' height="150px"/> <br/>
+                        
+                            {cartItems.find(cart => cart.food == food.id) 
+                            // If food is already added in cart, then display buttons to increase/decrease the quantity 
+                            ?   <div key={food.id}>
+                                    <button name='remove' onClick={ () => removeFromCart(food) }> - </button>
+                                    {cartItems.find(cart => cart.food == food.id).qty}
+                                    <button name='add' onClick={ () => addToCart(food) }> + </button> <br/><br/><br/>
+                                </div> 
+                            // Else if item is not in cart, then display an add to cart button
+                            :   <div key={food.id}>
+                                    <button name='add' onClick={ () => addToCart(food)}> Add To Cart </button> <br/><br/><br/>
+                                </div>
+                            }  
+
+                        </div>  
+                    ))}
+                    
+                </div>
+
+                
+
+                {/* To show cart summary */}
+                <div className='right'>
+                    <h2>CART</h2>
+                    {cartItems.map((cart) => (
+                        <div key={cart.id}>
+                            
+                            {foodItems.find(food => food.id == cart.food)?.name}
+
+                            <button name='remove' onClick={ () => removeFromCart(foodItems.find(food => food.id == cart.food)) }> - </button>
+                            {cart.qty}  
+                            <button name='add' onClick={ () => addToCart(foodItems.find(food => food.id == cart.food)) }> + </button><br/>
+                            
+                            AMOUNT: {foodItems.find(food => food.id == cart.food)?.price * cart.qty} 
+                            <br/><br/>
                         </div>
-                    }  
-
-                </div>  
-            ))}
-
+                    ))}
+                    {cartItems.length !== 0 
+                    ?   <div>
+                            <strong>TOTAL : {totalAmount}</strong>
+                        </div>
+                    :   <div>
+                            Cart empty
+                        </div>
+                    }
+                    
+                </div>
             
-
-            {/* To show cart summary */}
-            <div>
-                -------CART SUMMARY------------ <br/><br/>
-                {cartItems.map((cart) => (
-                    <div key={cart.id}>
-                        
-                        {foodItems.find(food => food.id == cart.food)?.name}
-
-                        <button name='remove' onClick={ () => removeFromCart(foodItems.find(food => food.id == cart.food)) }> - </button>
-                        {cart.qty}  
-                        <button name='add' onClick={ () => addToCart(foodItems.find(food => food.id == cart.food)) }> + </button><br/>
-                        
-                        AMOUNT: {foodItems.find(food => food.id == cart.food)?.price * cart.qty} 
-                        <br/><br/>
-                    </div>
-                ))}
-                TOTAL : {totalAmount}
             </div>
-
 
 
         </div>

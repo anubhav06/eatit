@@ -149,6 +149,18 @@ def addToCart(request, id):
         # Get the requested foodItem
         food = FoodItem.objects.get(id=id)
 
+        # Error checking: If user add's a food item from another restaurant (can add from only 1), then return with error message
+        try:
+            # Get the restaurant's ID of the current food items in cart
+            presentCart = Cart.objects.filter(user=request.user).first()
+            presentCartFood = FoodItem.objects.get(id= presentCart.food.id)
+            # Check if the restaurant's ID of item in cart is not same as the requested food item to add.
+            if food.restaurant != presentCartFood.restaurant:
+                return Response({'You already have items added to cart from another restaurant'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        except ObjectDoesNotExist:
+            pass
+
+
         # If the user's cart contains the requested food item, then increase it's quantity by 1
         try:
             getFood =  Cart.objects.get(food=food)
@@ -165,6 +177,7 @@ def addToCart(request, id):
         oldTotalAmount = Cart.objects.filter(user=request.user).first().totalAmount
         Cart.objects.filter(user=request.user).update(totalAmount = float(oldTotalAmount+food.price))
         
+
         # Get the added cart item of the requested user (for passing to serializer)
         cart = Cart.objects.get(user=request.user, food=id)
     

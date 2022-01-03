@@ -1,0 +1,26 @@
+.cart-section{
+    margin-left: 50px;
+}
+
+.column {
+    float: left;
+    width: 33.33%;
+}
+  
+/* Clear floats after the columns */
+.row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+  
+.left, .right {
+    float: left;
+    width: 25%;
+}
+  
+.middle {
+    float: left;
+    width: 50%;
+}
