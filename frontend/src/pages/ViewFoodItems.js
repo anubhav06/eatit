@@ -131,8 +131,8 @@ const ViewFoodItems = ({match}) => {
             setTotalAmount(parseFloat(newTotalAmount))
 
         } else {
-            alert('ERROR: Adding Item to cart ')
-            console.log('ERROR: ', response)
+            alert(data)
+            console.log('ERROR: ', data)
         }
     }
 
