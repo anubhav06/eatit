@@ -153,13 +153,19 @@ def addToCart(request, id):
         try:
             getFood =  Cart.objects.get(food=food)
             getFood.qty += 1
+            # Update the amount of the food item added in cart in accordance of it's quantity
+            getFood.amount = float(food.price * getFood.qty)
             getFood.save()
         # If the cart doesn't contain the food, then add it to cart and set quantity to 1
         except ObjectDoesNotExist :
-            addItem = Cart(user=request.user, food=food, qty=1)
+            addItem = Cart(user=request.user, food=food, qty=1, amount=food.price)
             addItem.save()
             
-        # Get all the cart items of the requested user (for passing to serializer)
+        # Update the cart's totalAmount by adding the current food item's price
+        oldTotalAmount = Cart.objects.filter(user=request.user).first().totalAmount
+        Cart.objects.filter(user=request.user).update(totalAmount = float(oldTotalAmount+food.price))
+        
+        # Get the added cart item of the requested user (for passing to serializer)
         cart = Cart.objects.get(user=request.user, food=id)
     
     # If a request is made with an invalid food ID, i.e food item doesn't exist, then return error
@@ -174,7 +180,6 @@ def addToCart(request, id):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def removeFromCart(request, id):
-    print('REMOVE FROM')
     # Remove the food item from the user's cart
     try:
         # Get the requested foodItem
@@ -185,6 +190,8 @@ def removeFromCart(request, id):
             getFood =  Cart.objects.get(food=food)
 
             getFood.qty -= 1
+            # Update the amount of the food items removed from cart in accordance with its quantity
+            getFood.amount =  food.price * getFood.qty
             getFood.save()
 
             print('GET FOOD QTY: ', getFood.qty)
@@ -197,7 +204,12 @@ def removeFromCart(request, id):
         except ObjectDoesNotExist :
             return Response('Food is not present in the cart')
             
-    
+        
+        # Update the cart's totalAmount by subtracting the current food item's price
+        oldTotalAmount = Cart.objects.filter(user=request.user).first().totalAmount
+        Cart.objects.filter(user=request.user).update(totalAmount = float(oldTotalAmount-food.price))
+        
+
     # If a request is made with an invalid food ID, i.e food item doesn't exist, then return error
     except KeyError:
         return Response('Not found')
