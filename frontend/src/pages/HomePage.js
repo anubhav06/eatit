@@ -46,9 +46,9 @@ const HomePage = () => {
                 {restaurants.map(restaurant => (
                     <Link to={`/restaurants/${restaurant.id}`} key={restaurant.id}>
                         <li key={restaurant.id} >
-                            <p> ID: {restaurant.id} </p>
-                            <p> NAME: {restaurant.name} </p>
-                            <p> ADDRESS: {restaurant.address} </p>
+                            <p> <img src={`http://localhost:8000${restaurant.image}`} alt='Food' height="150px"/> <br/>  </p>
+                            <p> {restaurant.name} </p>
+                            <p> {restaurant.address} </p> <br/><br/>
                         </li>
                     </Link>
                 ))}

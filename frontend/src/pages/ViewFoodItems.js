@@ -229,6 +229,8 @@ const ViewFoodItems = ({match}) => {
 
                         </div>  
                     ))}
+
+                    {foodItems.length === 0 ? <div> No items added by restaurant </div> : null}
                     
                 </div>
 

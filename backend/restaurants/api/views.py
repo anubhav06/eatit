@@ -54,6 +54,7 @@ def register(request):
     email = request.data["email"]
     name = request.data["name"]
     address = request.data["address"]
+    image = request.data["image"]
 
     # Ensure password matches confirmation
     password = request.data["password"]
@@ -79,7 +80,7 @@ def register(request):
     # Associate user details with the Restaurant model. Store the address, name etc.
     try:
         user = User.objects.get(username=email)
-        restaurant = Restaurant.objects.create(user=user, name=name, address=address)
+        restaurant = Restaurant.objects.create(user=user, name=name, address=address, image=image)
         restaurant.save()
     except IntegrityError:
         return Response(IntegrityError)

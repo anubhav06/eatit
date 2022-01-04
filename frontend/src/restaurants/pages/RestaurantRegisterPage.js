@@ -24,11 +24,12 @@ const RestaurantRegisterPage = () => {
         <div>
             <RestaurantHeader/>
             <form onSubmit={registerRestaurant}>
-                <input type="text" name="email" placeholder="Enter Email" required />
-                <input type="password" name="password" placeholder="Enter Password" required/>
-                <input type="password" name="confirmPassword" placeholder="Enter Password Again" required/>
-                <input type="text" name="name" placeholder="Enter Restaurant Name" required/>
-                <input type="text" name="address" placeholder="Enter Restaurant Address" required/>
+                <input type="text" name="email" placeholder="Enter Email" required /> <br/>
+                <input type="password" name="password" placeholder="Enter Password" required/> <br/>
+                <input type="password" name="confirmPassword" placeholder="Enter Password Again" required/> <br/>
+                <input type="text" name="name" placeholder="Enter Restaurant Name" required/> <br/>
+                <input type="text" name="address" placeholder="Enter Restaurant Address" required/> <br/>
+                <input type="file" accept="image/x-png,image/jpeg,image/jpg" name="image" placeholder="Main page food Image" required/> <br/>
                 
                 <input type="submit"/>
             </form>

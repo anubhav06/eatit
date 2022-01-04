@@ -75,26 +75,48 @@ export const RestaurantAuthProvider = ({children}) => {
     let registerRestaurant = async (e) => {
         e.preventDefault()
 
-        // Make a post request to the api with the user's credentials.
-        let response = await fetch('http://127.0.0.1:8000/partner-with-us/register/', {
-            method:'POST',
-            headers:{
-                'Content-Type':'application/json'
-            },
-            // 'e.target' is the form, '.username' gets the username field and '.password' gets the password field from wherever it is called (RegisterPage.js here)
-            body:JSON.stringify({ 'email':e.target.email.value, 'password':e.target.password.value, 'confirmPassword':e.target.confirmPassword.value, 'name':e.target.name.value, 'address':e.target.address.value})
-        })
-        // Get the access and refresh tokens
-        let data = await response.json()
+        //// Make a post request to the api with the user's credentials.
+        //let response = await fetch('http://127.0.0.1:8000/partner-with-us/register/', {
+        //    method:'POST',
+        //    headers:{
+        //        'Content-Type':'multipart/form-data'
+        //    },
+        //    // 'e.target' is the form, '.username' gets the username field and '.password' gets the password field from wherever it is called (RegisterPage.js here)
+        //    body: { 'email':e.target.email.value, 'password':e.target.password.value, 'confirmPassword':e.target.confirmPassword.value, 'name':e.target.name.value, 'address':e.target.address.value, 'image':e.target.image.files[0]}
+        //})
+        //// Get the access and refresh tokens
+        //let data = await response.json()
 
-        if(response.status === 200){
-            console.log('Registered Successfully')
-            alert(data)
-            history.push('/restaurants')
-        }else{
-            console.log(data)
-            alert(data)
-        }
+        //if(response.status === 200){
+        //    console.log('Registered Successfully')
+        //    alert(data)
+        //    history.push('/restaurants')
+        //}else{
+        //    console.log(data)
+        //    alert(data)
+        //}
+
+
+        // Reference: https://medium.com/@emeruchecole9/uploading-images-to-rest-api-backend-in-react-js-b931376b5833
+        let form_data = new FormData();
+        form_data.append('image', e.target.image.files[0]);
+        form_data.append('email', e.target.email.value);
+        form_data.append('password', e.target.password.value);
+        form_data.append('confirmPassword', e.target.confirmPassword.value);
+        form_data.append('name', e.target.name.value);
+        form_data.append('address', e.target.address.value);
+
+        let url = 'http://127.0.0.1:8000/partner-with-us/register/';
+        axios.post(url, form_data, {
+            headers: {
+                'content-type': 'multipart/form-data'
+            }
+        })
+        .then(response => {
+          alert(response.data);
+          history.push('/restaurants')
+        })
+        .catch(error => alert(error))
 
     }
 
