@@ -46,17 +46,17 @@ class Address(models.Model):
 
 
 
-## Stores the order details
-#class OrderDetials(models.Model):
-#    # User who has placed the order
-#    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='userOrder')
-#    # Restaurant for which the order is placed
-#    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='restaurantOrder')
-#    # Cart items which the user has added
-#    cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='cartOrder')
-#    # Address selected/chosen by the user to deliver to
-#    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='addressOrder')
+# Stores the order details
+class ActiveOrders(models.Model):
+    # User who has placed the order
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='userOrder')
+    # Restaurant for which the order is placed
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='restaurantOrder')
+    # Cart items which the user has added
+    cart = models.ManyToManyField(Cart)
+    # Address selected/chosen by the user to deliver to
+    address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='addressOrder')
     
-#    def __str__(self):
-#        return f"{self.user}'s order for {self.restaurant}"
+    def __str__(self):
+        return f"{self.user}'s order for {self.restaurant}"
 

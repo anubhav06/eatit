@@ -12,8 +12,13 @@ const CheckoutPage = ({match}) => {
     let [totalAmount, setTotalAmount] = useState(0.00)
     // To conditonally render a div based on if address has to be added.
     let [addAddressForm, setAddAddressForm] = useState(false);
-    // To store the user's address retrieved from api calls
+    // To store all the user's address retrieved from api calls
     let [address, setAddress] = useState([])
+
+    // Address selected by user to deliver to.
+    let [deliveryAddress, setDeliveryAddress] = useState({})
+
+    let [showPaymentWindow, setPaymentWindow] = useState(false)
 
     // Runs the following functions on each load of page
     useEffect(()=> {
@@ -158,6 +163,7 @@ const CheckoutPage = ({match}) => {
         } else {
             alert('ERROR: Removing Item to cart ')
             console.log('ERROR: ', response)
+            console.log('ERROR data: ', response.json())
         }
     }
 
@@ -192,6 +198,31 @@ const CheckoutPage = ({match}) => {
     }
 
 
+    // To place an order
+    let placeOrder = async() =>{
+        let response = await fetch(`http://127.0.0.1:8000/api/place-order/`, {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json',
+                // Provide the authToken when making API request to backend to access the protected route of that user
+                'Authorization':'Bearer ' + String(authTokens.access)
+            },
+            body: JSON.stringify({'address': deliveryAddress})
+        })
+        
+        let data = await response.json()
+
+        if(response.status === 200){
+            alert('Order Placed ✅')
+            console.log('SUCCESS: ', data)
+
+        } else {
+            alert(data)
+            console.log('ERROR: ', data)
+        }
+    }
+
+
     console.log('CART ITEMS: ', cartItems)
 
 
@@ -210,30 +241,59 @@ const CheckoutPage = ({match}) => {
 
                 <div className='middle'>
                     
-                    {addAddressForm
+                    {showPaymentWindow === false
                     ?   <div>
-                            Save delivery address 
-                            <form onSubmit={addAddress}>
-                                <input type="text" name='area' placeholder='complete address' required/> <br/>
-                                <input type="text" name='label' placeholder='Label (Ex: Home/Work)' required/> <br/>
-                                <input type="submit" value={'Add'}/>
-                            </form>
+                            {addAddressForm
+                            ?   <div>
+                                    Save delivery address 
+                                    <form onSubmit={addAddress}>
+                                        <input type="text" name='area' placeholder='complete address' required/> <br/>
+                                        <input type="text" name='label' placeholder='Label (Ex: Home/Work)' required/> <br/>
+                                        <input type="submit" value={'Add'}/>
+                                    </form>
+                                </div>
+                            :   <div>
+                                    <div>
+                                    Delivery Address + Payment
+                                        <h2>Select Delivery Address</h2>
+                                        {address.map(address => (
+                                            <div key={address.id}>
+                                                <h3>{address.label}</h3>
+                                                <p>{address.area}</p>
+                                                <button onClick={() => {setDeliveryAddress(address); setPaymentWindow(true); }}>
+                                                    Deliver Here
+                                                </button><br/><br/>
+                                            </div>
+                                        ))}
+                                        <div>
+                                            <p>Add a new address</p>
+                                            <button onClick={() => setAddAddressForm(true)}>Add new</button>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <h2> Payment </h2>
+                                    </div>
+                                    
+                                </div>
+                            }
                         </div>
                     :   <div>
-                            Delivery Address + Payment
-                            <h2>Select Delivery Address</h2>
-                            {address.map(address => (
-                                <div key={address.id}>
-                                    <h3>{address.label}</h3>
-                                    <p>{address.area}</p><br/>
-                                </div>
-                            ))}
                             <div>
-                                <p>Add a new address</p>
-                                <button onClick={() => setAddAddressForm(true)}>Add new</button>
+                                <h2> Delivery Address ✅</h2>
+                                <h5> {deliveryAddress.label} </h5>
+                                <p> {deliveryAddress.area} </p>
+                                <button onClick={() => { setPaymentWindow(false); setDeliveryAddress({}) }} > Change </button>
                             </div>
+                            <div>
+                                <h2> Payment Window </h2>
+                                <p> TODO: Add payment integration later. </p>
+                                <button onClick={placeOrder}> Confirm Order </button>
+                            </div>
+                            
                         </div>
                     }
+
+                    
                     
                     
                 </div>

@@ -8,8 +8,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-
-from eatit.models import Cart, User, Address
+from eatit.models import Cart, User, Address, ActiveOrders
 from eatit.api.serializers import CartSerializer, AddressSerializer
 
 from restaurants.models import Restaurant, FoodItem
@@ -251,3 +250,30 @@ def getAddress(request):
     serializer = AddressSerializer(address, many=True)
     
     return Response(serializer.data)
+
+
+# To place an order of a customer with the requested data
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def placeOrder(request):
+
+    # Get the cart items of the user
+    cart = Cart.objects.filter(user=request.user)
+    # Get the chosen delivery address passed from the frontend
+    addressID = request.data['address'].get('id')
+    address = Address.objects.get(id=addressID)
+    # Get the corresponding restaurant from the food items of the cart
+    restaurant = FoodItem.objects.filter(id = cart.first().food.id).first().restaurant
+
+    # Save the details in active orders model
+    addOrder = ActiveOrders(user=request.user, restaurant=restaurant, address=address)
+    addOrder.save()
+    # Add the user's cart's foodItems to the active order which user has placed
+    for cartItem in cart:
+        addOrder.cart.add(cartItem)
+
+    print('CART: ', cart)
+    print('ADDRESS: ', address)
+    print('RESTAURANT: ', restaurant)
+
+    return Response({'Order placed'})
