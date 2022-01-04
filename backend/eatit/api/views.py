@@ -1,8 +1,6 @@
-import re
 from django.core.exceptions import ObjectDoesNotExist
-from django.db.utils import Error
-from django.views.generic.base import RedirectView
-from rest_framework import permissions, serializers
+from django.db import IntegrityError
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -10,13 +8,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from django.db import IntegrityError
-from rest_framework import status
-from eatit.api.serializers import CartSerializer
-from eatit.models import Cart
 
-from eatit.models import User
-from rest_framework.reverse import reverse
+from eatit.models import Cart, User, Address
+from eatit.api.serializers import CartSerializer, AddressSerializer
 
 from restaurants.models import Restaurant, FoodItem
 from restaurants.api.serializers import RestaurantSerializer, FoodItemSerializer
@@ -231,3 +225,29 @@ def removeFromCart(request, id):
         return Response('Not found')
     
     return Response('Removed from cart')
+
+
+
+# To add an address of a user
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def addAddress(request):
+    
+    area = request.data['area']
+    label = request.data['label']
+
+    addAddress = Address(user=request.user, area=area, label=label)
+    addAddress.save()
+
+    return Response({'Address Added'})
+
+
+# To get all the added address of a user
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getAddress(request):
+
+    address = Address.objects.filter(user=request.user)
+    serializer = AddressSerializer(address, many=True)
+    
+    return Response(serializer.data)

@@ -19,6 +19,7 @@ import ManageOrders from './restaurants/pages/ManageOrders'
 import EditFoodItem from './restaurants/pages/EditFoodItem';
 import LandingPage from './pages/LandingPage';
 import ViewFoodItems from './pages/ViewFoodItems';
+import CheckoutPage from './pages/CheckoutPage';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
           <Route component={LandingPage} path="/" exact />
           <Route component={HomePage} path="/restaurants" exact/>
           <Route component={ViewFoodItems} path="/restaurants/:id" exact/>
+          <Route component={CheckoutPage} path='/checkout' exact />
         </AuthProvider>
 
         <RestaurantAuthProvider>

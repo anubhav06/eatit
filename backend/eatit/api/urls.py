@@ -22,6 +22,8 @@ urlpatterns = [
     path('add-to-cart/<int:id>', views.addToCart, name="addToCart"),
     path('remove-from-cart/<int:id>', views.removeFromCart, name="removeFromCart"),
 
+    path('add-address/', views.addAddress, name='addAddress'),
+    path('get-address/', views.getAddress, name='getAddress'),
 
     # For user authentication
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),

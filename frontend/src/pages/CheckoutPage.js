@@ -1,64 +1,23 @@
 import React, {useState, useEffect, useContext, setState} from 'react'
-import { useHistory } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import Header from '../components/Header'
 import AuthContext from '../context/AuthContext'
 import './ViewFoodItems.css'
 
-const ViewFoodItems = ({match}) => {
+const CheckoutPage = ({match}) => {
 
     let {authTokens} = useContext(AuthContext)
-
-    let [foodItems, setFoodItems] = useState([])
-    let [restaurantInfo, setRestaurantInfo] = useState([])
     let [cartItems, setCartItems] = useState([])
-
-    let restaurantId = match.params.id
-    
     // To display a user's total cart amount
     let [totalAmount, setTotalAmount] = useState(0.00)
-
-    const history = useHistory()
+    // To conditonally render a div based on if address has to be added.
+    let [addAddressForm, setAddAddressForm] = useState(false);
+    // To store the user's address retrieved from api calls
+    let [address, setAddress] = useState([])
 
     // Runs the following functions on each load of page
     useEffect(()=> {
-        
-        // To fetch the food items of a restaurant
-        let getFoodItems = async() =>{
-            let response = await fetch(`http://127.0.0.1:8000/api/restaurants/${restaurantId}`, {
-                method:'GET',
-                headers:{
-                    'Content-Type':'application/json',
-                }
-            })
-            let data = await response.json()
-
-            if(response.status === 200){
-                setFoodItems(data)
-
-            }else {
-                alert('ERROR: While loading the food items', response)
-            }
-            
-        }
-        
-
-        // To fetch the info of the requested restaurant (like name, address)
-        let getRestaurantInfo = async() =>{
-            let response = await fetch(`http://127.0.0.1:8000/api/restaurants/info/${restaurantId}`, {
-                method:'GET',
-                headers:{
-                    'Content-Type':'application/json',
-                }
-            })
-            let data = await response.json()
-
-            if(response.status === 200){
-                setRestaurantInfo(data)
-            }else {
-                alert('ERROR: While loading the restaurant\ns info ', response)
-            }
-        }
-
+              
 
         // To get the cart items of the logged in user (all the food items added to the user's cart)
         let getCartItems = async() =>{
@@ -87,11 +46,32 @@ const ViewFoodItems = ({match}) => {
         }
 
 
+
+        // To get all the added address of a user
+        let getAddress = async() =>{
+            let response = await fetch(`http://127.0.0.1:8000/api/get-address/`, {
+                method:'GET',
+                headers:{
+                    'Content-Type':'application/json',
+                    // Provide the authToken when making API request to backend to access the protected route of that user
+                    'Authorization':'Bearer ' + String(authTokens.access)
+                }
+            })
+            let data = await response.json()
+
+
+            if(response.status === 200){
+                setAddress(data)
+                console.log('SET ADDRESS: ', data)
+            }else {
+                alert('ERROR: While loading user\ns address', data)
+            }
+        }
+
         
         // Call these functions on each load of page
         getCartItems()
-        getRestaurantInfo()
-        getFoodItems()
+        getAddress()
     }, [])
 
 
@@ -182,8 +162,36 @@ const ViewFoodItems = ({match}) => {
     }
 
 
+    // To add an address
+    let addAddress = async(e) =>{
+        e.preventDefault()
 
-    console.log('FOOD ITEMS: ', foodItems)
+        let response = await fetch(`http://127.0.0.1:8000/api/add-address/`, {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json',
+                // Provide the authToken when making API request to backend to access the protected route of that user
+                'Authorization':'Bearer ' + String(authTokens.access)
+            },
+            body: JSON.stringify({'area': e.target.area.value, 'label': e.target.label.value})
+        })
+        
+        let data = await response.json()
+
+        setAddAddressForm(false)
+
+        if(response.status === 200){
+            // Reload the current page to get the updated addresses
+            window.location.reload()
+        }
+        else{
+            alert(data)
+            console.log('ERROR: ', data)
+        }
+    
+    }
+
+
     console.log('CART ITEMS: ', cartItems)
 
 
@@ -194,14 +202,7 @@ const ViewFoodItems = ({match}) => {
 
             <br/>
             <hr/>
-            {restaurantInfo.map(info => (
-                <div key={info.id}>
-                    <h2> {info.name} </h2>
-                    <h3> {info.address} </h3>
-                </div>
-            ))}
-            <hr/>
-            <br/><br/>
+
                 
             <div className='row'>
                 
@@ -209,31 +210,31 @@ const ViewFoodItems = ({match}) => {
 
                 <div className='middle'>
                     
-                    {foodItems.map(food => ( 
-                        <div key={food.id} >
-                            
-                            Name: {food.name} <br/>
-                            Description: {food.description} <br/>
-                            Price: {food.price} <br/>
-                            <img src={`http://localhost:8000${food.image}`} alt='Food' height="150px"/> <br/>
-                        
-                            {cartItems.find(cart => cart.food.id === food.id) 
-                            // If food is already added in cart, then display buttons to increase/decrease the quantity 
-                            ?   <div key={food.id}>
-                                    <button name='remove' onClick={ () => removeFromCart(food) }> - </button>
-                                    {cartItems.find(cart => cart.food.id == food.id).qty}
-                                    <button name='add' onClick={ () => addToCart(food) }> + </button> <br/><br/><br/>
-                                </div> 
-                            // Else if item is not in cart, then display an add to cart button
-                            :   <div key={food.id}>
-                                    <button name='add' onClick={ () => addToCart(food)}> Add To Cart </button> <br/><br/><br/>
+                    {addAddressForm
+                    ?   <div>
+                            Save delivery address 
+                            <form onSubmit={addAddress}>
+                                <input type="text" name='area' placeholder='complete address' required/> <br/>
+                                <input type="text" name='label' placeholder='Label (Ex: Home/Work)' required/> <br/>
+                                <input type="submit" value={'Add'}/>
+                            </form>
+                        </div>
+                    :   <div>
+                            Delivery Address + Payment
+                            <h2>Select Delivery Address</h2>
+                            {address.map(address => (
+                                <div key={address.id}>
+                                    <h3>{address.label}</h3>
+                                    <p>{address.area}</p><br/>
                                 </div>
-                            }  
-
-                        </div>  
-                    ))}
-
-                    {foodItems.length === 0 ? <div> No items added by restaurant </div> : null}
+                            ))}
+                            <div>
+                                <p>Add a new address</p>
+                                <button onClick={() => setAddAddressForm(true)}>Add new</button>
+                            </div>
+                        </div>
+                    }
+                    
                     
                 </div>
 
@@ -245,7 +246,7 @@ const ViewFoodItems = ({match}) => {
                     {cartItems.map((cart) => (
                         <div key={cart.id}>
                             
-                            {cart.food.name}
+                            {cart.food.restaurant.name}
 
                             <button name='remove' onClick={ () => removeFromCart(cart.food) }> - </button>
                             {cart.qty}  
@@ -258,7 +259,6 @@ const ViewFoodItems = ({match}) => {
                     {cartItems.length !== 0 
                     ?   <div>
                             <strong>TOTAL : {totalAmount}</strong> <br/>
-                            <button onClick={() => history.push('/checkout')}> Checkout </button>
                         </div>
                     :   <div>
                             Cart empty
@@ -274,4 +274,4 @@ const ViewFoodItems = ({match}) => {
     )
 }
 
-export default ViewFoodItems
+export default CheckoutPage
