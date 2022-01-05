@@ -86,6 +86,10 @@ const ManageOrders = () => {
                     {order.active === true 
                     ?   <div>
                             <div>
+                                <p>{order.date.split("-")[2]}-{order.date.split("-")[1]}-{order.date.split("-")[0]}</p>
+                                <p>{order.time.split(":")[0]}:{order.time.split(":")[1]}</p>
+                            </div>
+                            <div>
                                 Delivery Address:
                                 <p> {order.address.area} </p>
                             </div>
@@ -110,6 +114,10 @@ const ManageOrders = () => {
                 <div key={order.id}>
                     {order.active == false
                     ?   <div>
+                            <div>
+                                <p>{order.date.split("-")[2]}-{order.date.split("-")[1]}-{order.date.split("-")[0]}</p>
+                                <p>{order.time.split(":")[0]}:{order.time.split(":")[1]}</p>
+                            </div>
                             <div>
                                 Delivery Address:
                                 <p> {order.address.area} </p>

@@ -32,4 +32,4 @@ class ActiveOrdersSerializer(ModelSerializer):
     
     class Meta:
         model = ActiveOrders
-        fields = ['id', 'restaurant', 'cart', 'address', 'datetime', 'active']
+        fields = ['id', 'restaurant', 'cart', 'address', 'date', 'time', 'active']

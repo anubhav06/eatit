@@ -85,6 +85,10 @@ const UserProfile = ({match}) => {
                             </div>
                         }
                         <div>
+                            <p>{order.date.split("-")[2]}-{order.date.split("-")[1]}-{order.date.split("-")[0]}</p>
+                            <p>{order.time.split(":")[0]}:{order.time.split(":")[1]}</p>
+                        </div>
+                        <div>
                             <h2> {order.restaurant.name} </h2>
                             <p> {order.restaurant.address} </p>
                         </div>

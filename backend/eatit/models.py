@@ -58,7 +58,8 @@ class ActiveOrders(models.Model):
     # Address selected/chosen by the user to deliver to
     address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='addressOrder')
     
-    datetime = models.DateTimeField(auto_now=True)
+    date = models.DateField(auto_now_add=True)
+    time = models.TimeField(auto_now_add=True)
     active = models.BooleanField(default=True)
 
 
