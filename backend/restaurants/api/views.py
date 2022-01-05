@@ -1,24 +1,20 @@
-from django.contrib.auth import models
-from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import Error
-from django.http import JsonResponse
-from django.views.generic.base import RedirectView
-from rest_framework import permissions
+from django.contrib.auth.models import Group
+from django.db import IntegrityError
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from django.db import IntegrityError, connections
-from rest_framework import status
-from restaurants.api import serializers
-from restaurants.models import Restaurant, FoodItem, User
-from django.contrib.auth.models import Group
-from .serializers import FoodItemSerializer, RestaurantSerializer
+from eatit.models import ActiveOrders
+from eatit.api.serializers import ActiveOrdersSerializer
 
-from rest_framework.reverse import reverse
+from restaurants.models import Restaurant, FoodItem, User
+from .serializers import FoodItemSerializer
+
 
 
 # For customizing the token claims: (whatever value we want)
@@ -190,7 +186,7 @@ def updateFoodItem(request, id):
     return Response('✅ Your food item has been succesfully updated!')
     
 
-
+# To delete a food item
 @api_view(['DELETE'])
 @permission_classes([IsAuthenticated])
 def deleteFoodItem(request, id):
@@ -203,11 +199,26 @@ def deleteFoodItem(request, id):
     return Response(' ✅ DELETED food item successfully! ')
 
 
+# To get all the orders of the requested restaurant (logged in restaurant)
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getOrders(request):
 
-#@api_view(['GET'])
-#def restaurants(request):
-    
-#    restaurants = Restaurant.objects.all()
-#    serializer = RestaurantSerializer(restaurants, many=True)
-#    return Response(serializer.data)
-    
+    restaurant = Restaurant.objects.get(user=request.user)
+    activeOrders = ActiveOrders.objects.filter(restaurant=restaurant)
+
+    serializer = ActiveOrdersSerializer(activeOrders, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def updateOrderStatus(request, id):
+
+    restaurant = Restaurant.objects.get(user=request.user)
+    order = ActiveOrders.objects.get(id=id, restaurant=restaurant)
+    order.active = False
+    order.save()
+
+    serializer = ActiveOrdersSerializer(order)
+    return Response(serializer.data)

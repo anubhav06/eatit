@@ -14,12 +14,16 @@ urlpatterns = [
     path('register/', views.register, name="restaurantRegister"),
 
     path('add-food-item/', views.addFoodItem, name="addFoodItem"),
+
+    # To apply CRUD operations on food items
     path('manage-food-items/', views.manageFoodItems, name="manageFoodItems"),
     path('manage-food-items/<int:id>', views.editFoodItems, name="editFoodItems"),
     path('manage-food-items/<int:id>/update', views.updateFoodItem, name="updateFoodItem"),
     path('manage-food-items/<int:id>/delete', views.deleteFoodItem, name="deleteFoodItem"),
 
-    #path('restaurants/', views.restaurants, name="restaurants"),
+    # To get all the orders of the logged in restaurant
+    path('get-orders/', views.getOrders, name='getOrders'),
+    path('update-order-status/<int:id>', views.updateOrderStatus, name='updateOrderStatus'),
 
     path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),

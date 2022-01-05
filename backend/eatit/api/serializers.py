@@ -8,7 +8,7 @@ class CartSerializer(ModelSerializer):
     food = FoodItemSerializer(read_only=True)
     class Meta:
         model = Cart
-        fields = ['user', 'food', 'qty', 'amount', 'totalAmount']
+        fields = ['id', 'user', 'food', 'qty', 'amount', 'totalAmount']
 
 
 class AddressSerializer(ModelSerializer):

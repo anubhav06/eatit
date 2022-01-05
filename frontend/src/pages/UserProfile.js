@@ -96,7 +96,7 @@ const UserProfile = ({match}) => {
                         <div>
                             {order.cart.length} items
                             {order.cart.map( cart => (
-                                <div>
+                                <div key={cart.id}>
                                     {cart.food.name} x {cart.qty} ----- {cart.amount}
                                 </div>
                             ))}
