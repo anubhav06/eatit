@@ -9,6 +9,10 @@ import { RestaurantAuthProvider } from './restaurants/context/RestaurantAuthCont
 import HomePage from './pages/HomePage'
 import LoginPage from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage';
+import UserProfile from './pages/UserProfile';
+import LandingPage from './pages/LandingPage';
+import ViewFoodItems from './pages/ViewFoodItems';
+import CheckoutPage from './pages/CheckoutPage';
 
 import RestaurantHomePage from './restaurants/pages/RestaurantHomePage'
 import RestaurantLoginPage from './restaurants/pages/RestaurantLoginPage'
@@ -17,9 +21,7 @@ import ManageFoodItems from './restaurants/pages/ManageFoodItems'
 import AddFoodItem from './restaurants/pages/AddFoodItem'
 import ManageOrders from './restaurants/pages/ManageOrders'
 import EditFoodItem from './restaurants/pages/EditFoodItem';
-import LandingPage from './pages/LandingPage';
-import ViewFoodItems from './pages/ViewFoodItems';
-import CheckoutPage from './pages/CheckoutPage';
+
 
 function App() {
   return (
@@ -29,6 +31,7 @@ function App() {
           <Route component={LoginPage} path="/login"/>
           <Route component={RegisterPage} path="/register"/>
           <Route component={LandingPage} path="/" exact />
+          <Route component={UserProfile} path="/my-account"  exact />
           <Route component={HomePage} path="/restaurants" exact/>
           <Route component={ViewFoodItems} path="/restaurants/:id" exact/>
           <Route component={CheckoutPage} path='/checkout' exact />

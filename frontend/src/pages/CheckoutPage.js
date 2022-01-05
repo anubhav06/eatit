@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext, setState} from 'react'
-import { Redirect } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import Header from '../components/Header'
 import AuthContext from '../context/AuthContext'
 import './ViewFoodItems.css'
@@ -19,6 +19,8 @@ const CheckoutPage = ({match}) => {
     let [deliveryAddress, setDeliveryAddress] = useState({})
 
     let [showPaymentWindow, setPaymentWindow] = useState(false)
+
+    const history = useHistory()
 
     // Runs the following functions on each load of page
     useEffect(()=> {
@@ -214,6 +216,7 @@ const CheckoutPage = ({match}) => {
 
         if(response.status === 200){
             alert('Order Placed ✅')
+            history.push('/my-account')
             console.log('SUCCESS: ', data)
 
         } else {

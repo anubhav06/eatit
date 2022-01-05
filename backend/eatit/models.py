@@ -1,6 +1,7 @@
 import re
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.fields import DateTimeField
 from restaurants.models import Restaurant, FoodItem
 
 # User's cart
@@ -57,6 +58,34 @@ class ActiveOrders(models.Model):
     # Address selected/chosen by the user to deliver to
     address = models.ForeignKey(Address, on_delete=models.CASCADE, related_name='addressOrder')
     
+    datetime = models.DateTimeField(auto_now=True)
+    active = models.BooleanField(default=True)
+
+
+    def serializer(self):
+        return{
+            "restaurant" : {
+                "name": self.restaurant.name,
+                "address": self.restaurant.address,
+            },
+            "cart": {
+                "food" : {
+                    "id" :  self.cart.food.id,
+                    "name" : self.cart.food.name,
+                    "price" : self.cart.food.price,
+                },
+                "qty" : self.cart.qty,
+                "amount" : self.cart.amount,
+                "totalAmount" : self.cart.totalAmount,
+            },
+            "address" : {
+                "area": self.address.area,
+                "label": self.address.label,
+            },
+            "datetime": self.datetime,
+            "active" : self.active,
+        }
+
     def __str__(self):
         return f"{self.user}'s order for {self.restaurant}"
 

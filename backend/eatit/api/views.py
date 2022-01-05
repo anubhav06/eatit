@@ -9,7 +9,7 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from eatit.models import Cart, User, Address, ActiveOrders
-from eatit.api.serializers import CartSerializer, AddressSerializer
+from eatit.api.serializers import CartSerializer, AddressSerializer, UserSerializer, ActiveOrdersSerializer
 
 from restaurants.models import Restaurant, FoodItem
 from restaurants.api.serializers import RestaurantSerializer, FoodItemSerializer
@@ -277,3 +277,21 @@ def placeOrder(request):
     print('RESTAURANT: ', restaurant)
 
     return Response({'Order placed'})
+
+
+
+# To get the info of the logged in user like name, email etc.
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getUserInfo(request):
+
+    serializer = UserSerializer(request.user)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getOrders(request):
+    
+    activeOrders = ActiveOrders.objects.filter(user=request.user)
+    serializer = ActiveOrdersSerializer(activeOrders, many=True)
+    return Response(serializer.data)
