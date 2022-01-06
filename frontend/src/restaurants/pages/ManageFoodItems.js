@@ -48,7 +48,7 @@ const ManageFoodItems = () => {
                             Name: {food.name} <br/>
                             Description: {food.description} <br/>
                             Price: {food.price} <br/>
-                            <img src={`http://localhost:8000${food.image}`} alt='Food' height="150px"/> <br/><br/><br/>
+                            <img src={`${food.image}`} alt='Food' height="150px"/> <br/><br/><br/>
                         </li>    
                     </Link>
                 ))}
