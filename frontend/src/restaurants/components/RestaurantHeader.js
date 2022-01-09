@@ -38,7 +38,10 @@ const RestaurantHeader = () => {
                 <Link to="/restaurants" > Main Site </Link>
             )}
 
-
+            <span>  |   </span>
+            {restaurant ? (
+                <Link to="/partner-with-us/account-setup"> Account Setup </Link>
+            ) : (null)}
                 
            
         </div>

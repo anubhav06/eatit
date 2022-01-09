@@ -27,7 +27,8 @@ urlpatterns = [
     path('get-address/', views.getAddress, name='getAddress'),
 
     # To place an order, to get a user's existing orders, and to get the logged in user's info
-    path('place-order/', views.placeOrder, name="placeOrder"),
+    path('checkout/', views.checkout, name='checkout'),
+    path('webhook', views.webhook_received, name='webhookReceived'),
     path('get-orders/', views.getOrders, name='getOrders'),
     path('get-user-info/', views.getUserInfo, name='getUserInfo'),
 

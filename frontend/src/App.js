@@ -13,6 +13,8 @@ import UserProfile from './pages/UserProfile';
 import LandingPage from './pages/LandingPage';
 import ViewFoodItems from './pages/ViewFoodItems';
 import CheckoutPage from './pages/CheckoutPage';
+import CheckoutSuccessPage from './pages/CheckoutSuccessPage';
+import CheckoutCancelPage from './pages/CheckoutCancelPage';
 
 import RestaurantHomePage from './restaurants/pages/RestaurantHomePage'
 import RestaurantLoginPage from './restaurants/pages/RestaurantLoginPage'
@@ -21,7 +23,9 @@ import ManageFoodItems from './restaurants/pages/ManageFoodItems'
 import AddFoodItem from './restaurants/pages/AddFoodItem'
 import ManageOrders from './restaurants/pages/ManageOrders'
 import EditFoodItem from './restaurants/pages/EditFoodItem';
-
+import RestaurantAccountSetup from './restaurants/pages/RestaurantAccountSetup';
+import StripeReturnUrlPage from './restaurants/pages/StripeReturnUrlPage';
+import StripeRefreshUrlPage from './restaurants/pages/StripeRefreshUrlPage';
 
 function App() {
   return (
@@ -35,6 +39,8 @@ function App() {
           <Route component={HomePage} path="/restaurants" exact/>
           <Route component={ViewFoodItems} path="/restaurants/:id" exact/>
           <Route component={CheckoutPage} path='/checkout' exact />
+          <Route component={CheckoutSuccessPage} path='/checkout/success' exact />
+          <Route component={CheckoutCancelPage} path='/checkout/cancel' exact />
         </AuthProvider>
 
         <RestaurantAuthProvider>
@@ -45,6 +51,9 @@ function App() {
           <RestaurantPrivateRoute component={EditFoodItem} path="/partner-with-us/manage-food-items/:id" exact />
           <RestaurantPrivateRoute component={AddFoodItem} path="/partner-with-us/add-food-item" exact />
           <RestaurantPrivateRoute component={ManageOrders} path="/partner-with-us/orders" exact />
+          <RestaurantPrivateRoute component={RestaurantAccountSetup} path="/partner-with-us/account-setup" exact /> 
+          <RestaurantPrivateRoute component={StripeReturnUrlPage} path="/partner-with-us/account-setup/return-url" exact />
+          <RestaurantPrivateRoute component={StripeRefreshUrlPage} path="/partner-with-us/account-setup/refresh-url" exact/>
         </RestaurantAuthProvider>
 
       </Router>

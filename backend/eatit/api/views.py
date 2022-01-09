@@ -1,5 +1,8 @@
+from os import error
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
+from django.db.utils import Error
+from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -11,9 +14,13 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from eatit.models import Cart, User, Address, ActiveOrders
 from eatit.api.serializers import CartSerializer, AddressSerializer, UserSerializer, ActiveOrdersSerializer
 
-from restaurants.models import Restaurant, FoodItem
+from restaurants.models import Restaurant, FoodItem, Stripe
 from restaurants.api.serializers import RestaurantSerializer, FoodItemSerializer
 
+import json
+from decouple import config
+import stripe
+from django.http import HttpResponse
 
 
 # For customizing the token claims: (whatever value we want)
@@ -252,31 +259,131 @@ def getAddress(request):
     return Response(serializer.data)
 
 
+
+
 # To place an order of a customer with the requested data
+# Creates a Stripe checkout session and returns back a URL to redirect to.
+# Refer: https://stripe.com/docs/connect/enable-payment-acceptance-guide?platform=web#web-create-checkout for more information.
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def placeOrder(request):
+def checkout(request):
 
+    stripe.api_key = config('STRIPE_API_KEY')
+    
     # Get the cart items of the user
     cart = Cart.objects.filter(user=request.user)
     # Get the chosen delivery address passed from the frontend
     addressID = request.data['address'].get('id')
+
+
+    getCartFoodID = cart.first().food.id
+    getRestaurant = FoodItem.objects.get(id=getCartFoodID).restaurant
+    accountID = Stripe.objects.get(restaurant=getRestaurant).accountID
+    
+    # To create a stripe checkout session which returns back the checkout session url
+    try:
+        session = stripe.checkout.Session.create(
+            payment_method_types=['card'],
+            line_items=[
+                cart.checkoutSerializer() for cart in cart
+            ],
+            mode='payment',
+            success_url='http://localhost:3000/my-account',
+            cancel_url='http://localhost:3000/checkout/cancel',
+            stripe_account = str(accountID) ,
+            # Passes the metadata to a successfull checkout session by stripe if checkout is completed.
+            # The metadata will be used to save order details
+            metadata = {
+                "user" : str(request.user.id),
+                "addressID" : str(addressID), 
+            }
+        )
+    except Exception as e:
+        print('ERROR: ', e)
+        return Response({'This restaurant has not setup payment acceptance with Stripe yet !'}, status=status.HTTP_412_PRECONDITION_FAILED)
+
+    return Response({session.url}, status=status.HTTP_303_SEE_OTHER)
+
+
+
+
+# Stripe webhook to check if the payment is completed
+# If payment is successfully completed, then save the order details
+@api_view(['POST'])
+def webhook_received(request):
+
+    print('Running')
+
+    stripe.api_key = config('STRIPE_API_KEY')
+    endpoint_secret = 'whsec_063wKkEEG7uVckGQyAnIybdywzwkdjR5'
+
+
+    payload = request.body
+    sig_header = request.META['HTTP_STRIPE_SIGNATURE']
+    event = None
+
+    # Verify webhook signature and extract the event.
+    # See https://stripe.com/docs/webhooks/signatures for more information.
+    try:
+        event = stripe.Webhook.construct_event(
+            payload, sig_header, endpoint_secret
+        )
+    except ValueError as e:
+        # Invalid payload.
+        print('INVALID PAYLOAD')
+        return HttpResponse(status=400)
+    except stripe.error.SignatureVerificationError as e:
+        # Invalid Signature.
+        print('INVALID SIGNATURE', e)
+        return HttpResponse(status=400)
+
+    if event["type"] == "checkout.session.completed":
+        session = event["data"]["object"]
+        connected_account_id = event["account"]
+        handle_completed_checkout_session(connected_account_id, session, request)
+
+    else:
+        print('Unhandled event type {}'.format(event['type']))
+        
+    return HttpResponse(status=200)
+
+
+
+
+# If the checkout is completed, then call this function
+def handle_completed_checkout_session(connected_account_id, session, request):
+    # Fulfill the purchase.
+    print('Connected account ID: ' + connected_account_id)
+    print(str(session))
+    print('PAYMENT COMPLETED ✅')
+
+    print('Session Metadata:', session.metadata)
+    print('Session Metadata USER:', session.metadata.user)
+    print('Session Metadata ADDRESS ID:', session.metadata.addressID)
+    print('request: ', request)
+    print('request user: ', request.user)
+
+    # ---- Save the order details ----
+
+    # Get the cart items of the user
+    sessionUser = User.objects.get(id = session.metadata.user)
+    cart = Cart.objects.filter(user=sessionUser)
+    # Get the chosen delivery address passed from the frontend
+    addressID = session.metadata.addressID
     address = Address.objects.get(id=addressID)
     # Get the corresponding restaurant from the food items of the cart
     restaurant = FoodItem.objects.filter(id = cart.first().food.id).first().restaurant
 
     # Save the details in active orders model
-    addOrder = ActiveOrders(user=request.user, restaurant=restaurant, address=address)
+    addOrder = ActiveOrders(user=sessionUser, restaurant=restaurant, address=address)
     addOrder.save()
     # Add the user's cart's foodItems to the active order which user has placed
     for cartItem in cart:
         addOrder.cart.add(cartItem)
 
-    print('CART: ', cart)
-    print('ADDRESS: ', address)
-    print('RESTAURANT: ', restaurant)
+    print('Saved order details ✅')
 
-    return Response({'Order placed'})
+
 
 
 
@@ -288,6 +395,8 @@ def getUserInfo(request):
     serializer = UserSerializer(request.user)
     return Response(serializer.data)
 
+
+# To get the active orders of the logged in user
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getOrders(request):

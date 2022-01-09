@@ -12,6 +12,15 @@ class Cart(models.Model):
     amount = models.DecimalField(max_digits=6, decimal_places=2)
     totalAmount = models.DecimalField(max_digits=7, decimal_places=2, default=0)
 
+    # To serializer data as required by Stripe Payments during checkout
+    def checkoutSerializer(self):
+        return {
+            "name" : self.food,
+            "amount" : int(self.food.price)*100,
+            "currency" : 'inr',
+            "quantity" : self.qty,
+        }
+
     # Serialize in JSON format for sending data to frontend
     def serializer(self):
         return {

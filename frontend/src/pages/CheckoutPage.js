@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext, setState} from 'react'
-import { useHistory } from 'react-router-dom'
+import { Redirect, useHistory } from 'react-router-dom'
 import Header from '../components/Header'
 import AuthContext from '../context/AuthContext'
 import './ViewFoodItems.css'
@@ -200,9 +200,10 @@ const CheckoutPage = ({match}) => {
     }
 
 
+
     // To place an order
-    let placeOrder = async() =>{
-        let response = await fetch(`http://127.0.0.1:8000/api/place-order/`, {
+    let checkout = async() =>{
+        let response = await fetch(`http://127.0.0.1:8000/api/checkout/`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -214,9 +215,9 @@ const CheckoutPage = ({match}) => {
         
         let data = await response.json()
 
-        if(response.status === 200){
-            alert('Order Placed ✅')
-            history.push('/my-account')
+        if(response.status === 303){
+
+            window.location.href = data
             console.log('SUCCESS: ', data)
 
         } else {
@@ -290,7 +291,8 @@ const CheckoutPage = ({match}) => {
                             <div>
                                 <h2> Payment Window </h2>
                                 <p> TODO: Add payment integration later. </p>
-                                <button onClick={placeOrder}> Confirm Order </button>
+                                {/*<button onClick={placeOrder}> Confirm Order </button>*/}
+                                <button onClick={checkout}> Checkout </button>
                             </div>
                             
                         </div>
@@ -309,7 +311,7 @@ const CheckoutPage = ({match}) => {
                     {cartItems.map((cart) => (
                         <div key={cart.id}>
                             
-                            {cart.food.restaurant.name}
+                            {cart.food.name}
 
                             <button name='remove' onClick={ () => removeFromCart(cart.food) }> - </button>
                             {cart.qty}  

@@ -14,6 +14,13 @@ class Restaurant(models.Model):
         return f"{self.user} : {self.name}"
 
 
+class Stripe(models.Model):
+    restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='restaurantStripe')
+    accountID = models.CharField(max_length=32)
+
+    def __str__(self):
+        return f"{self.restaurant}"
+
 # Model for the food item.
 class FoodItem(models.Model):
     # Refers to the Restaurant Model (which restaurant the food is associated with)
