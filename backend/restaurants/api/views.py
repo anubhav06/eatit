@@ -251,8 +251,10 @@ def createStripeAccount(request):
     # To create a stripe account
     # For more info refer to: https://stripe.com/docs/connect/enable-payment-acceptance-guide?platform=web#web-create-standard-account
     response = stripe.Account.create(
-        type = "custom",
+        type = "standard",
+        country = "US",
         email = request.user.email, 
+
     )
     # Todo: Add business profile details later like name address etc. 
     # https://stripe.com/docs/api/accounts/create#create_account-business_profile

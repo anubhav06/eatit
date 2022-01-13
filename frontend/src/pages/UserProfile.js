@@ -104,7 +104,7 @@ const UserProfile = ({match}) => {
                                     {cart.food.name} x {cart.qty} ----- {cart.amount}
                                 </div>
                             ))}
-                            BILL TOTAL: {order.cart[0].totalAmount}
+                            BILL TOTAL: {order.cart[0]?.totalAmount}
                         </div>
                     </div>
                 ))} 

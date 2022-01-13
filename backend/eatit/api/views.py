@@ -315,8 +315,7 @@ def webhook_received(request):
     print('Running')
 
     stripe.api_key = config('STRIPE_API_KEY')
-    endpoint_secret = 'whsec_063wKkEEG7uVckGQyAnIybdywzwkdjR5'
-
+    endpoint_secret = config('endpoint_secret')
 
     payload = request.body
     sig_header = request.META['HTTP_STRIPE_SIGNATURE']
@@ -401,6 +400,6 @@ def getUserInfo(request):
 @permission_classes([IsAuthenticated])
 def getOrders(request):
     
-    activeOrders = ActiveOrders.objects.filter(user=request.user)
+    activeOrders = ActiveOrders.objects.filter(user=request.user).order_by('-id')
     serializer = ActiveOrdersSerializer(activeOrders, many=True)
     return Response(serializer.data)
