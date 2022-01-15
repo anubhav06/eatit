@@ -66,7 +66,6 @@ export const AuthProvider = ({children}) => {
     }
 
 
-
     // To register a usrer
     let registerUser = async (e) => {
         e.preventDefault()
@@ -78,7 +77,7 @@ export const AuthProvider = ({children}) => {
                 'Content-Type':'application/json'
             },
             // 'e.target' is the form, '.username' gets the username field and '.password' gets the password field from wherever it is called (LoginPage.js here)
-            body:JSON.stringify({'username':e.target.username.value, 'password':e.target.password.value, 'confirmPassword':e.target.confirmPassword.value, 'email':e.target.email.value})
+            body:JSON.stringify({'username':e.target.username.value, 'password':e.target.password.value, 'confirmPassword':e.target.confirmPassword.value, 'email':e.target.email.value, 'number': e.target.number.value})
         })
         // Get the access and refresh tokens
         let data = await response.json()
@@ -94,14 +93,15 @@ export const AuthProvider = ({children}) => {
 
     }
 
-
     // Context data for AuthContext so that it can be used in other pages
     let contextData = {
         user:user,
         authTokens:authTokens,
+
         loginUser:loginUser,
         logoutUser:logoutUser,
         registerUser:registerUser,
+
     }
 
 

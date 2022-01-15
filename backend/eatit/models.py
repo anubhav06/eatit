@@ -1,8 +1,13 @@
 import re
 from django.db import models
-from django.contrib.auth.models import User
 from django.db.models.fields import DateTimeField
 from restaurants.models import Restaurant, FoodItem
+from django.contrib.auth.models import AbstractUser
+
+class User(AbstractUser):
+    
+    def __str__(self):
+        return f"{self.username}"
 
 # User's cart
 class Cart(models.Model):

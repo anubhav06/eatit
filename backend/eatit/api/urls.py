@@ -13,6 +13,8 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [ 
     path('', views.getRoutes, name="index"),
     path('register/', views.register, name="register" ),
+    path('mobile-send-message/', views.mobileSendMessage, name="mobileSendMessage"),
+    path('mobile-verification/', views.mobileVerification, name='mobileVerification'),
 
     path('restaurants/', views.restaurants, name="restaurants"),
     path('restaurants/<int:id>', views.restaurantsFood, name="restaurantsFood"),

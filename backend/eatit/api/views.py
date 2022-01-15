@@ -1,4 +1,4 @@
-from os import error
+from os import error, stat
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from django.db.utils import Error
@@ -10,6 +10,9 @@ from rest_framework.permissions import IsAuthenticated
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+
+import os
+from twilio.rest import Client
 
 from eatit.models import Cart, User, Address, ActiveOrders
 from eatit.api.serializers import CartSerializer, AddressSerializer, UserSerializer, ActiveOrdersSerializer
@@ -75,6 +78,81 @@ def register(request):
 
 
 
+# Refer: https://www.twilio.com/docs/verify/api?code-sample=code-step-3-check-the-verification-token&code-language=Python&code-sdk-version=7.x
+# To send a text message with verification code to the requested mobile
+@api_view(['POST'])
+def mobileSendMessage(request):
+    
+    mobileNumber = request.data['number']
+    print("Mobile Number: ", mobileNumber)
+
+    # Find your Account SID and Auth Token at twilio.com/console
+    # and set the environment variables. See http://twil.io/secure
+    account_sid = config('TWILIO_ACCOUNT_SID')
+    auth_token = config('TWILIO_AUTH_TOKEN')
+    
+    client = Client(account_sid, auth_token)
+
+    try:
+        verification = client.verify \
+                            .services('VA7bedb5bcad76dea67499207e1b8b50f8') \
+                            .verifications \
+                            .create(to= '+' + mobileNumber, channel='sms')
+            
+        print(verification.status)
+        return Response({'Message Sent ✅'})
+
+    except Exception as exception:
+        # Check twilio's error code from here: https://www.twilio.com/docs/verify/api/v1/error-codes
+        if exception.code == 60200:
+            return Response({'Invalid Phone Number'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+        elif exception.code == 60203:
+            return Response({'Max attempts reached. Try sending message after some time ⚠️'}, status=status.HTTP_429_TOO_MANY_REQUESTS)
+        else:
+            return Response({'An unknown error occurred while sending message 🔴'}, status=status.HTTP_429_TOO_MANY_REQUESTS)
+
+
+
+
+# To verify the verification code sent by Twilio to the user's mobile
+@api_view(['POST'])
+def mobileVerification(request):
+    
+    mobileNumber = request.data['number']
+    verificationCode = request.data['code']
+
+    # Find your Account SID and Auth Token at twilio.com/console
+    # and set the environment variables. See http://twil.io/secure
+    account_sid = config('TWILIO_ACCOUNT_SID')
+    auth_token = config('TWILIO_AUTH_TOKEN')
+    client = Client(account_sid, auth_token)
+
+    try:
+        verification_check = client.verify \
+                                .services('VA7bedb5bcad76dea67499207e1b8b50f8') \
+                                .verification_checks \
+                                .create(to= '+' + mobileNumber , code= verificationCode )
+        
+        print(verification_check.status)
+        
+        if verification_check.status == 'approved':
+            return Response({'Phone number verified ✅'})
+        elif verification_check.status == 'pending':
+            return Response({'Invalid verification code ⚠️'}, status=status.HTTP_412_PRECONDITION_FAILED)
+        else:
+            return Response({verification_check}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+
+    except Exception as exception:
+        # Check Twilio's error codes from here: https://www.twilio.com/docs/verify/api/v1/error-codes
+        if exception.code == 60202:
+            return Response({'Max verification attempt reached. Try after some time ⚠️'})
+        else:
+            return Response({'An unknown error occurred while verifying code 🔴'}, status=status.HTTP_429_TOO_MANY_REQUESTS)
+
+
+
+# ------------------------------------
 @api_view(['GET'])
 def getRoutes(request):
     routes = [
