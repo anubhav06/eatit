@@ -14,7 +14,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 import os
 from twilio.rest import Client
 
-from eatit.models import Cart, User, Address, ActiveOrders
+from eatit.models import Cart, User, Address, ActiveOrders, MobileNumber
 from eatit.api.serializers import CartSerializer, AddressSerializer, UserSerializer, ActiveOrdersSerializer
 
 from restaurants.models import Restaurant, FoodItem, Stripe
@@ -57,6 +57,7 @@ class MyTokenObtainPairView(TokenObtainPairView):
 def register(request):
     username = request.data["username"]
     email = request.data["email"]
+    number = request.data["number"]
 
     # Ensure password matches confirmation
     password = request.data["password"]
@@ -68,12 +69,15 @@ def register(request):
     if not email or not username or not password or not confirmation:
         return Response('All data is required')
 
+
     # Attempt to create new user
     try:
         user = User.objects.create_user(username, email, password)
+        mobile = MobileNumber(user=user, number=number)
         user.save()
+        mobile.save()
     except IntegrityError:
-        return Response("ERROR: Username already taken", status=status.HTTP_406_NOT_ACCEPTABLE)
+        return Response("ERROR: Username/Number already taken", status=status.HTTP_406_NOT_ACCEPTABLE)
     return Response('Registered Successfully from backend')
 
 
@@ -134,7 +138,7 @@ def mobileVerification(request):
                                 .create(to= '+' + mobileNumber , code= verificationCode )
         
         print(verification_check.status)
-        
+
         if verification_check.status == 'approved':
             return Response({'Phone number verified ✅'})
         elif verification_check.status == 'pending':

@@ -1,13 +1,16 @@
-import re
+from enum import unique
+from pyexpat import model
 from django.db import models
-from django.db.models.fields import DateTimeField
+from django.contrib.auth.models import User
 from restaurants.models import Restaurant, FoodItem
-from django.contrib.auth.models import AbstractUser
 
-class User(AbstractUser):
-    
-    def __str__(self):
-        return f"{self.username}"
+
+# To store the user's mobile number
+class MobileNumber(models.Model):
+    # unique attribute added so that only 1 account should exist with that number
+    number = models.BigIntegerField(unique=True, default=None)
+    user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="userNumber")
+
 
 # User's cart
 class Cart(models.Model):

@@ -122,7 +122,7 @@ const RegisterPage = () => {
                     <input type="text" name="username" placeholder="Enter Username" />
                     <input type="password" name="password" placeholder="Enter Password"/>
                     <input type="password" name="confirmPassword" placeholder="Enter Password Again"/>
-                    <input type="number" name="number" value={phoneNo} hidden />
+                    <input type="number" name="number" defaultValue={phoneNo} hidden />
 
                     <input type="submit"/>    
                 </form>
