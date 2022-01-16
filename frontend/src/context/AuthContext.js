@@ -19,6 +19,75 @@ export const AuthProvider = ({children}) => {
     const history = useHistory()
 
 
+
+    // Login User method
+    let loginCustomUser = async (e)=> {
+        e.preventDefault()
+
+        // To submit the twilio's sms verification code
+
+        // Make a post request to the api with the mobile number.
+        let twilioResponse = await fetch('http://127.0.0.1:8000/api/mobile-verification/', {
+            method:'POST',
+            headers:{
+                'Content-Type':'application/json'
+            },
+            body:JSON.stringify({'number':e.target.number.value, 'code':e.target.code.value})
+        })
+        let twilioData = await twilioResponse.json()
+
+        // If verification code is invalid, then backend returns a status code of 412
+        if (twilioResponse.status === 412){
+            alert(twilioData)
+        }
+        else if(twilioResponse.status !== 200){
+            console.log("ERROR: ", twilioData)
+            alert(twilioData)
+        }
+        else{
+
+
+            // Make a post request to the api with the user's credentials.
+            let response = await fetch('http://127.0.0.1:8000/api/custom-login/', {
+                method:'POST',
+                headers:{
+                    'Content-Type':'application/json'
+                },
+                body:JSON.stringify({'number': e.target.number.value})
+            })
+            // Get the access and refresh tokens
+            let data = await response.json()
+
+            if(response.status === 200){
+
+                // If a restaurant owner tries to login, the return without allocating the authTokens
+                if(jwt_decode(data.access)['group'] === 'Restaurant'){
+                    alert('You need to login with a user account')
+                    return 
+                }
+
+                // Update the state with the logged in tokens
+                setAuthTokens(data) 
+                // Decode the access token and store the information
+                setUser(jwt_decode(data.access))
+                // Set the authTokens in the local storage
+                localStorage.setItem('authTokens', JSON.stringify(data))
+                // Redirect user to home page
+                history.push('/restaurants')
+            }
+            // Status Code 406 means no user exists with the provided phone number
+            else if(response.status === 406){
+                alert(data)
+            }
+            else{
+                alert('Something went wrong!')
+            }
+
+        }
+    }
+
+
+
     // Login User method
     let loginUser = async (e )=> {
         e.preventDefault()
@@ -66,7 +135,7 @@ export const AuthProvider = ({children}) => {
     }
 
 
-    // To register a usrer
+    // To register a user
     let registerUser = async (e) => {
         e.preventDefault()
 
@@ -98,6 +167,7 @@ export const AuthProvider = ({children}) => {
         user:user,
         authTokens:authTokens,
 
+        loginCustomUser:loginCustomUser,
         loginUser:loginUser,
         logoutUser:logoutUser,
         registerUser:registerUser,

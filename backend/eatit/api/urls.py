@@ -37,4 +37,6 @@ urlpatterns = [
     # For user authentication
     path('token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+
+    path('custom-login/', views.customLogin, name='customLogin'),
 ]

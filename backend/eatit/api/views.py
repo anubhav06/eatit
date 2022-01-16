@@ -1,8 +1,6 @@
-from os import error, stat
+from aifc import Error
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
-from django.db.utils import Error
-from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
@@ -10,8 +8,8 @@ from rest_framework.permissions import IsAuthenticated
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
+from rest_framework_simplejwt.tokens import RefreshToken
 
-import os
 from twilio.rest import Client
 
 from eatit.models import Cart, User, Address, ActiveOrders, MobileNumber
@@ -20,7 +18,6 @@ from eatit.api.serializers import CartSerializer, AddressSerializer, UserSeriali
 from restaurants.models import Restaurant, FoodItem, Stripe
 from restaurants.api.serializers import RestaurantSerializer, FoodItemSerializer
 
-import json
 from decouple import config
 import stripe
 from django.http import HttpResponse
@@ -50,6 +47,38 @@ class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
 
 
+
+# To manually create tokens for user's logging in with mobile verification
+# Refer: https://django-rest-framework-simplejwt.readthedocs.io/en/latest/creating_tokens_manually.html#creating-tokens-manually
+@api_view(['POST'])
+def customLogin(request):
+    
+    number = request.data['number']
+    print('CUSTOM LOGIN')
+    # Custom user authentication 
+    
+    try: 
+        getUserID = MobileNumber.objects.get(number=number).user.id
+        user = User.objects.get(id=getUserID)
+    except ObjectDoesNotExist:
+        return Response({'No user exists with that number ⚠️'}, status=status.HTTP_406_NOT_ACCEPTABLE)
+
+    refresh = RefreshToken.for_user(user)
+
+    # Add custom claims
+    refresh['username'] = user.username
+    
+    if user.groups.filter(name="Restaurant").exists():
+        refresh['group'] = "Restaurant"
+    else:
+        refresh['group'] = "None"
+    # ...
+
+    return Response({
+        'refresh': str(refresh),
+        'access': str(refresh.access_token),
+    })
+    
 
 
 # User registration logic
