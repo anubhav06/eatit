@@ -12,7 +12,9 @@ from rest_framework import status
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
-from eatit.models import ActiveOrders
+from twilio.rest import Client
+
+from eatit.models import ActiveOrders, MobileNumber
 from eatit.api.serializers import ActiveOrdersSerializer
 
 from restaurants.models import Restaurant, FoodItem, User, Stripe
@@ -226,6 +228,27 @@ def updateOrderStatus(request, id):
     order = ActiveOrders.objects.get(id=id, restaurant=restaurant)
     order.active = False
     order.save()
+
+    # --- To send the user a text SMS about the updated order status ----
+
+    orderedBy = User.objects.get(id=order.user.id)
+    number = MobileNumber.objects.get(user=orderedBy).number
+    # Find your Account SID and Auth Token at twilio.com/console
+    # and set the environment variables. See http://twil.io/secure
+    account_sid = config('TWILIO_ACCOUNT_SID')
+    auth_token = config('TWILIO_AUTH_TOKEN')
+    client = Client(account_sid, auth_token)
+
+    message = client.messages \
+                    .create(
+                        messaging_service_sid='MG3689472a26e433f57909e6a580e2d9be',
+                        to='+' + str(number),
+                        body="Your order #" + str(order.id) + " has been delivered! Thanks for ordering at EatIN ! " 
+                    )
+
+    print('Message sent ✅')
+    print(message.status)
+
 
     serializer = ActiveOrdersSerializer(order)
     return Response(serializer.data)

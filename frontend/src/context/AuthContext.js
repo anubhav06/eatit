@@ -20,7 +20,7 @@ export const AuthProvider = ({children}) => {
 
 
 
-    // Login User method
+    // To login a custom user who wishes to login using mobile authentication (i.e. text SMS verification code)
     let loginCustomUser = async (e)=> {
         e.preventDefault()
 
@@ -46,6 +46,7 @@ export const AuthProvider = ({children}) => {
         }
         else{
 
+            // If verification code is correct, then go on to login the user
 
             // Make a post request to the api with the user's credentials.
             let response = await fetch('http://127.0.0.1:8000/api/custom-login/', {

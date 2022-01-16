@@ -494,6 +494,26 @@ def handle_completed_checkout_session(connected_account_id, session, request):
     print('Saved order details ✅')
 
 
+    # ------- To send the user a text SMS using Twilio informing about their successfull order placement -----
+    
+    number = MobileNumber.objects.get(user=sessionUser).number
+
+    # Find your Account SID and Auth Token at twilio.com/console
+    # and set the environment variables. See http://twil.io/secure
+    account_sid = config('TWILIO_ACCOUNT_SID')
+    auth_token = config('TWILIO_AUTH_TOKEN')
+    client = Client(account_sid, auth_token)
+
+    message = client.messages \
+                    .create(
+                        messaging_service_sid='MG3689472a26e433f57909e6a580e2d9be',
+                        to='+' + str(number),
+                        body="Your order has been successfully placed at EatIN! " + str(cart.count()) + "x item(s) ordered from " + str(restaurant.name) + " with a total amount of " + str(cart.first().totalAmount) +". \n Happy EatIN!"
+                    )
+
+    print('Message sent ✅')
+    print(message.status)
+
 
 
 

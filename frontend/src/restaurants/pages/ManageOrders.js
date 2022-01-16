@@ -100,7 +100,7 @@ const ManageOrders = () => {
                                         {cart.food.name} x {cart.qty} ----- {cart.amount}
                                     </div>
                                 ))}
-                                BILL TOTAL: {order.cart[0].totalAmount}
+                                BILL TOTAL: {order.cart[0]?.totalAmount}
                             </div>
                             <button onClick={() => updateOrder(order.id)}> Mark as delivered </button>
                     </div>
@@ -129,7 +129,7 @@ const ManageOrders = () => {
                                         {cart.food.name} x {cart.qty} ----- {cart.amount}
                                     </div>
                                 ))}
-                                BILL TOTAL: {order.cart[0].totalAmount}
+                                BILL TOTAL: {order.cart[0]?.totalAmount}
                             </div>
                     </div>
                     : (null) }
