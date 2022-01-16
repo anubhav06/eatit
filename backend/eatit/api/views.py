@@ -272,7 +272,7 @@ def addToCart(request, id):
 
         # If the user's cart contains the requested food item, then increase it's quantity by 1
         try:
-            getFood =  Cart.objects.get(food=food)
+            getFood =  Cart.objects.get(food=food, user=request.user)
             getFood.qty += 1
             # Update the amount of the food item added in cart in accordance of it's quantity
             getFood.amount = float(food.price * getFood.qty)
@@ -309,7 +309,7 @@ def removeFromCart(request, id):
 
         # If the user's cart contains the requested food item, then decrease it's quantity by 1
         try:
-            getFood =  Cart.objects.get(food=food)
+            getFood =  Cart.objects.get(food=food, user=request.user)
 
             # If the item's quantity is more than 1, then decrease it's quantity
             if getFood.qty > 1:
