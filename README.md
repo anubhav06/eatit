@@ -4,7 +4,7 @@ An Online food ordering web application made using React + Django
 Frontend: **ReactJS**  
 Backend: **Django**  
 
-## Installation
+## Installation 🖥️
 
 Split the terminal in two and follow the below steps in different terminals
 
@@ -20,3 +20,6 @@ Split the terminal in two and follow the below steps in different terminals
 2. Run `npm install` to install the dependencies
 3. Run `npm start` to start the server
 
+## Current Status ⌛
+Backend: Complete  
+Frontend: To add CSS designing and improve the way react code is designed
