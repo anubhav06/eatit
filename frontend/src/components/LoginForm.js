@@ -8,7 +8,6 @@ const LoginForm = ({loginUser, loginCustomUser, phoneNo, userForm, mobileForm, v
 
     return (
         <div className='row'>
-            <br/><br/><br/><br/>
 
             <div className='form-column-left'>
 
@@ -16,7 +15,7 @@ const LoginForm = ({loginUser, loginCustomUser, phoneNo, userForm, mobileForm, v
                         
                     {/* username-password login form */}
                     {userForm == true ?
-                        <div>
+                        <div>   
                             <div className='form-header'> Login Form </div>
                             <form onSubmit={loginUser}>
                                 <input type="text" name="username" placeholder="Enter Username" className='form-input'/>

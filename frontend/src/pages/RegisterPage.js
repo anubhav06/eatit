@@ -2,7 +2,7 @@ import React, {useContext, useState} from 'react'
 import { Redirect } from 'react-router-dom'
 import AuthContext from '../context/AuthContext'
 import Header from '../components/Header'
-
+import RegisterForm from '../components/RegisterForm'
 
 const RegisterPage = () => {
 
@@ -94,39 +94,17 @@ const RegisterPage = () => {
     return (
         <div>
             <Header/>
+            <RegisterForm
+                registerUser={registerUser}
+                phoneNo={phoneNo}
+                mainForm={mainForm}
+                phoneForm={phoneForm}
+                phoneVerificationForm={phoneVerificationForm}
+                submitPhoneNumber={submitPhoneNumber}
+                submitVerificationCode={submitVerificationCode}
+            />
 
-
-            {/* Form to submit the phone number */}
-            {phoneForm == true ?
-                <form onSubmit={submitPhoneNumber }>
-                    <input type="number" name='number' placeholder="Enter mobile number" />
-                    <input type="submit"/>
-                </form>
-            : (null)}
-
-
-            {/*  Form to submit the phone verification number */}
-            {phoneVerificationForm == true ?
-                <form onSubmit={submitVerificationCode}>
-                    <input type="number" name="number" value={phoneNo} disabled/>
-                    <input type="number" name="code" placeholder='Enter verification Code' />  
-                    <input type="submit" />
-                </form>
-            : (null)}
             
-            
-            {/* The main registration form */}
-            {mainForm == true ?
-                <form onSubmit={registerUser}>
-                    <input type="text" name="email" placeholder="Enter Email" />
-                    <input type="text" name="username" placeholder="Enter Username" />
-                    <input type="password" name="password" placeholder="Enter Password"/>
-                    <input type="password" name="confirmPassword" placeholder="Enter Password Again"/>
-                    <input type="number" name="number" defaultValue={phoneNo} hidden />
-
-                    <input type="submit"/>    
-                </form>
-            : (null)}
             
         </div>
     )
