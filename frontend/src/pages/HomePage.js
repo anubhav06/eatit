@@ -41,7 +41,10 @@ const HomePage = () => {
     return (
         <div>
             <Header/>
-
+            
+            <div style={{backgroundColor: 'black'}}>
+                TEST
+            </div>
             <ul>
                 {restaurants.map(restaurant => (
                     <Link to={`/restaurants/${restaurant.id}`} key={restaurant.id}>
