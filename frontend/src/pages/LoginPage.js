@@ -2,6 +2,8 @@ import React, {useContext, useState} from 'react'
 import { Redirect } from 'react-router-dom'
 import AuthContext from '../context/AuthContext'
 import Header from '../components/Header'
+import LoginForm from '../components/LoginForm'
+
 
 const LoginPage = () => {
 
@@ -59,44 +61,19 @@ const LoginPage = () => {
     return (
         <div>
             <Header/>
-            
-            <br/><br/><br/><br/>
-            {/* username-password login form */}
-            {userForm == true ?
-                <form onSubmit={loginUser}>
-                    <input type="text" name="username" placeholder="Enter Username" />
-                    <input type="password" name="password" placeholder="Enter Password" />
-                    <input type="submit"/>
-                </form>
-            : (null)}
-            
-            {/* login via mobile number form */}
-            {mobileForm == true ?
-                <form onSubmit={submitPhoneNumber}>
-                    <input type="number" name="number" placeholder='Enter Number' />
-                    <input type="submit" />
-                </form>
-            : (null)}
-
-            {/* form to enter verification code sent through text sms */}
-            {verificationForm === true ?
-                <form onSubmit={loginCustomUser}>
-                    <input type="number" name="number" value={phoneNo} disabled/>
-                    <input type="number" name="code" placeholder='Enter verification Code' />  
-                    <input type="submit" />
-                </form>
-            : (null)}
-            
-            
-            <br/>
-            {/* To switch methods of login - either with mobile or with password */}
-            <button onClick={() => {setUserForm(!userForm); setMobileForm(!mobileForm); setVerificationForm(false)}}> 
-                {userForm === true 
-                ?   <p> Click here to login with mobile instead </p>
-                :   <p> Click here to login with password instead </p>
-                }
-                 
-            </button>
+            <LoginForm
+                loginUser = {loginUser}
+                loginCustomUser = {loginCustomUser}
+                phoneNo = {phoneNo}
+                userForm = {userForm}
+                mobileForm = {mobileForm}
+                verificationForm = {verificationForm}
+                setPhoneNo = {setPhoneNo}
+                setUserForm = {setUserForm}
+                setMobileForm = {setMobileForm}
+                setVerificationForm = {setVerificationForm}
+                submitPhoneNumber = {submitPhoneNumber}
+            />
         </div>
     )
 }
