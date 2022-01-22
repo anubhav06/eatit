@@ -1,0 +1,111 @@
+* {
+    box-sizing: border-box;
+    font-family: 'Dongle', sans-serif;
+}
+
+.restaurant-offers-container{
+    background-color: rgb(5, 4, 37);
+    width: 100%;
+    height: 21rem;
+    margin-top: 4rem;
+}
+
+.restaurant-offer-container:after{
+    content : "";
+    clear: both;
+    display: table;
+}
+
+.restaurant-offer-column {
+    float: left;
+    padding: 15px;
+    margin: 65px 35px 35px 35px;
+    width: 20%;
+    height: 20rem;
+    font-size: 24px;
+    text-decoration: none;
+    transform: scale(1.1);
+}
+
+.restaurant-offer-column:hover{
+    transform: scale(1.2);
+}
+
+
+
+.restaurant-row:after{
+    content : "";
+    clear: both;
+    display: table;
+}
+
+.restaurant-row{
+    margin: 20px 50px 50px 50px;
+}
+
+.restaurant-list-column {
+    float: left;
+    padding: 15px;
+    margin: 0px 35px 35px 35px;
+    width: 20%;
+    height: 20rem;
+    font-size: 24px;
+    text-decoration: none;
+}
+
+.restaurant-list-column:hover{
+    background-color: rgb(240, 240, 240);
+    border: 0.1px solid grey;
+}
+
+
+.restaurant-image{
+    margin-top: 15px;
+    width: 255px;
+    height: 170px;
+}
+
+.restaurant-heading{
+    font-size: 30px;
+    color: black;
+    font-weight: bold;
+}
+
+.restaurant-address{
+    color: black;
+}
+
+
+
+
+@media only screen and (max-width: 600px){
+    .restaurant-list-column{
+        width: 100%;
+        margin: 0px;
+    }
+
+    .restaurant-offers-container{
+        display: none;
+    }
+
+    .restaurant-row{
+        margin: 100px 50px 50px 50px;
+    }
+}
+
+@media (min-width:801px) and (max-width:1025px){
+    .restaurant-list-column{
+        width: 50%;
+        margin: 0px;
+    }
+
+    .restaurant-offer-column{
+        width: 50%;
+        margin: 35px 0px 0px 0px;
+        padding: 60px;
+    }
+
+    .restaurant-offers-container{
+        height: 42rem;
+    }
+}

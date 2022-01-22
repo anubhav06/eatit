@@ -1,8 +1,12 @@
 import React, {useState, useEffect, useContext} from 'react'
 import AuthContext from '../context/AuthContext'
 import Header from '../components/Header'
-import { Link } from 'react-router-dom'
+import RestaurantList from '../components/RestaurantList'
 
+import RestaurantOffer from '../assets/RestaurantOffer.png'
+import RestaurantOffer1 from '../assets/RestaurantOffer1.png'
+import RestaurantOffer2 from '../assets/RestaurantOffer2.png'
+import RestaurantOffer3 from '../assets/RestaurantOffer3.png'
 
 const HomePage = () => {
     let [notes, setNotes] = useState([])
@@ -10,10 +14,9 @@ const HomePage = () => {
     let {authTokens, logoutUser} = useContext(AuthContext)
 
 
-    // call getNotes on load
     useEffect(()=> {
         
-        // To fetch the notes of a user
+        // To fetch all the restaurants
         let getRestaurants = async() =>{
             let response = await fetch('http://127.0.0.1:8000/api/restaurants/', {
                 method:'GET',
@@ -30,9 +33,7 @@ const HomePage = () => {
             }
             
         }
-
         
-
         getRestaurants()
 
     }, [])
@@ -42,20 +43,24 @@ const HomePage = () => {
         <div>
             <Header/>
             
-            <div style={{backgroundColor: 'black'}}>
-                TEST
+            {/* OFFERS SECTION */}
+            <div className='restaurant-offers-container'> 
+                <div className='restaurant-offer-column'> <img src={RestaurantOffer}/> </div>
+                <div className='restaurant-offer-column'> <img src={RestaurantOffer1}/> </div>
+                <div className='restaurant-offer-column'> <img src={RestaurantOffer2}/> </div>
+                <div className='restaurant-offer-column'> <img src={RestaurantOffer3}/> </div>
             </div>
-            <ul>
+            
+            {/* RESTAURANT LISTS SECTION */}
+            <div className='restaurant-row'>
+                <p style={{fontSize: '42px'}}>{restaurants.length} restaurants </p><hr/>
+
                 {restaurants.map(restaurant => (
-                    <Link to={`/restaurants/${restaurant.id}`} key={restaurant.id}>
-                        <li key={restaurant.id} >
-                            <p> <img src={`${restaurant.image}`} alt='Food' height="150px"/> <br/>  </p>
-                            <p> {restaurant.name} </p>
-                            <p> {restaurant.address} </p> <br/><br/>
-                        </li>
-                    </Link>
+                    <RestaurantList
+                        restaurant={restaurant}
+                    />
                 ))}
-            </ul>
+            </div>
 
         </div>
     )
