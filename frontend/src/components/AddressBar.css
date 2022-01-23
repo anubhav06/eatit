@@ -1,0 +1,105 @@
+
+
+.address-container{
+  width: 100%;
+  margin: 10px 10px 10px 0px;
+  background-color:rgb(255, 255, 255);
+}
+
+.address-row::after{
+  content : "";
+  clear: both;
+  display: table;
+}
+
+.address-row{
+  margin-bottom: 10px;
+  margin-left: 15px;
+}
+
+.address-subpart{
+  float: left;
+  padding: 15px 0px 0px 15px;
+  margin: 10px;
+  width: 45%;
+  font-size: 24px;
+  border: 0.1px rgb(211, 211, 211) solid;
+}
+
+.address-subpartHeading{
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: -10px;
+}
+
+.address-subpartDetails{
+  font-size: 25px;
+  color: grey;
+}
+
+.address-subpartBtn{
+  background-color: rgb(56, 163, 23);
+  padding: 0px 15px 0px 15px;
+  font-size: 24px;
+  border: none;
+  color: white;
+  margin: 10px 0px 10px 0px;
+  font-weight: 600;
+}
+
+.address-subpartBtn:disabled{
+  background-color: grey;
+}
+
+.address-subpartBtn2{
+  border: 0.1px solid rgb(56, 163, 23);
+  background-color: white;
+  padding: 0px 15px 0px 15px;
+  font-size: 24px;
+  color: rgb(56, 163, 23);
+  margin: 10px 0px 10px 0px;
+  font-weight: 600;
+}
+
+.address-heading{
+  font-size: 50px;
+  margin: 10px 0px 5px 10px;
+  font-weight: bold;
+}
+
+
+.address-addForm{
+  margin: 10px;
+}
+
+.address-addFormFields{
+  height: 35px;
+  width: 40%;
+  margin: 5px;
+  padding: 5px;
+  font-size: 24px;
+}
+
+.payment-disabled{
+  background-color: white;
+  height: 5rem;
+  margin-top: 20px;
+  color: grey;
+  padding-left: 10px;
+}
+
+@media only screen and (max-width: 600px){
+    .address-subpart{
+      width: 100%;
+    }
+
+    .payment-disabled{
+      margin-left: 20px;
+      width: 100%;
+    }
+
+      
+  .address-addFormFields{
+    width: 80%;
+  }
+}

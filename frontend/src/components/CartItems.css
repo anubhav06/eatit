@@ -1,9 +1,10 @@
 
 
 .cart-container{
-  width: 80%;
+  width: 100%;
   margin: 10px 10px 10px 0px;
-  background-color:rgb(250, 250, 250);
+  padding: 25px;
+  background-color:white;
 }
 
 .cart-row::after{

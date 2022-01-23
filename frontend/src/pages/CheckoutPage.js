@@ -2,7 +2,10 @@ import React, {useState, useEffect, useContext, setState} from 'react'
 import { Redirect, useHistory } from 'react-router-dom'
 import Header from '../components/Header'
 import AuthContext from '../context/AuthContext'
-import './ViewFoodItems.css'
+import './CheckoutPage.css'
+import AddressBar from '../components/AddressBar'
+import PaymentsBar from '../components/PaymentsBar'
+import CartBar from '../components/CartBar'
 
 const CheckoutPage = ({match}) => {
 
@@ -19,6 +22,9 @@ const CheckoutPage = ({match}) => {
     let [deliveryAddress, setDeliveryAddress] = useState({})
 
     let [showPaymentWindow, setPaymentWindow] = useState(false)
+
+    // To disable to checkout btn once clicked on it
+    let [disabled, setDisabled] = useState(false)
 
     const history = useHistory()
 
@@ -203,6 +209,8 @@ const CheckoutPage = ({match}) => {
 
     // To place an order
     let checkout = async() =>{
+        setDisabled(true)
+        console.log('CLICKED CHECKOUT')
         let response = await fetch(`http://127.0.0.1:8000/api/checkout/`, {
             method:'POST',
             headers:{
@@ -232,104 +240,40 @@ const CheckoutPage = ({match}) => {
 
 
     return (
-        <div>
+        <div className='checkout-background'>
             <Header/>
-
-            <br/>
-            <hr/>
-
                 
-            <div className='row'>
+            <div className='checkout-row'>
                 
-                <div className='left'> TODO </div>
-
-                <div className='middle'>
-                    
+                <div className='checkout-left'>
                     {showPaymentWindow === false
-                    ?   <div>
-                            {addAddressForm
-                            ?   <div>
-                                    Save delivery address 
-                                    <form onSubmit={addAddress}>
-                                        <input type="text" name='area' placeholder='complete address' required/> <br/>
-                                        <input type="text" name='label' placeholder='Label (Ex: Home/Work)' required/> <br/>
-                                        <input type="submit" value={'Add'}/>
-                                    </form>
-                                </div>
-                            :   <div>
-                                    <div>
-                                    Delivery Address + Payment
-                                        <h2>Select Delivery Address</h2>
-                                        {address.map(address => (
-                                            <div key={address.id}>
-                                                <h3>{address.label}</h3>
-                                                <p>{address.area}</p>
-                                                <button onClick={() => {setDeliveryAddress(address); setPaymentWindow(true); }}>
-                                                    Deliver Here
-                                                </button><br/><br/>
-                                            </div>
-                                        ))}
-                                        <div>
-                                            <p>Add a new address</p>
-                                            <button onClick={() => setAddAddressForm(true)}>Add new</button>
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <h2> Payment </h2>
-                                    </div>
-                                    
-                                </div>
-                            }
-                        </div>
-                    :   <div>
-                            <div>
-                                <h2> Delivery Address ✅</h2>
-                                <h5> {deliveryAddress.label} </h5>
-                                <p> {deliveryAddress.area} </p>
-                                <button onClick={() => { setPaymentWindow(false); setDeliveryAddress({}) }} > Change </button>
-                            </div>
-                            <div>
-                                <h2> Payment Window </h2>
-                                <p> TODO: Add payment integration later. </p>
-                                {/*<button onClick={placeOrder}> Confirm Order </button>*/}
-                                <button onClick={checkout}> Checkout </button>
-                            </div>
-                            
-                        </div>
+                    ?   <AddressBar
+                            addAddressForm={addAddressForm}
+                            addAddress={addAddress}
+                            address={address}
+                            setDeliveryAddress={setDeliveryAddress}
+                            setPaymentWindow={setPaymentWindow}
+                            setAddAddressForm={setAddAddressForm}
+                        />
+                    :   <PaymentsBar
+                            deliveryAddress={deliveryAddress}
+                            checkout={checkout}
+                            disabled={disabled}
+                            setPaymentWindow={setPaymentWindow}
+                            setDeliveryAddress={setDeliveryAddress}
+                        />
                     }
-
-                    
-                    
-                    
                 </div>
 
                 
-
                 {/* To show cart summary */}
-                <div className='right'>
-                    <h2>CART</h2>
-                    {cartItems.map((cart) => (
-                        <div key={cart.id}>
-                            
-                            {cart.food.name}
-
-                            <button name='remove' onClick={ () => removeFromCart(cart.food) }> - </button>
-                            {cart.qty}  
-                            <button name='add' onClick={ () => addToCart(cart.food) }> + </button><br/>
-                            
-                            AMOUNT: {cart.amount}
-                            <br/><br/>
-                        </div>
-                    ))}
-                    {cartItems.length !== 0 
-                    ?   <div>
-                            <strong>TOTAL : {totalAmount}</strong> <br/>
-                        </div>
-                    :   <div>
-                            Cart empty
-                        </div>
-                    }
-                    
+                <div className='checkout-right'>
+                    <CartBar
+                        cartItems={cartItems}
+                        removeFromCart={removeFromCart}
+                        addToCart={addToCart}
+                        totalAmount={totalAmount}
+                    />
                 </div>
             
             </div>

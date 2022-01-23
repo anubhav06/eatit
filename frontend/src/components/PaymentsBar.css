@@ -1,0 +1,10 @@
+.testPayment-warning{
+  background-color: rgb(240, 240, 76);
+  width: 90%;
+  padding: 10px 15px 10px 15px;
+  font-size: 20px;
+  line-height: 80%;
+  border: 0.1px black solid;
+}
+
+

@@ -1,0 +1,63 @@
+.checkout-background{
+    background-color: rgb(231, 231, 231);
+}
+
+.checkout-row:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.checkout-row{
+    margin: 8rem 8rem 2rem 8rem;
+}
+
+  
+.checkout-left {
+    float: left;
+    width: 60%;
+    padding: 15px;
+    background-color: rgb(231, 231, 231);
+    margin: 10px;
+}
+
+.checkout-right{
+    float: left;
+    width: 35%;
+    padding: 15px;
+    background-color: white;
+    margin: 35px 10px 10px 10px;
+}
+  
+
+
+@media only screen and (max-width: 600px){
+    .checkout-left{
+      width: 95%;
+      padding: 0px;
+      margin: 10px 0px 10px 0px;
+    }
+    .checkout-right{
+      width: 95%;
+      padding: 0px;
+    }
+    .checkout-row{
+        margin: 8rem 1rem 2rem 0rem;
+    }
+    
+}
+
+
+@media (min-width:760px) and (max-width:1025px){
+    .checkout-left{
+        width: 100%;
+    }
+
+    .checkout-right{
+        width: 100%;
+    }
+    .checkout-row{
+        margin: 8rem 2rem 2rem 1rem;
+    }
+
+}
