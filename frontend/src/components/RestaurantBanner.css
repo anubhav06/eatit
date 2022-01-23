@@ -1,0 +1,80 @@
+
+
+
+.restaurant-banner::after{
+  content : "";
+  clear: both;
+  display: table;
+}
+
+.restaurant-banner{
+  background-color: rgb(5, 4, 37);
+  width: 100%;
+  height: 18rem;
+  margin-top: 4rem;
+  margin-bottom: 2rem;
+  color: white;
+}
+
+.banner-left{
+  float: left;
+  padding: 60px;
+  width: 40%;
+}
+
+.banner-right{
+  float: left;
+  padding: 60px 60px 60px 0px;
+  width: 60%;
+  margin-left: -5rem; 
+}
+
+.banner-image{
+  height: 170px;
+  width: 255px;
+  margin-left: 10rem;
+}
+
+.banner-heading{
+  font-size: 50px;
+}
+
+.banner-subheading{
+  font-size: 32px;
+  color: rgb(197, 197, 197);
+}
+
+
+@media only screen and (max-width: 600px){
+
+  .banner-image{
+    margin-left: 0px; 
+  }
+
+  .banner-left{
+    width: 100%;
+  }
+
+  .banner-right{
+    margin-top: -100px;
+    width: 100%;
+    margin-left: 5rem;
+  }
+
+  .restaurant-banner{
+    height: 28rem;
+  }
+
+}
+
+
+@media (min-width:750px) and (max-width:1025px){
+  .banner-image{
+    margin-left: -2rem;
+  }
+
+  .banner-right{
+    margin-left: 0rem;
+    padding: 60px 0px 60px 0px;
+  }
+}

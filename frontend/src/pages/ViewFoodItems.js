@@ -3,6 +3,10 @@ import { useHistory } from 'react-router-dom'
 import Header from '../components/Header'
 import AuthContext from '../context/AuthContext'
 import './ViewFoodItems.css'
+import FoodItem from '../components/FoodItem'
+import CartItems from '../components/CartItems'
+import RestaurantBanner from '../components/RestaurantBanner'
+import cookingImg from '../assets/CookingSVG.png'
 
 const ViewFoodItems = ({match}) => {
 
@@ -191,49 +195,31 @@ const ViewFoodItems = ({match}) => {
     return (
         <div>
             <Header/>
-
-            <br/>
-            <hr/>
-            {restaurantInfo.map(info => (
-                <div key={info.id}>
-                    <h2> {info.name} </h2>
-                    <h3> {info.address} </h3>
-                </div>
-            ))}
-            <hr/>
-            <br/><br/>
+            
+            <RestaurantBanner
+                restaurantInfo={restaurantInfo}
+            />
                 
             <div className='row'>
                 
-                <div className='left'> TODO </div>
+                <div className='left'> 
+                    <img src={cookingImg} className='cookingImg' />
+                    <p> Good food is foundation of genuine happiness </p>
+                </div>
 
                 <div className='middle'>
                     
                     {foodItems.map(food => ( 
-                        <div key={food.id} >
-                            
-                            Name: {food.name} <br/>
-                            Description: {food.description} <br/>
-                            Price: {food.price} <br/>
-                            <img src={`${food.image}`} alt='Food' height="150px"/> <br/>
-                        
-                            {cartItems.find(cart => cart.food.id === food.id) 
-                            // If food is already added in cart, then display buttons to increase/decrease the quantity 
-                            ?   <div key={food.id}>
-                                    <button name='remove' onClick={ () => removeFromCart(food) }> - </button>
-                                    {cartItems.find(cart => cart.food.id == food.id).qty}
-                                    <button name='add' onClick={ () => addToCart(food) }> + </button> <br/><br/><br/>
-                                </div> 
-                            // Else if item is not in cart, then display an add to cart button
-                            :   <div key={food.id}>
-                                    <button name='add' onClick={ () => addToCart(food)}> Add To Cart </button> <br/><br/><br/>
-                                </div>
-                            }  
-
-                        </div>  
+                        <FoodItem
+                            food={food}
+                            cartItems={cartItems}
+                            addToCart={addToCart}
+                            removeFromCart={removeFromCart}
+                        />
                     ))}
+                    <hr/>
 
-                    {foodItems.length === 0 ? <div> No items added by restaurant </div> : null}
+                    {foodItems.length === 0 ? <div className='noItemNotice'> ☹️ No food items added by this restaurant. <br/> Try visiting some other restaurant's page! </div> : null}
                     
                 </div>
 
@@ -241,30 +227,13 @@ const ViewFoodItems = ({match}) => {
 
                 {/* To show cart summary */}
                 <div className='right'>
-                    <h2>CART</h2>
-                    {cartItems.map((cart) => (
-                        <div key={cart.id}>
-                            
-                            {cart.food.name}
-
-                            <button name='remove' onClick={ () => removeFromCart(cart.food) }> - </button>
-                            {cart.qty}  
-                            <button name='add' onClick={ () => addToCart(cart.food) }> + </button><br/>
-                            
-                            AMOUNT: {cart.amount}
-                            <br/><br/>
-                        </div>
-                    ))}
-                    {cartItems.length !== 0 
-                    ?   <div>
-                            <strong>TOTAL : {totalAmount}</strong> <br/>
-                            <button onClick={() => history.push('/checkout')}> Checkout </button>
-                        </div>
-                    :   <div>
-                            Cart empty
-                        </div>
-                    }
-                    
+                    <CartItems
+                        cartItems={cartItems}
+                        addToCart={addToCart}
+                        removeFromCart={removeFromCart}
+                        totalAmount={totalAmount}
+                        history={history}
+                    />
                 </div>
             
             </div>

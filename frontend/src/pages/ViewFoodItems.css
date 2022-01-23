@@ -15,12 +15,69 @@
 }
 
   
-.left, .right {
+.left {
     float: left;
-    width: 25%;
+    width: 20%;
+    padding: 100px;
+}
+
+.right{
+    float: left;
+    width: 30%;
 }
   
 .middle {
     float: left;
     width: 50%;
+    
+}
+
+.cookingImg{
+    width: 80px;
+    color: grey;
+    height: auto;
+}
+
+
+.noItemNotice{
+    font-size: 40px;
+}
+
+@media only screen and (max-width: 600px){
+    .left{
+      display: none;
+    }
+    .middle{
+      width: 100%;
+    }
+    .right{
+      width: 100%;
+    }
+
+    .noItemNotice{
+        font-size: 20px;
+        margin-left: 1rem;
+    }
+    
+}
+
+
+@media (min-width:760px) and (max-width:1025px){
+    .left{
+        display: none;
+    }
+
+    .middle{
+        width: 60%;
+    }
+
+    .right{
+        width: 40%;
+    }
+
+    .noItemNotice{
+        font-size: 30px;
+        padding: 15px;
+    }
+
 }

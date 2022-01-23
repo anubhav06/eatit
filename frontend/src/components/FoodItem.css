@@ -1,0 +1,104 @@
+
+
+.item-container{
+  width: 80%;
+  margin: 10px;
+  background-color:rgb(235, 235, 235);
+}
+
+.item-container::after{
+  content : "";
+  clear: both;
+  display: table;
+}
+
+.item-left{
+  float: left;
+  padding: 15px;
+  width: 60%;
+}
+
+.item-right{
+  float: left;
+  padding: 15px;
+  width: 40%;
+}
+
+.item-name{
+  font-size: 30px;
+}
+
+.item-description{
+  font-size: 25px;
+  color: grey;
+}
+
+.item-price{
+  font-size: 25px;
+}
+
+.item-image{
+  height: 125px;
+  width: 180px;
+  margin-bottom: -30px;
+}
+
+.item-addToCart{
+  background-color: white;
+  height: 30px;
+  width: 60px;
+  position: absolute;
+  margin-left: 60px;
+  padding: 0px;
+  border: 0.1px solid grey;
+  font-size: 20px;
+  color: green;
+}
+
+.item-cartBtn{
+  width: 22px;
+  margin: 0px;
+  height: 80%;
+  color: green;
+  background-color: white;
+  font-size: 25px;
+  font-weight: bold;
+  border: 0px;
+}
+
+.item-cartInfo{
+  display: inline;
+  font-size: 20px;
+}
+
+@media only screen and (max-width: 600px){
+
+  .item-left{
+    width: 100%;
+  }  
+
+  .item-right{
+    width: 100%;
+    margin-bottom: 30px;
+  }
+
+  .item-image{
+    margin-top: -20px;
+  }
+
+}
+
+
+@media (min-width:750px) and (max-width:1025px){
+  .item-container{
+    width: 90%;
+  }
+
+  .item-left{
+    width: 50%;
+  }
+
+  .item-right{
+    width: 50%;
+  }
+}
