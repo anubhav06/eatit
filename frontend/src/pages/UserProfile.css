@@ -1,0 +1,24 @@
+.user-info{
+    background-color: rgb(62, 149, 184);
+    padding: 15px 15px 15px 100px;
+    margin-top: 5rem;
+    color: white;
+}
+
+.user-name{
+    font-size: 50px;
+    font-weight: bold;
+    margin-bottom: -15px;
+}
+
+.user-mail{
+    font-size: 28px;
+}
+
+
+@media only screen and (max-width: 600px){
+    .user-info{
+        padding-left: 30px;
+    }
+
+}

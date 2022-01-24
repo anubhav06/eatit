@@ -1,0 +1,149 @@
+
+
+.orders-container{
+  width: 100%;
+  margin: 10px 0px 10px 0px;
+  background-color:rgb(207, 202, 202);
+}
+
+.orders-container::after{
+  content : "";
+  clear: both;
+  display: table;
+}
+
+.order-container-left{
+  float: left;
+  width: 20%;
+  padding: 100px;
+}
+
+.order-container-right{
+  float: left;
+  width: 80%;
+  padding: 15px;
+}
+
+.order-img{
+  width: 100px;
+  height: auto;
+}
+
+.orders-row::after{
+  content : "";
+  clear: both;
+  display: table;
+}
+
+.orders-row{
+  background-color: white;
+  width: 75%;
+  margin: 10px 100px 10px 100px;
+}
+
+.orders-row-left{
+  float: left;
+  padding: 15px;
+  width: 40%;
+}
+
+.orders-row-right{
+  float: left;
+  padding: 15px 15px 15px 50px;
+  width: 60%;
+}
+
+
+.order-status{
+  border: 1px solid black;
+  padding: 10px;
+  font-size: 20px;
+}
+
+.order-address{
+  margin: 10px;
+}
+
+.order-address-heading{
+  font-size: 26px;
+  font-weight: bold;
+  margin-bottom: -10px;
+}
+
+.order-address-arrow{
+  font-weight: bold;
+  font-size: 25px;
+  margin-bottom: -10px;
+}
+
+.order-address-subheading{
+  font-size: 20px;
+}
+
+
+.order-details-heading{
+    font-size: 32px;
+    font-weight: bold;
+}
+
+.order-details{
+  font-size: 24px;
+  width: 75%;
+}
+
+.order-details::after{
+  content : "";
+  clear: both;
+  display: table;
+}
+
+.order-details-left{
+  float: left;
+  padding: 15px;
+  width: 70%;
+  font-weight: bold;
+}
+
+.order-details-right{
+  float: left;
+  padding: 15px;
+  width: 30%;
+}
+
+@media only screen and (max-width: 600px){
+    .order-container-left{
+      display: none;
+    }
+
+    .orders-row{
+      width: 100%;
+      margin: 10px 0px 10px 0px;
+    }
+    .order-container-right{
+      width: 100%;
+      padding: 15px;
+    }
+
+    .orders-row-right{
+      padding: 15px 15px 15px 15px;
+      width: 60%;
+    }
+
+}
+
+
+@media (min-width:760px) and (max-width:1025px){
+  .order-container-left{
+    display: none;
+  }
+
+  .orders-row{
+    width: 100%;
+    margin: 10px 0px 10px 0px;
+  }
+
+  .orders-container-right{
+    width: 100%;
+  }
+
+}

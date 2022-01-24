@@ -2,7 +2,8 @@ import React, {useState, useEffect, useContext, setState} from 'react'
 import { useHistory } from 'react-router-dom'
 import Header from '../components/Header'
 import AuthContext from '../context/AuthContext'
-import './ViewFoodItems.css'
+import './UserProfile.css'
+import OrdersPage from '../components/OrdersPage'
 
 const UserProfile = ({match}) => {
 
@@ -63,52 +64,16 @@ const UserProfile = ({match}) => {
 
 
 
-
-
     return (
         <div>
             <Header/>
-            <div>
-                <p> {userInfo.email} </p>
-                <p> {userInfo.username} </p>
+            <div className='user-info'>
+                <p className='user-name'> {userInfo.username} </p>
+                <p className='user-mail'> {userInfo.email} </p>
             </div>
-            <hr/>
-            <div>
-                {orders.map(order => (
-                    <div key={order.id}>
-                        {order.active == true 
-                        ?   <div>
-                                🍽️ Your order has been placed
-                            </div>
-                        :   <div>
-                                ✅Order delivered successfully
-                            </div>
-                        }
-                        <div>
-                            <p>{order.date.split("-")[2]}-{order.date.split("-")[1]}-{order.date.split("-")[0]}</p>
-                            <p>{order.time.split(":")[0]}:{order.time.split(":")[1]}</p>
-                        </div>
-                        <div>
-                            <h2> {order.restaurant.name} </h2>
-                            <p> {order.restaurant.address} </p>
-                        </div>
-                        <div>
-                            | <br/> | <br/> 
-                            <h2> {order.address.label} </h2>
-                            <p> {order.address.area} </p>
-                        </div>
-                        <div>
-                            {order.cart.length} items
-                            {order.cart.map( cart => (
-                                <div key={cart.id}>
-                                    {cart.food.name} x {cart.qty} ----- {cart.amount}
-                                </div>
-                            ))}
-                            BILL TOTAL: {order.cart[0]?.totalAmount}
-                        </div>
-                    </div>
-                ))} 
-            </div>
+            <OrdersPage
+                orders={orders}
+            />
         </div>
     )
 }
