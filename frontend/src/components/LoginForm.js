@@ -30,7 +30,7 @@ const LoginForm = ({loginUser, loginCustomUser, phoneNo, userForm, mobileForm, v
                         <div>
                             <div className='form-header'> Login Form </div>
                             <form onSubmit={submitPhoneNumber}>
-                                <input type="number" name="number" placeholder='Enter Number' className='form-input' required /> <br/>
+                                <input type="number" name="number" placeholder='Enter mobile number' className='form-input' required /> <br/>
                                 <input type="submit" value={'Send OTP'} className='form-submit-btn'/>
                             </form>
                         </div>
@@ -40,7 +40,7 @@ const LoginForm = ({loginUser, loginCustomUser, phoneNo, userForm, mobileForm, v
                     {verificationForm === true ?
                         <form onSubmit={loginCustomUser}>
                             <input type="number" name="number" value={phoneNo} disabled className='form-input'/>
-                            <input type="number" name="code" placeholder='Enter verification Code' className='form-input'/>  
+                            <input type="number" name="code" placeholder='Enter verification Code' className='form-input'/> <br/> 
                             <input type="submit" className='form-submit-btn'/>
                         </form>
                     : (null)}
@@ -59,8 +59,9 @@ const LoginForm = ({loginUser, loginCustomUser, phoneNo, userForm, mobileForm, v
             </div>
             
             <div className='form-column-right'>
-                TODO: ADD ABOUT EATIN HERE <br/><br/><br/><br/>
-                blah blah blah . . . 
+                <p className='formRight-heading'> EATIN </p>
+                <p className='formRight-subHeading'> <span id='spin'/> </p>
+                <p className='formRight-subHeading2'> Order food from your favourite restaurants. </p>
             </div>
         </div>
 

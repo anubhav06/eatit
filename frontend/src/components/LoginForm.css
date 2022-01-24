@@ -9,23 +9,34 @@
     display: table; 
 }
 
+.row{
+    background-color: rgb(223, 223, 223);
+}
+
 .form-column-left {
   float: left;
   padding: 15px;
   width: 50%;
   font-size: 24px;
   margin-top: 5rem;
+  background-color: rgb(216, 216, 216);
+  background-image: url('../assets/LoginImg2.png');
 }
 
 .form-column-right {
     float: left;
-    padding: 15px;
+    padding: 15px 15px 17rem 5rem;
     width: 50%;
     font-size: 24px;
+    margin-top: 5rem;
+    background-image: url('../assets/LoginImg.png');
+    filter: grayscale(20%);
 }
 
+
 .form-background{
-    border: 2px solid darkolivegreen;
+    border: 5px solid rgb(0, 0, 0);
+    background-color: rgb(231, 231, 231);
     height: 35rem;
     max-width: 80%;
     margin: 1rem 5rem 0rem 5rem;
@@ -54,6 +65,42 @@
     color: white;
     border-radius: 5px;
     font-weight: bold;
+}
+
+
+.formRight-heading{
+    font-size: 80px;
+    font-weight: bold;
+    margin-top: 5rem;
+    color: white;
+}
+
+.formRight-subHeading{
+    font-size: 50px;
+    font-weight: bold;
+    color: whitesmoke;
+}
+
+.formRight-subHeading2{
+    font-size: 35px;
+    color: rgb(187, 187, 187);
+}
+
+#spin {
+    color:white;
+}
+#spin::after {
+    content:"";
+    animation: spin 15s linear infinite;
+}
+
+@keyframes spin {
+    0% { content:"Hungry? ";}
+    20% { content:"Unexpected Guests ?";}
+    40% { content:"Movie marathon ?";}
+    60% { content:"Game Night ?";}
+    80% { content:"Late Night at office ?";}
+    100% { content:"Hungry?";}
 }
 
 @media only screen and (max-width: 1000px){

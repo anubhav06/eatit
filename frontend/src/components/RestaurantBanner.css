@@ -58,7 +58,8 @@
   .banner-right{
     margin-top: -100px;
     width: 100%;
-    margin-left: 5rem;
+    margin-left: 0rem;
+    padding-left: 4rem;
   }
 
   .restaurant-banner{

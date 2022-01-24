@@ -83,6 +83,7 @@
 
 @media only screen and (max-width: 600px){
     .cart-container{
-      margin-left: 20px;
+      margin-left: 0px;
+      width: 90%;
     }
 }

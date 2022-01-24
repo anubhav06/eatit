@@ -58,8 +58,9 @@ const RegisterForm = ({registerUser,phoneNo, mainForm, phoneForm, phoneVerificat
             </div>
             
             <div className='form-column-right'>
-                TODO: ADD ABOUT EATIN HERE <br/><br/><br/><br/>
-                blah blah blah . . . 
+                <p className='formRight-heading'> EATIN </p>
+                <p className='formRight-subHeading'> Hungry? Unexpected guests ? </p>
+                <p className='formRight-subHeading2'> Order food from your favourite restaurants. </p>
             </div>
         </div>
 
