@@ -1,0 +1,72 @@
+.restaurants-form-background{
+    border: 5px solid rgb(0, 0, 0);
+    background-color: rgb(231, 231, 231);
+    max-width: 80%;
+    margin: 1rem 5rem 0rem 5rem;
+    padding: 25px;
+}
+
+.restaurants-form-column-left {
+    float: left;
+    padding: 15px;
+    width: 50%;
+    font-size: 24px;
+    margin-top: 5rem;
+    background-color: rgb(216, 216, 216);
+    background-image: url('../../assets/LoginImg2.png'); 
+    background-size: cover;
+}
+
+
+.restaurants-form-column-right {
+    float: left;
+    padding: 15px 15px 17rem 5rem;
+    width: 50%;
+    font-size: 24px;
+    margin-top: 5rem;
+    background-image: url('../../assets/LoginImg.png');
+    filter: grayscale(20%);
+}
+
+.form-file-input-label{
+    font-size: 28px;
+    margin-bottom: -10px;
+    padding-left: 10px;
+}
+
+.form-file-input{
+    width: 100%;
+    padding: 5px;
+    font-size: 18px;
+    margin: 5px 0px 10px 0px;
+}
+
+
+@media only screen and (max-width: 1000px){
+    .restaurants-form-column-right{
+        display: none;
+    }
+
+    .restaurants-form-column-left{
+        width: 100%;
+    }
+    
+    .restaurants-form-background{
+        width: 100%;
+    }
+}
+
+@media only screen and (max-width: 600px){
+    .restaurants-form-column-right{
+        display: none;
+    }
+
+    .restaurants-form-column-left{
+        width: 100%;
+    }
+
+    .restaurants-form-background{
+        max-width: 100%;
+        margin: 1rem 2rem 0rem 0rem;
+    }
+}

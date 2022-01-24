@@ -2,7 +2,8 @@ import React, {useContext} from 'react'
 import RestaurantAuthContext from '../context/RestaurantAuthContext'
 import RestaurantHeader from '../components/RestaurantHeader'
 import { Redirect } from 'react-router'
-
+import '../../components/LoginForm.css'
+import './RestaurantLoginPage.css'
 
 const RestaurantRegisterPage = () => {
 
@@ -23,16 +24,31 @@ const RestaurantRegisterPage = () => {
     return (
         <div>
             <RestaurantHeader/>
-            <form onSubmit={registerRestaurant}>
-                <input type="text" name="email" placeholder="Enter Email" required /> <br/>
-                <input type="password" name="password" placeholder="Enter Password" required/> <br/>
-                <input type="password" name="confirmPassword" placeholder="Enter Password Again" required/> <br/>
-                <input type="text" name="name" placeholder="Enter Restaurant Name" required/> <br/>
-                <input type="text" name="address" placeholder="Enter Restaurant Address" required/> <br/>
-                <input type="file" accept="image/x-png,image/jpeg,image/jpg" name="image" placeholder="Main page food Image" required/> <br/>
+            <div className='row'>
+
+                <div className='restaurants-form-column-left'>
+                    <div className='restaurants-form-background'>
+                        <div className='form-header'> Registration Form </div>
+                        <form onSubmit={registerRestaurant}>
+                            <input type="text" name="email" placeholder="Enter Email" required className='form-input'/> 
+                            <input type="password" name="password" placeholder="Enter Password" required className='form-input'/>
+                            <input type="password" name="confirmPassword" placeholder="Enter Password Again" required className='form-input'/> 
+                            <input type="text" name="name" placeholder="Enter Restaurant Name" required className='form-input'/>
+                            <input type="text" name="address" placeholder="Enter Restaurant Address" required className='form-input'/>
+                            <div className='form-file-input-label'> Upload a restaurant image to be shown on main page </div>
+                            <input type="file" accept="image/x-png,image/jpeg,image/jpg" name="image" placeholder="Main page food Image" required className='form-file-input'/> <br/>
+                            
+                            <input type="submit" className='form-submit-btn'/>
+                        </form>
+                    </div>
                 
-                <input type="submit"/>
-            </form>
+                </div>
+                <div className='restaurants-form-column-right'>    
+                    <p className='formRight-heading'> EATIN </p>
+                    <p className='formRight-subHeading'> Partner with us by filling the form</p>
+                    <p className='formRight-subHeading2'> EATIN offers an easy onboarding process </p>
+                </div>
+            </div>
         </div>
     )
 }
