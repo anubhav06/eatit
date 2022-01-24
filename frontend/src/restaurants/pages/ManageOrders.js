@@ -2,7 +2,12 @@ import React, {useState, useEffect, useContext} from 'react'
 import { Redirect } from 'react-router'
 import RestaurantAuthContext from '../context/RestaurantAuthContext'
 import RestaurantHeader from '../components/RestaurantHeader'
+import RestaurantOrderPage from '../components/RestaurantOrdersPage'
 
+import '../../components/OrdersPage.css'
+import orderImage from '../../assets/Delivery.png'
+import './ManageOrders.css'
+import '../../pages/UserProfile.css'
 
 const ManageOrders = () => {
 
@@ -74,68 +79,33 @@ const ManageOrders = () => {
     return (
         <div>
             <RestaurantHeader/>
-            <p> Welcome restaurant! NAME: {restaurant.username} GROUP:{restaurant.group}</p>
-            <p>You are logged to the home page!</p>
-            <br/><br/>
-            <p> Your active orders will show here </p>
+            <div className='user-info'>
+                
+                <p className='user-name'> {restaurant.username} </p>
+                <p className='user-mail'> Your orders will show here </p>
 
-            
-            <h2> Active Orders </h2>
-            {orders.map(order => (
-                <div key={order.id}>
-                    {order.active === true 
-                    ?   <div>
-                            <div>
-                                <p>{order.date.split("-")[2]}-{order.date.split("-")[1]}-{order.date.split("-")[0]}</p>
-                                <p>{order.time.split(":")[0]}:{order.time.split(":")[1]}</p>
-                            </div>
-                            <div>
-                                Delivery Address:
-                                <p> {order.address.area} </p>
-                            </div>
-                            <div>
-                                {order.cart.length} items
-                                {order.cart.map( cart => (
-                                    <div key={cart.id}>
-                                        {cart.food.name} x {cart.qty} ----- {cart.amount}
-                                    </div>
-                                ))}
-                                BILL TOTAL: {order.cart[0]?.totalAmount}
-                            </div>
-                            <button onClick={() => updateOrder(order.id)}> Mark as delivered </button>
-                    </div>
-                    : (null) }
+            </div>
+            <div className='orders-container'>
+                <div className='order-container-left'>
+                    <img src={orderImage} className='order-img' />
+                    The joy of getting best
                 </div>
-            ))}
-
-
-            <h2> Completed Orders (Inactive) </h2>
-            {orders.map(order => (
-                <div key={order.id}>
-                    {order.active == false
-                    ?   <div>
-                            <div>
-                                <p>{order.date.split("-")[2]}-{order.date.split("-")[1]}-{order.date.split("-")[0]}</p>
-                                <p>{order.time.split(":")[0]}:{order.time.split(":")[1]}</p>
-                            </div>
-                            <div>
-                                Delivery Address:
-                                <p> {order.address.area} </p>
-                            </div>
-                            <div>
-                                {order.cart.length} items
-                                {order.cart.map( cart => (
-                                    <div key={cart.id}>
-                                        {cart.food.name} x {cart.qty} ----- {cart.amount}
-                                    </div>
-                                ))}
-                                BILL TOTAL: {order.cart[0]?.totalAmount}
-                            </div>
-                    </div>
-                    : (null) }
+                <div className='order-container-right'>
+                    <p className='active-order'> ACTIVE ORDERS </p>
+                    <RestaurantOrderPage
+                        orders={orders}
+                        updateOrder={updateOrder}
+                        showBtn={true}
+                    />
+                    <br/><hr/><br/>
+                    <p className='inactive-order'> COMPLETED ORDERS (Inactive) </p>
+                    <RestaurantOrderPage
+                        orders={orders}
+                        updateOrder={updateOrder}
+                        showBtn={false}
+                    />
                 </div>
-            ))}
-
+            </div>
             
         </div>
     )

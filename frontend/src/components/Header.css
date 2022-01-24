@@ -4,7 +4,7 @@
 .Header {
     position: fixed;
     top: 0; /* Stick it to the top */
-    max-height: 70px;
+    max-height: 110px;
     width: 100vw;
   
     display: grid;
@@ -24,7 +24,7 @@
   .Nav {
     display: grid;
     grid-area: nav;
-    grid-template-columns: repeat(4, auto);
+    grid-template-columns: repeat(5, auto);
     align-items: center;
     justify-items: center;
   }

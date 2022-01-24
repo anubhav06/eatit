@@ -1,0 +1,48 @@
+.active-order{
+    font-size: 30px;
+    font-weight: bold;
+    background-color: rgb(173, 152, 56);
+    border: 1px white solid;
+    color: white;
+    max-width: 30%;
+    padding: 5px 0px 5px 25px;
+    margin-left: 75px;
+}
+
+.inactive-order{
+    font-size: 30px;
+    font-weight: bold;
+    background-color: rgb(32, 97, 122);
+    border: 1px white solid;
+    color: white;
+    max-width: 30%;
+    padding: 5px 0px 5px 25px;
+    margin-left: 75px;
+}
+
+
+@media only screen and (max-width: 600px){
+    .active-order{
+        max-width: 100%;
+        margin-left: 0px;
+    }
+    .inactive-order{
+        max-width: 100%;
+        margin-left: 0px;
+    }
+    
+}
+
+
+
+@media (min-width:760px) and (max-width:1025px){
+    .active-order{
+        max-width: 100%;
+        margin-left: 0px;
+    }
+    .inactive-order{
+        max-width: 100%;
+        margin-left: 0px;
+    }
+
+}

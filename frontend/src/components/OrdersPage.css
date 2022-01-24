@@ -110,6 +110,14 @@
   width: 30%;
 }
 
+.restaurant-orderDeliverBtn{
+  background-color: green;
+  color: white;
+  border: 2px green solid;
+  padding: 5px 10px 5px 10px;
+  font-size: 25px;
+}
+
 @media only screen and (max-width: 600px){
     .order-container-left{
       display: none;

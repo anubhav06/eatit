@@ -52,8 +52,7 @@ const RestaurantHeader = () => {
                 {restaurant 
                 ?   <nav className='Nav'>
                         {/* If user is logged in */}
-                        <a href="/restaurants" className='link'>Home</a>
-                        <a href='/my-account' className='link'> {restaurant.username} </a>
+                        <a href="/partner-with-us/orders" className='link'>Home</a>
                         <a href="/partner-with-us/manage-food-items" className='link'> Manage Food Items </a>
                         <a href="/partner-with-us/add-food-item" className='link'> Add Food Item </a>
                         <a href="/partner-with-us/account-setup" className='link'> Account Setup </a>
