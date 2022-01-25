@@ -42,7 +42,7 @@ const StripeRefreshUrlPage = () => {
     
     return(
         <div>
-            You are lost 🔎
+            🔎🔎🔎 You are lost 🔎🔎🔎
         </div>
     )
 }

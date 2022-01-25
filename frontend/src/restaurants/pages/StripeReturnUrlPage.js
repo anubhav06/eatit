@@ -50,15 +50,18 @@ const StripeReturnUrlPage = () => {
     return (
         <div>
             {returnURLData === true
-            ?   <div>
+            ?   <div className='account-setup-center'>
                     STRIPE ONBOARDING PROCESS COMPLETED <br/>
                     YOUR ACCOUNT IS NOW SETUP <br/>
                     SIT BACK AND RELAX WHILE ANY PURCHASE AUTOMATICALLY COMES TO YOUR ACCOUNT <br/>
-                    <button onClick={returnToAccountSetup}> Go back to Account Setup </button>
+                    <button onClick={returnToAccountSetup} className='account-setup-btn2'> Click here to go back to Account Setup </button>
                 </div>
-            :   <div>
+            :   <div className='incompleteAccount-setup-center'>
                     STRIPE ONBORADING PROCESS WAS NOT COMPLETED ⚠️ <br/>
-                    <button onClick={returnToAccountSetup}> Go back to Account Setup </button>
+                    <div className='accountSetup-warning'>
+                        NOTE: If you have already provided all the details, then please wait for 2-5 minutes for stripe to verify and update the status.
+                    </div>
+                    <button onClick={returnToAccountSetup} className='account-setup-btn2'> Click here to go back to Account Setup </button>
                 </div>
             }
         </div>

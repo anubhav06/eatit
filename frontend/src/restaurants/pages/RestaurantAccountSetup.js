@@ -1,12 +1,14 @@
 import React, {useContext, useEffect, useState} from 'react'
 import RestaurantAuthContext from '../context/RestaurantAuthContext'
 import RestaurantHeader from '../components/RestaurantHeader'
-
-
+import './RestaurantsAccountSetup.css'
+import bankIcon from '../../assets/bankIcon.png'
+import '../../pages/UserProfile.css'
+import { Link } from 'react-router-dom'
 
 const RestaurantAccountSetup = () => {
 
-    let {restaurantAuthTokens} = useContext(RestaurantAuthContext)
+    let {restaurant, restaurantAuthTokens} = useContext(RestaurantAuthContext)
     let [accountStatus, setAccountStatus] = useState({})
 
     useEffect(() => {
@@ -42,7 +44,6 @@ const RestaurantAccountSetup = () => {
         }
 
         getAccountInfo()
-    
 
     }, [])
 
@@ -104,35 +105,69 @@ const RestaurantAccountSetup = () => {
         }
     }
     
+    console.log('account status: ', accountStatus)
 
     return (
         <div>
             <RestaurantHeader/>
 
-            <h2> Account Setup Page</h2>
+            <div className='user-info'>
+                <p className='user-name'> {restaurant.username} </p>
+                <p className='user-mail'> Account Setup Page </p>
+            </div>
 
             {accountStatus === 'NotCreated' 
-            ?    <div>
-                    Setup payments using Stripe. <br/>
-                    Recieve direct payments from costumers securely through Stripe <br/>
-                    The payment process is securely handled via Stripe thus we store none of your bank account details <br/><br/>
-                    <button onClick={createStripeAccount}> Click here to continue </button>
+            ?   <div> 
+                    <div className='newAccount-setup-center'>
+                        <img src={bankIcon} className='bank-image' /> <br/>
+                        <h2>Setup payouts to list on EATIN.</h2> 
+                        EATIN partners with Stripe to transfer earnings to your (test) bank account. <br/>
+                        All payments are directly transfered to your account after deducting applicable fees <br/>
+                        <button className='account-setup-btn' onClick={createStripeAccount}> Click here to continue </button>
+                        <p className='redirect-text'> You'll be redirected to Stripe to complete the onboarding proces.</p>
+                        <div className='accountSetup-warning'>
+                            NOTE: A test US account will be created with stripe. No real payments will be processed <br/>
+                            Certain test data needs to be entered to trigger the verification. The required data is given below
+                        </div>
+                    </div>
+                    <div className='test-section'>
+                        <p className='test-heading'> Section 1: Stripe Sign Up</p>
+                        <p className='test-details'> Sign up on stripe with your genuine credentials i.e. email, password, and mobile number</p>
+                        <p className='test-heading'> Section 2: Tell us about your business </p>
+                        <p className='test-details'> Address Line 1: address_full_match </p>
+                        <p className='test-details'> City, State, ZIP: any United States address <br/> EXAMPLE- State:Alabama, City:Montgomery, ZIP:35005 </p>
+                        <p className='test-heading'> Section 3: Personal Details </p>
+                        <p className='test-details'> Name, Email: [any example value] <br/> DOB: 01/01/1901 <br/> Phone: 0000000000 <br/> SSN: 000-00-0000</p>
+                        <p className='test-heading'> Section 4: Business details </p>
+                        <p className='test-details'> Industry: Software <br/> Website: https://github.com/anubhav06/eatit <br/> Desc: test stripe account for eatin </p>
+                        <p className='test-heading'> Section 5: Customer support details</p>
+                        <p className='test-details'> Statement descriptor: [your restaurant name] </p>
+                    </div>
                 </div> 
             : (null)}
 
 
             {accountStatus === 'NotCompleted'
-            ?   <div>
-                    Account Created but all details not provided <br/>
-                    <button onClick={completeStripeAccount}> Continue to Add details  </button>
+            ?   <div className='incompleteAccount-setup-center'>
+                    <img src={bankIcon} className='bank-image' /> <br/>
+                    Stripe account created but all details are not provided <br/>
+                    <button onClick={completeStripeAccount} className='account-setup-btn'> Continue to Add details  </button>
+                    <p className='redirect-text'> You'll be redirected to Stripe to complete the onboarding proces.</p>
+                    <div className='accountSetup-warning'>
+                        NOTE: If you have already provided all the details, then please wait for 2-5 minutes for stripe to verify and update the status.
+                    </div>
                 </div>
             : (null)}
 
 
             {accountStatus === 'Completed'
-            ?   <div>
-                    You have completed seting up you account with Stripe. <br/>
-                    Now you can directly login with stripe to monitor your payments
+            ?   <div className='account-setup-center'>
+                    <img src={bankIcon} className='bank-image' /> <br/>
+                    You have completed setting up your account with Stripe. <br/>
+                    Now you can directly login with stripe to monitor your payments <br/>
+                    <form action='https://stripe.com/'>  
+                        <button className='account-setup-btn'> Take me to stripe →  </button>
+                    </form>
                 </div>
             : (null)}
             
