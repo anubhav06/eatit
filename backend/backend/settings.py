@@ -24,10 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/3.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-ifo8u$qv@&7z7b%u5&^p$lci6@7a(j^x61p7pw8#zi15v66!&6'
+SECRET_KEY = config('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG')
 
 ALLOWED_HOSTS = []
 
@@ -204,6 +204,14 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # List of allowed origins to make an API request    
 # https://github.com/adamchainz/django-cors-headers#configuration
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:8000",
+    #"http://localhost:3000",
+    #"http://127.0.0.1:8000",
+    'https://eatit-anubhav06.vercel.app:3000',
+    'https://eatin-django.herokuapp.com:8000',
 ]
+
+
+# https://github.com/heroku/django-heroku/issues/39
+if 'I_AM_HEROKU' in os.environ:
+    import django_heroku
+    django_heroku.settings(locals())
