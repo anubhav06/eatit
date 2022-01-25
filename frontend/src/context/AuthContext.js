@@ -132,7 +132,6 @@ export const AuthProvider = ({children}) => {
         setAuthTokens(null)
         setUser(null)
         localStorage.removeItem('authTokens')
-        //history.push('/login')
     }
 
 
@@ -155,7 +154,7 @@ export const AuthProvider = ({children}) => {
         if(response.status === 200){
             console.log('Registered Successfully')
             alert(data)
-            history.push('/restaurants')
+            history.push('/login')
         }else{
             console.log(data)
             alert(data)

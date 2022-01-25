@@ -53,7 +53,7 @@ export const RestaurantAuthProvider = ({children}) => {
             // Set the authTokens in the local storage
             localStorage.setItem('restaurantAuthTokens', JSON.stringify(data))
             // Redirect restaurant to home page
-            //history.push('/partner-with-us')
+            history.push('/partner-with-us/orders')
         }else{
             alert('Something went wrong!')
         }
@@ -114,7 +114,7 @@ export const RestaurantAuthProvider = ({children}) => {
         })
         .then(response => {
           alert(response.data);
-          history.push('/restaurants')
+          history.push('/partner-with-us/login')
         })
         .catch(error => alert(error))
 

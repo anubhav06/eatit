@@ -35,12 +35,12 @@ function App() {
           <Route component={LoginPage} path="/login"/>
           <Route component={RegisterPage} path="/register"/>
           <Route component={LandingPage} path="/" exact />
-          <Route component={UserProfile} path="/my-account"  exact />
           <Route component={HomePage} path="/restaurants" exact/>
-          <Route component={ViewFoodItems} path="/restaurants/:id" exact/>
-          <Route component={CheckoutPage} path='/checkout' exact />
-          <Route component={CheckoutSuccessPage} path='/checkout/success' exact />
-          <Route component={CheckoutCancelPage} path='/checkout/cancel' exact />
+          <PrivateRoute component={UserProfile} path="/my-account"  exact />
+          <PrivateRoute component={ViewFoodItems} path="/restaurants/:id" exact/>
+          <PrivateRoute component={CheckoutPage} path='/checkout' exact />
+          <PrivateRoute component={CheckoutSuccessPage} path='/checkout/success' exact />
+          <PrivateRoute component={CheckoutCancelPage} path='/checkout/cancel' exact />
         </AuthProvider>
 
         <RestaurantAuthProvider>
