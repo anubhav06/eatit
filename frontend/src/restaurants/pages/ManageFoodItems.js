@@ -17,7 +17,7 @@ const ManageFoodItems = () => {
         
         // To fetch the notes of a user
         let getFoodItems = async() =>{
-            let response = await fetch('/partner-with-us/manage-food-items/', {
+            let response = await fetch('https://eatin-django.herokuapp.com/partner-with-us/manage-food-items/', {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',

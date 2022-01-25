@@ -18,7 +18,7 @@ const HomePage = () => {
         
         // To fetch all the restaurants
         let getRestaurants = async() =>{
-            let response = await fetch('/api/restaurants/', {
+            let response = await fetch('https://eatin-django.herokuapp.com/api/restaurants/', {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',

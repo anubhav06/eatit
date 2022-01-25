@@ -14,7 +14,7 @@ const StripeReturnUrlPage = () => {
         
         // To get the stripe refresh url
         let getStripeReturnURL = async() =>{
-            let response = await fetch(`/partner-with-us/create-stripe-account/return-url/`, {
+            let response = await fetch(`https://eatin-django.herokuapp.com/partner-with-us/create-stripe-account/return-url/`, {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',

@@ -34,7 +34,7 @@ const CheckoutPage = ({match}) => {
 
         // To get the cart items of the logged in user (all the food items added to the user's cart)
         let getCartItems = async() =>{
-            let response = await fetch(`/api/get-cart-items/`, {
+            let response = await fetch(`https://eatin-django.herokuapp.com/api/get-cart-items/`, {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
@@ -62,7 +62,7 @@ const CheckoutPage = ({match}) => {
 
         // To get all the added address of a user
         let getAddress = async() =>{
-            let response = await fetch(`/api/get-address/`, {
+            let response = await fetch(`https://eatin-django.herokuapp.com/api/get-address/`, {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
@@ -93,7 +93,7 @@ const CheckoutPage = ({match}) => {
 
     // To add an item to cart
     let addToCart = async(food) =>{
-        let response = await fetch(`/api/add-to-cart/${food.id}`, {
+        let response = await fetch(`https://eatin-django.herokuapp.com/api/add-to-cart/${food.id}`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -135,7 +135,7 @@ const CheckoutPage = ({match}) => {
 
      // To remove an item from cart
      let removeFromCart = async(food) =>{
-        let response = await fetch(`/api/remove-from-cart/${food.id}`, {
+        let response = await fetch(`https://eatin-django.herokuapp.com/api/remove-from-cart/${food.id}`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -180,7 +180,7 @@ const CheckoutPage = ({match}) => {
     let addAddress = async(e) =>{
         e.preventDefault()
 
-        let response = await fetch(`/api/add-address/`, {
+        let response = await fetch(`https://eatin-django.herokuapp.com/api/add-address/`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -211,7 +211,7 @@ const CheckoutPage = ({match}) => {
     let checkout = async() =>{
         setDisabled(true)
         //console.log('CLICKED CHECKOUT')
-        let response = await fetch(`/api/checkout/`, {
+        let response = await fetch(`https://eatin-django.herokuapp.com/api/checkout/`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json',

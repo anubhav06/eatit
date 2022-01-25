@@ -18,7 +18,7 @@ const UserProfile = ({match}) => {
         
         // To get the cart items of the logged in user (all the food items added to the user's cart)
         let getUserInfo = async() =>{
-            let response = await fetch(`/api/get-user-info/`, {
+            let response = await fetch(`https://eatin-django.herokuapp.com/api/get-user-info/`, {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
@@ -37,7 +37,7 @@ const UserProfile = ({match}) => {
 
          // To get the cart items of the logged in user (all the food items added to the user's cart)
          let getOrders = async() =>{
-            let response = await fetch(`/api/get-orders/`, {
+            let response = await fetch(`https://eatin-django.herokuapp.com/api/get-orders/`, {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',

@@ -16,7 +16,6 @@
     "react-transition-group": "^4.4.2",
     "web-vitals": "^1.1.2"
   },
-  "proxy": "https://eatin-django.herokuapp.com",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

@@ -13,7 +13,7 @@ const StripeRefreshUrlPage = () => {
         
         // To get the stripe refresh url
         let getStripeRefreshURL = async() =>{
-            let response = await fetch(`/partner-with-us/create-stripe-account/refresh-url/`, {
+            let response = await fetch(`https://eatin-django.herokuapp.com/partner-with-us/create-stripe-account/refresh-url/`, {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
