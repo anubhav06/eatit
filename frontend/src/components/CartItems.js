@@ -23,7 +23,7 @@ const CartItems = ({cartItems, removeFromCart, addToCart, totalAmount, history})
                             </div>
                         </div>    
                         <p className='cart-right'>
-                            ${cart.amount}
+                            Rs. {cart.amount}
                         </p>
                     </div>
                 ))}
@@ -33,7 +33,7 @@ const CartItems = ({cartItems, removeFromCart, addToCart, totalAmount, history})
                 ?   <div className='cart-row'>
                         <p className='cart-left cart-totalAmount'>Total:</p>
                         <p className='cart-center'/> 
-                        <p className='cart-right cart-totalAmount'> ${totalAmount}</p> 
+                        <p className='cart-right cart-totalAmount'> Rs. {totalAmount}</p> 
                         <button onClick={() => history.push('/checkout')} className='cart-checkout'> Checkout → </button>
                     </div>
                 :   <div>

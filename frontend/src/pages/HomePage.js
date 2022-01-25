@@ -18,7 +18,7 @@ const HomePage = () => {
         
         // To fetch all the restaurants
         let getRestaurants = async() =>{
-            let response = await fetch('http://127.0.0.1:8000/api/restaurants/', {
+            let response = await fetch('/api/restaurants/', {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',

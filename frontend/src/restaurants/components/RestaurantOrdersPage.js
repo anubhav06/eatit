@@ -37,7 +37,7 @@ const RestaurantOrderPage = ({orders, updateOrder, showBtn}) => {
                                                 {cart.food.name} x {cart.qty}
                                             </p>
                                             <p className='order-details-right'>
-                                                {cart.amount}
+                                                Rs. {cart.amount}
                                             </p>
                                         </div>
                                     ))}
@@ -46,7 +46,7 @@ const RestaurantOrderPage = ({orders, updateOrder, showBtn}) => {
                                         BILL TOTAL: 
                                     </p>
                                     <p className='order-details-right'>
-                                        {order.cart[0]?.totalAmount}
+                                        Rs. {order.cart[0]?.totalAmount}
                                     </p>
                                 </div>
                             </div>

@@ -28,7 +28,7 @@ const ViewFoodItems = ({match}) => {
         
         // To fetch the food items of a restaurant
         let getFoodItems = async() =>{
-            let response = await fetch(`http://127.0.0.1:8000/api/restaurants/${restaurantId}`, {
+            let response = await fetch(`/api/restaurants/${restaurantId}`, {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
@@ -48,7 +48,7 @@ const ViewFoodItems = ({match}) => {
 
         // To fetch the info of the requested restaurant (like name, address)
         let getRestaurantInfo = async() =>{
-            let response = await fetch(`http://127.0.0.1:8000/api/restaurants/info/${restaurantId}`, {
+            let response = await fetch(`/api/restaurants/info/${restaurantId}`, {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
@@ -66,7 +66,7 @@ const ViewFoodItems = ({match}) => {
 
         // To get the cart items of the logged in user (all the food items added to the user's cart)
         let getCartItems = async() =>{
-            let response = await fetch(`http://127.0.0.1:8000/api/get-cart-items/`, {
+            let response = await fetch(`/api/get-cart-items/`, {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
@@ -104,7 +104,7 @@ const ViewFoodItems = ({match}) => {
 
     // To add an item to cart
     let addToCart = async(food) =>{
-        let response = await fetch(`http://127.0.0.1:8000/api/add-to-cart/${food.id}`, {
+        let response = await fetch(`/api/add-to-cart/${food.id}`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -146,7 +146,7 @@ const ViewFoodItems = ({match}) => {
 
      // To remove an item from cart
      let removeFromCart = async(food) =>{
-        let response = await fetch(`http://127.0.0.1:8000/api/remove-from-cart/${food.id}`, {
+        let response = await fetch(`/api/remove-from-cart/${food.id}`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json',

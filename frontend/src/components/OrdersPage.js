@@ -54,7 +54,7 @@ const OrdersPage = ({orders}) => {
                                             {cart.food.name} x {cart.qty}
                                         </p>
                                         <p className='order-details-right'> 
-                                            {cart.amount}
+                                            Rs. {cart.amount}
                                         </p>
                                     </div>
                                 ))}
@@ -63,7 +63,7 @@ const OrdersPage = ({orders}) => {
                                     BILL TOTAL: 
                                 </p>
                                 <p className='order-details-right'>
-                                    {order.cart[0]?.totalAmount}
+                                    Rs. {order.cart[0]?.totalAmount}
                                 </p>
                             </div>
                         </div>

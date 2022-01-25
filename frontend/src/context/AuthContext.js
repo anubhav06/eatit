@@ -27,7 +27,7 @@ export const AuthProvider = ({children}) => {
         // To submit the twilio's sms verification code
 
         // Make a post request to the api with the mobile number.
-        let twilioResponse = await fetch('http://127.0.0.1:8000/api/mobile-verification/', {
+        let twilioResponse = await fetch('/api/mobile-verification/', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -49,7 +49,7 @@ export const AuthProvider = ({children}) => {
             // If verification code is correct, then go on to login the user
 
             // Make a post request to the api with the user's credentials.
-            let response = await fetch('http://127.0.0.1:8000/api/custom-login/', {
+            let response = await fetch('/api/custom-login/', {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'
@@ -93,7 +93,7 @@ export const AuthProvider = ({children}) => {
     let loginUser = async (e )=> {
         e.preventDefault()
         // Make a post request to the api with the user's credentials.
-        let response = await fetch('http://127.0.0.1:8000/api/token/', {
+        let response = await fetch('/api/token/', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -140,7 +140,7 @@ export const AuthProvider = ({children}) => {
         e.preventDefault()
 
         // Make a post request to the api with the user's credentials.
-        let response = await fetch('http://127.0.0.1:8000/api/register/', {
+        let response = await fetch('/api/register/', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -188,7 +188,7 @@ export const AuthProvider = ({children}) => {
                 return
             }
             // Make a post request to the api with the refresh token to update the access token
-            let response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
+            let response = await fetch('/api/token/refresh/', {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'

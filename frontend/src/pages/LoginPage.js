@@ -36,7 +36,7 @@ const LoginPage = () => {
         setPhoneNo(e.target.number.value)
 
         // Make a post request to the api with the mobile number.
-        let response = await fetch('http://127.0.0.1:8000/api/mobile-send-message/', {
+        let response = await fetch('/api/mobile-send-message/', {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'

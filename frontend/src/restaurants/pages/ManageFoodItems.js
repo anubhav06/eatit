@@ -17,7 +17,7 @@ const ManageFoodItems = () => {
         
         // To fetch the notes of a user
         let getFoodItems = async() =>{
-            let response = await fetch('http://127.0.0.1:8000/partner-with-us/manage-food-items/', {
+            let response = await fetch('/partner-with-us/manage-food-items/', {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
@@ -63,7 +63,7 @@ const ManageFoodItems = () => {
                                 <div className='item-left'>
                                     <p className='item-name'> {food.name} </p>
                                     <p className='item-description'> {food.description} </p>
-                                    <p className='item-price'> $ {food.price} </p>
+                                    <p className='item-price'> Rs. {food.price} </p>
                                 </div>
                                 <div className='item-right'>
                                     <img src={`${food.image}`} alt='Food' height="150px" className='item-image'/>

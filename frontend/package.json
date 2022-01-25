@@ -16,6 +16,7 @@
     "react-transition-group": "^4.4.2",
     "web-vitals": "^1.1.2"
   },
+  "proxy": "http://127.0.0.1:8000",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

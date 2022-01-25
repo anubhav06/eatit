@@ -26,7 +26,7 @@ const ManageOrders = () => {
         
          // To get the cart items of the logged in user (all the food items added to the user's cart)
          let getOrders = async() =>{
-            let response = await fetch(`http://127.0.0.1:8000/partner-with-us/get-orders/`, {
+            let response = await fetch(`/partner-with-us/get-orders/`, {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
@@ -52,7 +52,7 @@ const ManageOrders = () => {
 
     // To place an order
     let updateOrder = async(id) =>{
-        let response = await fetch(`http://127.0.0.1:8000/partner-with-us/update-order-status/${id}`, {
+        let response = await fetch(`/partner-with-us/update-order-status/${id}`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json',

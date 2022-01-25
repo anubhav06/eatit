@@ -18,7 +18,7 @@ const EditFoodItem = ({match}) => {
 
     // API Route to update food based on the ID
     let getFood = async () => {
-        let response = await fetch(`http://127.0.0.1:8000/partner-with-us/manage-food-items/${foodId}`, {
+        let response = await fetch(`/partner-with-us/manage-food-items/${foodId}`, {
             method: 'GET',
             headers:{
                 'Content-Type':'application/json',

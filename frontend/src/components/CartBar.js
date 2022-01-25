@@ -20,7 +20,7 @@ const CartBar = ({cartItems, removeFromCart, addToCart, totalAmount}) => {
                         </div>
                     </div>    
                     <p className='cart-right'>
-                        ${cart.amount}
+                        Rs. {cart.amount}
                     </p>
                 </div>
             ))}
@@ -28,7 +28,7 @@ const CartBar = ({cartItems, removeFromCart, addToCart, totalAmount}) => {
             ?   <div className='cart-row'>
                     <p className='cart-left cart-totalAmount'>TO PAY:</p>
                     <p className='cart-center'/> 
-                    <p className='cart-right cart-totalAmount'> ${totalAmount}</p> 
+                    <p className='cart-right cart-totalAmount'> Rs. {totalAmount}</p> 
                 </div>
             :   <div>
                     Cart empty

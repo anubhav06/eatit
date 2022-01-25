@@ -13,7 +13,7 @@ const StripeRefreshUrlPage = () => {
         
         // To get the stripe refresh url
         let getStripeRefreshURL = async() =>{
-            let response = await fetch(`http://127.0.0.1:8000/partner-with-us/create-stripe-account/refresh-url/`, {
+            let response = await fetch(`/partner-with-us/create-stripe-account/refresh-url/`, {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',

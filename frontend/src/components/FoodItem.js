@@ -11,7 +11,7 @@ const FoodItem = ({food, cartItems, addToCart, removeFromCart}) => {
             <div className='item-left'>
                 <p className='item-name'> {food.name} </p>
                 <p className='item-description'> {food.description} </p>
-                <p className='item-price'> $ {food.price} </p>
+                <p className='item-price'> Rs. {food.price} </p>
             </div>
 
             <div className='item-right'>
