@@ -1,7 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react'
 import AuthContext from '../context/AuthContext'
 import './Header.css'
-import logo from '../assets/logo192.png'
+import logo from '../assets/eatin.png'
 import { CSSTransition } from "react-transition-group";
 
 

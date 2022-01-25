@@ -1,7 +1,7 @@
 import React, {useContext, useState, useEffect} from 'react'
 import RestaurantAuthContext from '../context/RestaurantAuthContext'
 import '../../components/Header.css'
-import logo from '../../assets/logo192.png'
+import logo from '../../assets/eatin.png'
 import { CSSTransition } from "react-transition-group";
 
 const RestaurantHeader = () => {
