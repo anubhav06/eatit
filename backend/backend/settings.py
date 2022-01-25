@@ -206,8 +206,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     #"http://localhost:3000",
     #"http://127.0.0.1:8000",
-    'https://eatit-anubhav06.vercel.app:3000',
-    'https://eatin-django.herokuapp.com:8000',
+    'https://eatit-anubhav06.vercel.app',
+    'https://eatin-django.herokuapp.com',
 ]
 
 
