@@ -1,0 +1,93 @@
+.homePage-bg{
+    background-color: rgba(0, 0, 0, 0.822);
+    height: 52rem;
+}
+
+.homePage-row:after{
+    content : "";
+    clear: both;
+    display: table; 
+}
+
+.homePage-row{
+    background-image: url('../../assets/homePageBGimage.png');
+    filter: grayscale(15%);
+    background-size: cover;
+    padding: 15px;
+    width: 100%;
+    font-size: 24px;
+    margin: 4.5rem 0rem 1rem 0rem;
+    padding: 5rem;
+    color: rgb(0, 0, 0);
+}
+
+
+  
+.homePage-column-heading{
+    font-size: 100px;
+    font-weight: bold;
+    margin: 0rem 0rem 2rem 0rem;
+}
+
+.homePage-column-subheading{
+    font-size: 50px;
+    line-height: 100%;
+    font-weight: bold;
+    color: white;
+}
+
+.homePage-img{
+    margin-left: -20px;
+    width: 100%;
+}
+
+
+.homePage-row2:after{
+    content : "";
+    clear: both;
+    display: table; 
+}
+
+.homePage-row2{
+    background-color: white;
+    padding: 15px;
+}
+
+.homePage-column{
+    float: left;
+    padding: 15px 15px 15px 4rem;
+    width: 33.33%;
+}
+
+.homePage-row2-heading{
+    font-size: 55px;
+    margin-left: 5rem;
+    margin-bottom: 3rem;
+}
+
+
+.homePage-row2-subheading{
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.homePage-row2-subheading2{
+    font-size: 28px;
+    line-height: 80%;
+    margin-bottom: 4rem;
+}
+
+@media only screen and (max-width: 600px){
+    
+        
+    .homePage-column{
+        float: left;
+        padding: 15px 15px 15px 1rem;
+        width: 100%;
+    }
+
+    .homePage-row2-heading{
+        margin-left: 2rem;
+    }
+    
+}
