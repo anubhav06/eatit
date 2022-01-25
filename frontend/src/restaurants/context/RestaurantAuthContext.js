@@ -134,7 +134,7 @@ export const RestaurantAuthProvider = ({children}) => {
         form_data.append('description', e.target.description.value);
         form_data.append('price', e.target.price.value);
 
-        let url = 'https://eatin-django.herokuapp.com//partner-with-us/add-food-item/';
+        let url = 'https://eatin-django.herokuapp.com/partner-with-us/add-food-item/';
         axios.post(url, form_data, {
         headers: {
             'content-type': 'multipart/form-data',
@@ -162,7 +162,7 @@ export const RestaurantAuthProvider = ({children}) => {
         form_data.append('description', e.target.description.value);
         form_data.append('price', e.target.price.value);
         
-        let url = `https://eatin-django.herokuapp.com//partner-with-us/manage-food-items/${e.target.id.value}/update`;
+        let url = `https://eatin-django.herokuapp.com/partner-with-us/manage-food-items/${e.target.id.value}/update`;
         axios.post(url, form_data, {
         headers: {
             'content-type': 'multipart/form-data',
