@@ -50,7 +50,7 @@ const LoginPage = () => {
             setMobileForm(false)
             setVerificationForm(true)
         }else{
-            console.log(data)
+            //console.log(data)
             alert(data)
         }
 

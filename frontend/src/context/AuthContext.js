@@ -41,7 +41,7 @@ export const AuthProvider = ({children}) => {
             alert(twilioData)
         }
         else if(twilioResponse.status !== 200){
-            console.log("ERROR: ", twilioData)
+            //console.log("ERROR: ", twilioData)
             alert(twilioData)
         }
         else{
@@ -152,11 +152,11 @@ export const AuthProvider = ({children}) => {
         let data = await response.json()
 
         if(response.status === 200){
-            console.log('Registered Successfully')
+            //console.log('Registered Successfully')
             alert(data)
             history.push('/login')
         }else{
-            console.log(data)
+            //console.log(data)
             alert(data)
         }
 

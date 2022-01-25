@@ -51,7 +51,7 @@ const RegisterPage = () => {
             setPhoneForm(false)
             setPhoneVerificationForm(true)
         }else{
-            console.log(data)
+            //console.log(data)
             alert(data)
         }
 
@@ -85,7 +85,7 @@ const RegisterPage = () => {
             alert(data)
         }
         else{
-            console.log("ERROR: ", data)
+            //console.log("ERROR: ", data)
             alert(data)
         }
 

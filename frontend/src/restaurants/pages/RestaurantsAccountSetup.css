@@ -43,6 +43,12 @@
     font-weight: bold;
 }
 
+.account-setup-btn:disabled{
+    background-color: gray;
+    color: black;
+    border: black;
+}
+
 .redirect-text{
     font-size: 20px;
     margin-top: 10px;

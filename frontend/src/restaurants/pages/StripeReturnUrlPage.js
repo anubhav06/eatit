@@ -28,14 +28,14 @@ const StripeReturnUrlPage = () => {
             // Redirect to the link generated from backend
             if(response.status === 200){
                 setReturnURLData(true)
-                console.log('GET STRIPE RETURN URL ', data)
+                //console.log('GET STRIPE RETURN URL ', data)
                 alert(data)
 
             } 
             else {
                 setReturnURLData(false)
                 alert(data)
-                console.log('ERROR: ', data)
+                //console.log('ERROR: ', data)
             }
         }
 

@@ -47,7 +47,7 @@ const CheckoutPage = ({match}) => {
 
             if(response.status === 200){
                 setCartItems(data)
-                console.log('SET CART ITEMS DATA: ', data)
+                //console.log('SET CART ITEMS DATA: ', data)
                 // If the user's cart is not empty, then get the cart's total amount from backend and store it
                 if (data[0]?.totalAmount !== undefined){
                     var newTotalAmount = parseFloat(data[0]?.totalAmount)
@@ -75,7 +75,7 @@ const CheckoutPage = ({match}) => {
 
             if(response.status === 200){
                 setAddress(data)
-                console.log('SET ADDRESS: ', data)
+                //console.log('SET ADDRESS: ', data)
             }else {
                 alert('ERROR: While loading user\ns address', data)
             }
@@ -128,7 +128,7 @@ const CheckoutPage = ({match}) => {
 
         } else {
             alert(data)
-            console.log('ERROR: ', data)
+            //console.log('ERROR: ', data)
         }
     }
 
@@ -151,7 +151,7 @@ const CheckoutPage = ({match}) => {
 
             // If the food item's qty is 1, then delete the item from cart
             if(exist.qty === 1) {
-                console.log('QTY 0')
+                //console.log('QTY 0')
                 setCartItems(cartItems.filter( cart => cart.food.id !== food.id ))
             }
             // If the food item already exists in cart, then decrease its quantity
@@ -165,13 +165,13 @@ const CheckoutPage = ({match}) => {
 
             //Update the user's cart's total amount by subtracting the removed food item's price from total amount
             var newTotalAmount = parseFloat(totalAmount) - parseFloat(food.price)
-            console.log("NEW TOTAL AMOUNT: ", newTotalAmount)
+            //console.log("NEW TOTAL AMOUNT: ", newTotalAmount)
             setTotalAmount(parseFloat(newTotalAmount))
 
         } else {
             alert('ERROR: Removing Item to cart ')
-            console.log('ERROR: ', response)
-            console.log('ERROR data: ', response.json())
+            //console.log('ERROR: ', response)
+            //console.log('ERROR data: ', response.json())
         }
     }
 
@@ -200,7 +200,7 @@ const CheckoutPage = ({match}) => {
         }
         else{
             alert(data)
-            console.log('ERROR: ', data)
+            //console.log('ERROR: ', data)
         }
     
     }
@@ -210,7 +210,7 @@ const CheckoutPage = ({match}) => {
     // To place an order
     let checkout = async() =>{
         setDisabled(true)
-        console.log('CLICKED CHECKOUT')
+        //console.log('CLICKED CHECKOUT')
         let response = await fetch(`http://127.0.0.1:8000/api/checkout/`, {
             method:'POST',
             headers:{
@@ -226,16 +226,16 @@ const CheckoutPage = ({match}) => {
         if(response.status === 303){
 
             window.location.href = data
-            console.log('SUCCESS: ', data)
+            //console.log('SUCCESS: ', data)
 
         } else {
             alert(data)
-            console.log('ERROR: ', data)
+            //console.log('ERROR: ', data)
         }
     }
 
 
-    console.log('CART ITEMS: ', cartItems)
+    //console.log('CART ITEMS: ', cartItems)
 
 
 

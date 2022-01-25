@@ -37,7 +37,7 @@ const ManageOrders = () => {
             let data = await response.json()
 
             if(response.status === 200){
-                console.log('Active Orders: ', data)
+                //console.log('Active Orders: ', data)
                 setOrders(data)
             }else {
                 alert('ERROR: While getting active order\ns ', data)
@@ -70,7 +70,7 @@ const ManageOrders = () => {
 
         } else {
             alert('Error updating order status. ',data)
-            console.log('ERROR: ', data)
+            //console.log('ERROR: ', data)
         }
     }
 

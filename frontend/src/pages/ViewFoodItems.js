@@ -79,7 +79,7 @@ const ViewFoodItems = ({match}) => {
 
             if(response.status === 200){
                 setCartItems(data)
-                console.log('SET CART ITEMS DATA: ', data)
+                //console.log('SET CART ITEMS DATA: ', data)
                 // If the user's cart is not empty, then get the cart's total amount from backend and store it
                 if (data[0]?.totalAmount !== undefined){
                     var newTotalAmount = parseFloat(data[0]?.totalAmount)
@@ -139,7 +139,7 @@ const ViewFoodItems = ({match}) => {
 
         } else {
             alert(data)
-            console.log('ERROR: ', data)
+            //console.log('ERROR: ', data)
         }
     }
 
@@ -162,7 +162,7 @@ const ViewFoodItems = ({match}) => {
 
             // If the food item's qty is 1, then delete the item from cart
             if(exist.qty === 1) {
-                console.log('QTY 0')
+                //console.log('QTY 0')
                 setCartItems(cartItems.filter( cart => cart.food.id !== food.id ))
             }
             // If the food item already exists in cart, then decrease its quantity
@@ -176,19 +176,19 @@ const ViewFoodItems = ({match}) => {
 
             //Update the user's cart's total amount by subtracting the removed food item's price from total amount
             var newTotalAmount = parseFloat(totalAmount) - parseFloat(food.price)
-            console.log("NEW TOTAL AMOUNT: ", newTotalAmount)
+            //console.log("NEW TOTAL AMOUNT: ", newTotalAmount)
             setTotalAmount(parseFloat(newTotalAmount))
 
         } else {
             alert('ERROR: Removing Item to cart ')
-            console.log('ERROR: ', response)
+            //console.log('ERROR: ', response)
         }
     }
 
 
 
-    console.log('FOOD ITEMS: ', foodItems)
-    console.log('CART ITEMS: ', cartItems)
+    //console.log('FOOD ITEMS: ', foodItems)
+    //console.log('CART ITEMS: ', cartItems)
 
 
 

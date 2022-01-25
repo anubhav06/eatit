@@ -11,6 +11,9 @@ const RestaurantAccountSetup = () => {
     let {restaurant, restaurantAuthTokens} = useContext(RestaurantAuthContext)
     let [accountStatus, setAccountStatus] = useState({})
 
+    // To disable a submit btn once it's pressed, till it get's back a response
+    let [disabled, setDisabled] = useState(false)
+
     useEffect(() => {
         
         // To place an order
@@ -28,17 +31,17 @@ const RestaurantAccountSetup = () => {
 
             // If restaurant has not created any account yet (probably because landed for first time)
             if(response.status === 200){
-                console.log('GET STRIPE: ', data)
+                //console.log('GET STRIPE: ', data)
                 setAccountStatus('NotCreated')
             }
             // If restaurant has created the account but has not provided all details to stripe
             else if(response.status === 230){
-                console.log('GET STRIPE: ', data)
+                //console.log('GET STRIPE: ', data)
                 setAccountStatus('NotCompleted')
             } 
             // If restaurant has created the account and provided all the details (i.e. fully connected with stripe)
             else if(response.status === 231) {
-                console.log('GET STRIPE:', data)
+                //console.log('GET STRIPE:', data)
                 setAccountStatus('Completed')
             }
         }
@@ -49,6 +52,7 @@ const RestaurantAccountSetup = () => {
 
     // To place an order
     let createStripeAccount = async() =>{
+        setDisabled(true)
         let response = await fetch(`http://127.0.0.1:8000/partner-with-us/create-stripe-account/`, {
             method:'POST',
             headers:{
@@ -61,7 +65,7 @@ const RestaurantAccountSetup = () => {
         let data = await response.json()
 
         if(response.status === 200){
-            console.log('CREATE STRIPE ACCOUNT DATA: ', data)
+            //console.log('CREATE STRIPE ACCOUNT DATA: ', data)
             alert('Stripe account created ✅')
             window.location.href = `${data}`
         }
@@ -79,6 +83,7 @@ const RestaurantAccountSetup = () => {
 
     // To place an order
     let completeStripeAccount = async() =>{
+        setDisabled(true)
         let response = await fetch(`http://127.0.0.1:8000/partner-with-us/complete-stripe-account/`, {
             method:'POST',
             headers:{
@@ -91,13 +96,13 @@ const RestaurantAccountSetup = () => {
         let data = await response.json()
 
         if(response.status === 200){
-            console.log('CREATE STRIPE ACCOUNT DATA: ', data)
+            //console.log('CREATE STRIPE ACCOUNT DATA: ', data)
             alert('Stripe account onborading link created ✅')
             window.location.href = `${data}`
         }
         else if(response.status === 412){
             alert(data)
-            console.log('Account Already Created')
+            //console.log('Account Already Created')
         } 
         else {
             alert('Error creating a stripe account ',data)
@@ -105,7 +110,7 @@ const RestaurantAccountSetup = () => {
         }
     }
     
-    console.log('account status: ', accountStatus)
+    //console.log('account status: ', accountStatus)
 
     return (
         <div>
@@ -123,7 +128,11 @@ const RestaurantAccountSetup = () => {
                         <h2>Setup payouts to list on EATIN.</h2> 
                         EATIN partners with Stripe to transfer earnings to your (test) bank account. <br/>
                         All payments are directly transfered to your account after deducting applicable fees <br/>
-                        <button className='account-setup-btn' onClick={createStripeAccount}> Click here to continue </button>
+                        <button className='account-setup-btn' onClick={createStripeAccount} disabled={disabled}> Click here to continue </button>
+                        {/* If checkout button is clicked, then show a redirecting text */}
+                        {disabled == true 
+                        ?   <div style={{marginTop: '-10px'}}> Please wait. Redirecting . . . </div>
+                        : (null)}
                         <p className='redirect-text'> You'll be redirected to Stripe to complete the onboarding proces.</p>
                         <div className='accountSetup-warning'>
                             NOTE: A test US account will be created with stripe. No real payments will be processed <br/>
@@ -151,7 +160,11 @@ const RestaurantAccountSetup = () => {
             ?   <div className='incompleteAccount-setup-center'>
                     <img src={bankIcon} className='bank-image' /> <br/>
                     Stripe account created but all details are not provided <br/>
-                    <button onClick={completeStripeAccount} className='account-setup-btn'> Continue to Add details  </button>
+                    <button onClick={completeStripeAccount} className='account-setup-btn' disabled={disabled}> Continue to Add details  </button>
+                    {/* If checkout button is clicked, then show a redirecting text */}
+                    {disabled == true 
+                    ?   <div style={{marginTop: '-10px'}}> Please wait. Redirecting . . . </div>
+                    : (null)}
                     <p className='redirect-text'> You'll be redirected to Stripe to complete the onboarding proces.</p>
                     <div className='accountSetup-warning'>
                         NOTE: If you have already provided all the details, then please wait for 2-5 minutes for stripe to verify and update the status.
