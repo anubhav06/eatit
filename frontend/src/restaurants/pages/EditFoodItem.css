@@ -1,0 +1,10 @@
+.edit-food-delete-btn{
+    margin-top: 1rem;
+    height: 2rem;
+    width: 7rem;
+    background-color: red;
+    font-size: 20px;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}

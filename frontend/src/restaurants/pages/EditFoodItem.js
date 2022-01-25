@@ -1,7 +1,9 @@
 import React, {useState, useEffect, useContext} from 'react'
 import RestaurantAuthContext from '../context/RestaurantAuthContext'
 import RestaurantHeader from '../components/RestaurantHeader'
-
+import '../../components/LoginForm.css'
+import './EditFoodItem.css'
+import './RestaurantLoginPage.css'
 
 const EditFoodItem = ({match}) => {
     let [foodItem, setFoodItem] = useState([])
@@ -32,30 +34,45 @@ const EditFoodItem = ({match}) => {
     return (
         <div>
             <RestaurantHeader/>
-            <p> Edit you food item here: </p> <br/>
 
-            {foodItem.map( food => (
-                
-                <div key={food.id}>
+            <div className='row'>
 
-                    {/* Form to edit the food item details */}
-                    <form onSubmit={editFoodItem}>
-                        <input type="hidden" name="id" defaultValue={food.id} />
-                        <input type="text" name="name" defaultValue={food.name} onChange={(e) => {updateFoodItem({...updateFood, 'body': e.target.value})}} />
-                        <input type="text" name="description" defaultValue={food.description} onChange={(e) => {updateFoodItem({...updateFood, 'body': e.target.value})}} /> <br/>
-                        <input type="number" min="0" step="0.01" name="price" defaultValue={food.price} onChange={(e) => {updateFoodItem({...updateFood, 'body': e.target.value})}} /> <br/>
-                        <input type="file" accept="image/x-png,image/jpeg,image/jpg" name="image"/> <br/>
+                <div className='restaurants-form-column-left'>
+                    <div className='restaurants-form-background'>
+                        <div className='form-header'> Edit you food item here </div>
+
+                        {foodItem.map( food => (
+                            
+                            <div key={food.id}>
+
+                                {/* Form to edit the food item details */}
+                                <form onSubmit={editFoodItem}>
+                                    <input type="hidden" name="id" defaultValue={food.id} />
+                                    <input type="text" name="name" defaultValue={food.name} onChange={(e) => {updateFoodItem({...updateFood, 'body': e.target.value})}} className='form-input' />
+                                    <input type="text" name="description" defaultValue={food.description} onChange={(e) => {updateFoodItem({...updateFood, 'body': e.target.value})}} className='form-input'/>
+                                    <input type="number" min="0" step="0.01" name="price" defaultValue={food.price} onChange={(e) => {updateFoodItem({...updateFood, 'body': e.target.value})}} className='form-input'/> 
+                                    <div className='form-file-input-label'> Upload new image only if you want to update the exisiting one: </div>
+                                    <input type="file" accept="image/x-png,image/jpeg,image/jpg" name="image" className='form-file-input'/> <br/>
+                                    
+                                    <input type="submit" value="UPDATE" className='form-submit-btn'/>
+                                </form>
+
+                                {/* Button to delete the food item */}
+                                <button onClick={deleteFoodItem} name="id" value={food.id} className='edit-food-delete-btn'> 
+                                    DELETE ITEM 
+                                </button>
+                            </div>
+                        ))}
                         
-                        <input type="submit" value="Update"/>
-                    </form>
-
-                    {/* Button to delete the food item */}
-                    <button onClick={deleteFoodItem} name="id" value={food.id}> 
-                        DELETE ITEM 
-                    </button>
+                    </div>
                 </div>
-            ))}
+                <div className='restaurants-form-column-right'>
+                    <p className='formRight-heading'> EATIN </p>
+                    <p className='formRight-subHeading'> Edit the food item here </p>
+                    <p className='formRight-subHeading2'> Easily update/delete any of your exisiting foods with EATIN </p>
+                </div>
         
+            </div>
     
         </div>
     )
