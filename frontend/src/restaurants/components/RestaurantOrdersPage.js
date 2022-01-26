@@ -11,7 +11,7 @@ const RestaurantOrderPage = ({orders, updateOrder, showBtn}) => {
             {orders.length == 0 ? <h2 style={{marginTop: '10px', marginLeft: '10px'}}> No orders so far </h2> : (null)}
             {orders.map(order => (
                 <div key={order.id} className='orders-row'>
-                    {order.active === true 
+                    {order.active === showBtn 
                     ?   <div className='orders-row'>
                             <div className='orders-row-left'>
                                 <div className='order-status'>
