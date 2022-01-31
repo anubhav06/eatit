@@ -29,7 +29,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = ['eatin-django.herokuapp.com']
+ALLOWED_HOSTS = ['eatin-django.herokuapp.com', 'testserver']
 
 
 # Application definition

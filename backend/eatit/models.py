@@ -1,5 +1,3 @@
-from enum import unique
-from pyexpat import model
 from django.db import models
 from django.contrib.auth.models import User
 from restaurants.models import Restaurant, FoodItem
@@ -11,6 +9,10 @@ class MobileNumber(models.Model):
     number = models.BigIntegerField(unique=True, default=None)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name="userNumber")
 
+    # For testing: To check if the number field contains a 10 digit number
+    def is_valid_number_length(self):
+        return len(str(self.number)) == 10
+
 
 # User's cart
 class Cart(models.Model):
@@ -19,6 +21,14 @@ class Cart(models.Model):
     qty = models.IntegerField(default=0)
     amount = models.DecimalField(max_digits=6, decimal_places=2)
     totalAmount = models.DecimalField(max_digits=7, decimal_places=2, default=0)
+
+    # For testing: To check if values are positive
+    def is_valid_amount(self):
+        return self.amount > 0 and self.qty > 0
+
+    # For testing: To check the total amount
+    def is_valid_totalAmount(self):
+        return self.totalAmount == self.amount * self.qty
 
     # To serializer data as required by Stripe Payments during checkout
     def checkoutSerializer(self):
