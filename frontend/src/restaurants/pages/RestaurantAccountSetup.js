@@ -136,7 +136,8 @@ const RestaurantAccountSetup = () => {
                         <p className='redirect-text'> You'll be redirected to Stripe to complete the onboarding proces.</p>
                         <div className='accountSetup-warning'>
                             NOTE: A test US account will be created with stripe. No real payments will be processed <br/>
-                            Certain test data needs to be entered to trigger the verification. The required data is given below
+                            Certain test data needs to be entered to trigger the verification. The required data is given below <br/>
+                            It's recommended to copy and paste the below data in a text file for reference.
                         </div>
                     </div>
                     <div className='test-section'>

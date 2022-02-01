@@ -33,7 +33,7 @@ const RestaurantLoginPage = () => {
                         
                         <div className='form-header'> Restaurant Login Page </div>
                         <form onSubmit={loginRestaurant}>
-                            <input type="text" name="username" placeholder="Enter Username" required className='form-input'/>
+                            <input type="text" name="email" placeholder="Enter Username" required className='form-input'/>
                             <input type="password" name="password" placeholder="Enter Password" required className='form-input' /> <br/>
                             <input type="submit" className='form-submit-btn'/>
                         </form>

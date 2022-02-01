@@ -44,9 +44,8 @@ export const AuthProvider = ({children}) => {
             //console.log("ERROR: ", twilioData)
             alert(twilioData)
         }
+        // If verification code is correct, then go on to login the user
         else{
-
-            // If verification code is correct, then go on to login the user
 
             // Make a post request to the api with the user's credentials.
             let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/custom-login/`, {
@@ -132,6 +131,7 @@ export const AuthProvider = ({children}) => {
         setAuthTokens(null)
         setUser(null)
         localStorage.removeItem('authTokens')
+        history.push('/')
     }
 
 
@@ -151,13 +151,12 @@ export const AuthProvider = ({children}) => {
         // Get the access and refresh tokens
         let data = await response.json()
 
-        if(response.status === 200){
-            //console.log('Registered Successfully')
-            alert(data)
-            history.push('/login')
-        }else{
-            //console.log(data)
-            alert(data)
+        // If registration is successfull, then go ahead and login.
+        if(response.status == 200){
+            loginUser(e)
+        }
+        else{
+            alert('ERROR: ', data)
         }
 
     }
