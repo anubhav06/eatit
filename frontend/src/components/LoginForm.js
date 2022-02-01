@@ -3,7 +3,7 @@ import './Header.css'
 import './LoginForm.css'
 
 
-const LoginForm = ({loginUser, loginCustomUser, phoneNo, userForm, mobileForm, verificationForm, setUserForm, setMobileForm, setVerificationForm, submitPhoneNumber}) => {
+const LoginForm = ({loginUser, loginCustomUser, phoneNo, userForm, mobileForm, verificationForm, loading, formLoading, setUserForm, setMobileForm, setVerificationForm, submitPhoneNumber}) => {
     
 
     return (
@@ -20,7 +20,8 @@ const LoginForm = ({loginUser, loginCustomUser, phoneNo, userForm, mobileForm, v
                             <form onSubmit={loginUser}>
                                 <input type="text" name="username" placeholder="Enter Username" className='form-input'/>
                                 <input type="password" name="password" placeholder="Enter Password" className='form-input' /> <br/>
-                                <input type="submit" className='form-submit-btn'/>
+                                <input type="submit" disabled={formLoading} className='form-submit-btn'/>
+                                {formLoading ? <p> Logging you in. Please wait . . </p> : (null)}
                             </form>
                         </div>
                     : (null)}
@@ -31,7 +32,8 @@ const LoginForm = ({loginUser, loginCustomUser, phoneNo, userForm, mobileForm, v
                             <div className='form-header'> Login Form </div>
                             <form onSubmit={submitPhoneNumber}>
                                 <input type="number" name="number" placeholder='Enter mobile number' className='form-input' required /> <br/>
-                                <input type="submit" value={'Send OTP'} className='form-submit-btn'/>
+                                <input type="submit" disabled={loading} value={'Send OTP'} className='form-submit-btn'/>
+                                {loading ? <p> Sending OTP. Please wait . . </p> : (null)}
                             </form>
                         </div>
                     : (null)}
@@ -41,7 +43,8 @@ const LoginForm = ({loginUser, loginCustomUser, phoneNo, userForm, mobileForm, v
                         <form onSubmit={loginCustomUser}>
                             <input type="number" name="number" value={phoneNo} disabled className='form-input'/>
                             <input type="number" name="code" placeholder='Enter verification Code' className='form-input'/> <br/> 
-                            <input type="submit" className='form-submit-btn'/>
+                            <input type="submit" disabled={formLoading} className='form-submit-btn'/>
+                            {formLoading ? <p> Verifying OTP. Please wait . . </p> : (null)}
                         </form>
                     : (null)}
                     

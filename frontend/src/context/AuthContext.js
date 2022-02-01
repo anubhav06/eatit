@@ -16,6 +16,9 @@ export const AuthProvider = ({children}) => {
     let [user, setUser] = useState(()=> localStorage.getItem('authTokens') ? jwt_decode(localStorage.getItem('authTokens')) : null)
     let [loading, setLoading] = useState(true)
 
+    // To check the API state, before an API is called, and after the API has returned a response.
+    let [formLoading, setFormLoading] = useState(false)
+
     const history = useHistory()
 
 
@@ -23,7 +26,7 @@ export const AuthProvider = ({children}) => {
     // To login a custom user who wishes to login using mobile authentication (i.e. text SMS verification code)
     let loginCustomUser = async (e)=> {
         e.preventDefault()
-
+        setFormLoading(true)
         // To submit the twilio's sms verification code
 
         // Make a post request to the api with the mobile number.
@@ -57,6 +60,7 @@ export const AuthProvider = ({children}) => {
             })
             // Get the access and refresh tokens
             let data = await response.json()
+            setFormLoading(false)
 
             if(response.status === 200){
 
@@ -91,6 +95,8 @@ export const AuthProvider = ({children}) => {
     // Login User method
     let loginUser = async (e )=> {
         e.preventDefault()
+        setFormLoading(true)
+
         // Make a post request to the api with the user's credentials.
         let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/token/`, {
             method:'POST',
@@ -102,6 +108,7 @@ export const AuthProvider = ({children}) => {
         })
         // Get the access and refresh tokens
         let data = await response.json()
+        setFormLoading(false)
 
         if(response.status === 200){
 
@@ -138,6 +145,7 @@ export const AuthProvider = ({children}) => {
     // To register a user
     let registerUser = async (e) => {
         e.preventDefault()
+        setFormLoading(true)
 
         // Make a post request to the api with the user's credentials.
         let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/register/`, {
@@ -150,6 +158,7 @@ export const AuthProvider = ({children}) => {
         })
         // Get the access and refresh tokens
         let data = await response.json()
+        setFormLoading(false)
 
         // If registration is successfull, then go ahead and login.
         if(response.status == 200){
@@ -165,6 +174,7 @@ export const AuthProvider = ({children}) => {
     let contextData = {
         user:user,
         authTokens:authTokens,
+        formLoading:formLoading,
 
         loginCustomUser:loginCustomUser,
         loginUser:loginUser,

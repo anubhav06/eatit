@@ -3,7 +3,7 @@ import './Header.css'
 import './LoginForm.css'
 
 
-const RegisterForm = ({registerUser,phoneNo, mainForm, phoneForm, phoneVerificationForm, submitPhoneNumber, submitVerificationCode}) => {
+const RegisterForm = ({registerUser,phoneNo, mainForm, phoneForm,loading, formLoading, phoneVerificationForm, submitPhoneNumber, submitVerificationCode}) => {
     
 
     return (
@@ -19,7 +19,8 @@ const RegisterForm = ({registerUser,phoneNo, mainForm, phoneForm, phoneVerificat
                             <div className='form-header'> Registration Form </div>
                             <form onSubmit={submitPhoneNumber }>
                                 <input type="number" name='number' placeholder="Enter mobile number" className='form-input'/> <br/>
-                                <input type="submit" className='form-submit-btn'/>
+                                <input type="submit" disabled={loading} className='form-submit-btn'/>
+                                {loading ? <p> Sending OTP. Please wait . . </p> : (null)}
                             </form>
                         </div>
                     : (null)}
@@ -32,7 +33,8 @@ const RegisterForm = ({registerUser,phoneNo, mainForm, phoneForm, phoneVerificat
                             <form onSubmit={submitVerificationCode}>
                                 <input type="number" name="number" value={phoneNo} disabled className='form-input'/>
                                 <input type="number" name="code" placeholder='Enter verification Code' className='form-input' /> <br/> 
-                                <input type="submit" className='form-submit-btn'/>
+                                <input type="submit" disabled={loading} className='form-submit-btn'/>
+                                {loading ? <p> Verifying the OTP. Please wait . . </p> : (null)}
                             </form>
                         </div>
                     : (null)}
@@ -49,7 +51,8 @@ const RegisterForm = ({registerUser,phoneNo, mainForm, phoneForm, phoneVerificat
                                 <input type="password" name="confirmPassword" placeholder="Enter Password Again" className='form-input'/>
                                 <input type="number" name="number" defaultValue={phoneNo} hidden /> <br/>
 
-                                <input type="submit" className='form-submit-btn'/>    
+                                <input type="submit" disabled={formLoading} className='form-submit-btn'/>    
+                                {formLoading ? <p> Registering your account. Please wait . . </p> : (null)}
                             </form>
                         </div>
                     : (null)}

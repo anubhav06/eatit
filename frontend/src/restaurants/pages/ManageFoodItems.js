@@ -6,17 +6,21 @@ import cookingImg from '../../assets/CookingSVG.png'
 import '../../components/FoodItem.css'
 import '../../components/CartItems.css'
 import '../../pages/UserProfile.css'
+import loadingImg from '../../assets/loading.gif'
 
 
 const ManageFoodItems = () => {
     let [foodItems, setFoodItems] = useState([])
     let {restaurant, restaurantAuthTokens, logoutRestaurant} = useContext(RestaurantAuthContext)
 
+    let [loading, setLoading] = useState(false)
+
     // call getNotes on load
     useEffect(()=> {
         
         // To fetch the notes of a user
         let getFoodItems = async() =>{
+            setLoading(true)
             let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/manage-food-items/`, {
                 method:'GET',
                 headers:{
@@ -26,6 +30,7 @@ const ManageFoodItems = () => {
                 }
             })
             let data = await response.json()
+            setLoading(false)
 
             if(response.status === 200){
                 setFoodItems(data)
@@ -57,20 +62,28 @@ const ManageFoodItems = () => {
                 </div>
 
                 <div className='middle'>
-                    {foodItems.map(food => (   
-                        <div key={food.id} className='item-container'>
-                            <Link to={`/partner-with-us/manage-food-items/${food.id}`} key={food.id}> 
-                                <div className='item-left'>
-                                    <p className='item-name'> {food.name} </p>
-                                    <p className='item-description'> {food.description} </p>
-                                    <p className='item-price'> Rs. {food.price} </p>
-                                </div>
-                                <div className='item-right'>
-                                    <img src={`${food.image}`} alt='Food' height="150px" className='item-image'/>
-                                </div>
-                            </Link>
-                        </div>    
-                    ))}
+                    {loading 
+                    ?   <div>
+                            <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} />
+                            <p style={{marginLeft: 25}}> Getting your food. Please wait . . . </p>
+                        </div>
+                    :   <div>
+                            {foodItems.map(food => (   
+                                <div key={food.id} className='item-container'>
+                                    <Link to={`/partner-with-us/manage-food-items/${food.id}`} key={food.id}> 
+                                        <div className='item-left'>
+                                            <p className='item-name'> {food.name} </p>
+                                            <p className='item-description'> {food.description} </p>
+                                            <p className='item-price'> Rs. {food.price} </p>
+                                        </div>
+                                        <div className='item-right'>
+                                            <img src={`${food.image}`} alt='Food' height="150px" className='item-image'/>
+                                        </div>
+                                    </Link>
+                                </div>    
+                            ))}
+                        </div>
+                    }
                 </div>
 
                 <div className='right'>

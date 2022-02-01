@@ -7,7 +7,8 @@ import '../../components/LoginForm.css'
 const RestaurantLoginPage = () => {
 
     // Get the login user function from AuthContext 
-    let {restaurant , loginRestaurant} = useContext(RestaurantAuthContext)
+    let {restaurant , loginRestaurant, formLoading} = useContext(RestaurantAuthContext)
+    
 
 
     // If a normal user is logged in, then tell them to logout with the normal account to access the restaurant login
@@ -35,7 +36,8 @@ const RestaurantLoginPage = () => {
                         <form onSubmit={loginRestaurant}>
                             <input type="text" name="email" placeholder="Enter Username" required className='form-input'/>
                             <input type="password" name="password" placeholder="Enter Password" required className='form-input' /> <br/>
-                            <input type="submit" className='form-submit-btn'/>
+                            <input type="submit" disabled={formLoading} className='form-submit-btn'/>
+                            {formLoading ? <p> Logging you in. Please wait . . </p> : (null)}
                         </form>
                     </div>
                 </div>

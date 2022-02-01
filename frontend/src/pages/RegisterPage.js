@@ -6,7 +6,7 @@ import RegisterForm from '../components/RegisterForm'
 
 const RegisterPage = () => {
 
-    let {user, registerUser} = useContext(AuthContext)
+    let {user, registerUser, formLoading} = useContext(AuthContext)
     // To store the user's phone number
     let [phoneNo, setPhoneNo] = useState({})
 
@@ -14,6 +14,7 @@ const RegisterPage = () => {
     let [phoneForm, setPhoneForm] = useState(true)
     let [phoneVerificationForm, setPhoneVerificationForm] = useState(false)
 
+    let [loading, setLoading] = useState(false)
 
     // If a restaurant owner is logged in, then tell them to logout and login with a USER ACCOUNT to access the user's login
     if(localStorage.getItem('restaurantAuthTokens') !== null){
@@ -33,6 +34,7 @@ const RegisterPage = () => {
     // To submit phone number to recieve a verification code
     let submitPhoneNumber = async (e) => {
         e.preventDefault()
+        setLoading(true)
         // To temporarily store the phone number, and pass it for submission along with the main registration form (username, password)
         setPhoneNo(e.target.number.value)
 
@@ -45,6 +47,7 @@ const RegisterPage = () => {
             body:JSON.stringify({'number':e.target.number.value})
         })
         let data = await response.json()
+        setLoading(false)
 
         if(response.status === 200){
             alert(data)
@@ -63,6 +66,7 @@ const RegisterPage = () => {
     // To submit the phone's verification code
     let submitVerificationCode = async (e) => {
         e.preventDefault()
+        setLoading(true)
         setPhoneNo(e.target.number.value)
 
         // Make a post request to the api with the mobile number.
@@ -74,6 +78,7 @@ const RegisterPage = () => {
             body:JSON.stringify({'number':e.target.number.value, 'code':e.target.code.value})
         })
         let data = await response.json()
+        setLoading(false)
 
         if(response.status === 200){
             alert(data)
@@ -99,6 +104,8 @@ const RegisterPage = () => {
                 phoneNo={phoneNo}
                 mainForm={mainForm}
                 phoneForm={phoneForm}
+                loading={loading}
+                formLoading={formLoading}
                 phoneVerificationForm={phoneVerificationForm}
                 submitPhoneNumber={submitPhoneNumber}
                 submitVerificationCode={submitVerificationCode}

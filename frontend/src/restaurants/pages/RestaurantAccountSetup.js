@@ -4,7 +4,7 @@ import RestaurantHeader from '../components/RestaurantHeader'
 import './RestaurantsAccountSetup.css'
 import bankIcon from '../../assets/bankIcon.png'
 import '../../pages/UserProfile.css'
-import { Link } from 'react-router-dom'
+import loadingImg from '../../assets/loading.gif'
 
 const RestaurantAccountSetup = () => {
 
@@ -12,7 +12,7 @@ const RestaurantAccountSetup = () => {
     let [accountStatus, setAccountStatus] = useState({})
 
     // To disable a submit btn once it's pressed, till it get's back a response
-    let [disabled, setDisabled] = useState(false)
+    let [disabled, setDisabled] = useState(true)
 
     useEffect(() => {
         
@@ -120,6 +120,13 @@ const RestaurantAccountSetup = () => {
                 <p className='user-name'> {restaurant.username} </p>
                 <p className='user-mail'> Account Setup Page </p>
             </div>
+
+            {Object.keys(accountStatus).length == 0 ? 
+            <div> 
+                <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} />
+                <p style={{fontSize:24 ,marginLeft: 25}}> Getting your account details. Please wait . . . </p>
+            </div> 
+            : (null)}
 
             {accountStatus === 'NotCreated' 
             ?   <div> 

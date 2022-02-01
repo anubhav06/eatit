@@ -7,6 +7,7 @@ import RestaurantOffer from '../assets/RestaurantOffer.png'
 import RestaurantOffer1 from '../assets/RestaurantOffer1.png'
 import RestaurantOffer2 from '../assets/RestaurantOffer2.png'
 import RestaurantOffer3 from '../assets/RestaurantOffer3.png'
+import loadingGIF from '../assets/loading.gif'
 
 const HomePage = () => {
     let [notes, setNotes] = useState([])
@@ -53,13 +54,22 @@ const HomePage = () => {
             
             {/* RESTAURANT LISTS SECTION */}
             <div className='restaurant-row'>
-                <p style={{fontSize: '42px'}}>{restaurants.length} restaurants </p><hr/>
+                {Object.keys(restaurants).length == 0 
+                ?   <div>
+                        <img src={loadingGIF} style={{width: 50, marginTop:25, marginLeft: 25}} />
+                        <p style={{fontSize: '28px'}}> Getting restaurants for you. Please wait . . .  </p>
+                    </div>
+                : <div>
+                    <p style={{fontSize: '42px'}}>{restaurants.length} restaurants </p><hr/>
+                  </div>
+                }
 
                 {restaurants.map(restaurant => (
                     <RestaurantList
                         restaurant={restaurant}
                     />
                 ))}
+
             </div>
 
         </div>

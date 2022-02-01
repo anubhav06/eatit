@@ -7,7 +7,7 @@ import './RestaurantLoginPage.css'
 
 const RestaurantRegisterPage = () => {
 
-    let {restaurant, registerRestaurant} = useContext(RestaurantAuthContext)
+    let {restaurant, registerRestaurant, formLoading} = useContext(RestaurantAuthContext)
 
     // If a normal user is logged in, then tell them to logout with the normal account to access the restaurant login
     if(localStorage.getItem('authTokens') !== null){
@@ -38,7 +38,8 @@ const RestaurantRegisterPage = () => {
                             <div className='form-file-input-label'> Upload a restaurant image to be shown on main page </div>
                             <input type="file" accept="image/x-png,image/jpeg,image/jpg" name="image" placeholder="Main page food Image" required className='form-file-input'/> <br/>
                             
-                            <input type="submit" className='form-submit-btn'/>
+                            <input type="submit" disabled={formLoading} className='form-submit-btn'/>
+                            {formLoading ? <p> Registering your account. Please wait . . </p> : (null)}
                         </form>
                     </div>
                 

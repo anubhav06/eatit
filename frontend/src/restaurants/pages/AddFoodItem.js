@@ -5,7 +5,7 @@ import '../../components/LoginForm.css'
 
 const AddFoodItem = () => {
 
-    let {addFoodItem} = useContext(RestaurantAuthContext)
+    let {addFoodItem, formLoading} = useContext(RestaurantAuthContext)
     console.log('Add food item page')
     return (
         <div>
@@ -23,7 +23,8 @@ const AddFoodItem = () => {
                             <div className='form-file-input-label'> Upload the food's image: </div>
                             <input type="file" accept="image/x-png,image/jpeg,image/jpg" name="image" placeholder="Food Image" required className='form-file-input'/> <br/>
                             
-                            <input type="submit" className='form-submit-btn'/>
+                            <input type="submit" disabled={formLoading} className='form-submit-btn'/>
+                            {formLoading ? <p> Adding food. Please wait . . </p> : (null)}
                         </form>
 
                     </div>

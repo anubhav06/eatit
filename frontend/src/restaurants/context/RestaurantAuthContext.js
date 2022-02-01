@@ -19,12 +19,16 @@ export const RestaurantAuthProvider = ({children}) => {
     let [restaurant, setRestaurant] = useState(()=> localStorage.getItem('restaurantAuthTokens') ? jwt_decode(localStorage.getItem('restaurantAuthTokens')) : null)
     let [loading, setLoading] = useState(true)
 
+    // To check the API state, before an API is called, and after the API has returned a response.
+    let [formLoading, setFormLoading] = useState(false)
+
     const history = useHistory()
 
 
     // Login Restaurant method
     let loginRestaurant = async (e )=> {
         e.preventDefault()
+        setFormLoading(true)
 
         // Make a post request to the api with the Restaurant's credentials.
         let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/api/token/`, {
@@ -37,6 +41,7 @@ export const RestaurantAuthProvider = ({children}) => {
         })
         // Get the access and refresh tokens
         let data = await response.json()
+        setFormLoading(false)
 
         if(response.status === 200){
 
@@ -74,6 +79,7 @@ export const RestaurantAuthProvider = ({children}) => {
     // To register a Restaurant
     let registerRestaurant = async (e) => {
         e.preventDefault()
+        setFormLoading(true)
 
         // Reference: https://medium.com/@emeruchecole9/uploading-images-to-rest-api-backend-in-react-js-b931376b5833
         let form_data = new FormData();
@@ -96,6 +102,8 @@ export const RestaurantAuthProvider = ({children}) => {
         })
         .catch(error => alert(error))
 
+        setFormLoading(false)
+
     }
 
 
@@ -104,6 +112,7 @@ export const RestaurantAuthProvider = ({children}) => {
     // To add a new food item
     let addFoodItem = async (e) => {
         e.preventDefault()
+        setFormLoading(true)
 
         // Reference: https://medium.com/@emeruchecole9/uploading-images-to-rest-api-backend-in-react-js-b931376b5833
         let form_data = new FormData();
@@ -124,6 +133,7 @@ export const RestaurantAuthProvider = ({children}) => {
           history.push('/partner-with-us/manage-food-items')
         })
         .catch(err => alert(err))
+        setFormLoading(false)
         
     }
 
@@ -131,6 +141,7 @@ export const RestaurantAuthProvider = ({children}) => {
     // To edit an exisiting food item
     let editFoodItem = async (e) => {
         e.preventDefault()
+        setFormLoading(true)
 
         // Reference: https://medium.com/@emeruchecole9/uploading-images-to-rest-api-backend-in-react-js-b931376b5833
         let form_data = new FormData();
@@ -152,13 +163,14 @@ export const RestaurantAuthProvider = ({children}) => {
           history.push('/partner-with-us/manage-food-items')
         })
         .catch(err => alert(err))
-        
+        setFormLoading(false)
     }
 
     
      // To delete a food item
      let deleteFoodItem = async (e) => {
         e.preventDefault()
+        setFormLoading(true)
 
         let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/manage-food-items/${e.target.value}/delete`, {
             method: 'DELETE',
@@ -168,6 +180,7 @@ export const RestaurantAuthProvider = ({children}) => {
             }
         })
         let data = await response.json()
+        setFormLoading(false)
         alert(data)
         history.push('/partner-with-us/manage-food-items')
     }
@@ -176,6 +189,7 @@ export const RestaurantAuthProvider = ({children}) => {
     let contextData = {
         restaurant:restaurant,
         restaurantAuthTokens:restaurantAuthTokens,
+        formLoading:formLoading,
         loginRestaurant:loginRestaurant,
         logoutRestaurant:logoutRestaurant,
         registerRestaurant:registerRestaurant,

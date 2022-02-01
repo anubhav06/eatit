@@ -2,6 +2,7 @@ import React from 'react'
 import './Header.css'
 import './OrdersPage.css'
 import orderImage from '../assets/Delivery.png'
+import loadingImg from '../assets/loading.gif'
 
 const OrdersPage = ({orders}) => {
     
@@ -12,7 +13,15 @@ const OrdersPage = ({orders}) => {
                 <img src={orderImage} className='order-img' />
                 The joy of getting best
             </div>
-            <div className='order-container-right'> 
+            <div className='order-container-right'>             
+
+                {Object.keys(orders).length == 0 
+                ?   <div>
+                        <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} />
+                        <p style={{fontSize:24, marginLeft: 25}}> Getting your orders. Please wait . . .  </p>
+                    </div>
+                : (null)} 
+
                 {orders.map(order => (
                     <div key={order.id} className='orders-row'>
                         <div className='orders-row-left'>
