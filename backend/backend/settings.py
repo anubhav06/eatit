@@ -29,7 +29,8 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = ['eatin-django.herokuapp.com', 'testserver']
+# Get the allowed host URL from env file
+ALLOWED_HOSTS = [config('BACKEND_HOST')]
 
 
 # Application definition
@@ -204,11 +205,11 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # List of allowed origins to make an API request    
 # https://github.com/adamchainz/django-cors-headers#configuration
 CORS_ALLOWED_ORIGINS = [
-    #"http://localhost:3000",
-    #"http://127.0.0.1:8000",
-    'https://eatit-anubhav06.vercel.app',
-    'https://eatin-django.herokuapp.com',
-    'https://dashboard.stripe.com'
+    config('CORS_BACKEND_HOST'),
+    config('CORS_FRONTEND_HOST'),
+    #'https://eatit-anubhav06.vercel.app',
+    #'https://eatin-django.herokuapp.com',
+    #'https://dashboard.stripe.com'
 ]
 
 

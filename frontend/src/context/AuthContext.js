@@ -27,7 +27,7 @@ export const AuthProvider = ({children}) => {
         // To submit the twilio's sms verification code
 
         // Make a post request to the api with the mobile number.
-        let twilioResponse = await fetch('https://eatin-django.herokuapp.com/api/mobile-verification/', {
+        let twilioResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/mobile-verification/`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -49,7 +49,7 @@ export const AuthProvider = ({children}) => {
             // If verification code is correct, then go on to login the user
 
             // Make a post request to the api with the user's credentials.
-            let response = await fetch('https://eatin-django.herokuapp.com/api/custom-login/', {
+            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/custom-login/`, {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'
@@ -93,7 +93,7 @@ export const AuthProvider = ({children}) => {
     let loginUser = async (e )=> {
         e.preventDefault()
         // Make a post request to the api with the user's credentials.
-        let response = await fetch('https://eatin-django.herokuapp.com/api/token/', {
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/token/`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -140,7 +140,7 @@ export const AuthProvider = ({children}) => {
         e.preventDefault()
 
         // Make a post request to the api with the user's credentials.
-        let response = await fetch('https://eatin-django.herokuapp.com/api/register/', {
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/register/`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -188,7 +188,7 @@ export const AuthProvider = ({children}) => {
                 return
             }
             // Make a post request to the api with the refresh token to update the access token
-            let response = await fetch('https://eatin-django.herokuapp.com/api/token/refresh/', {
+            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/token/refresh/`, {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'

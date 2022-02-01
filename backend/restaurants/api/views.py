@@ -287,8 +287,9 @@ def createStripeAccount(request):
     # To create an account link. Refer: https://stripe.com/docs/connect/enable-payment-acceptance-guide?platform=web#web-create-account-link
     accountLinkResponse = stripe.AccountLink.create(
         account = response.id,
-        refresh_url = "https://eatit-anubhav06.vercel.app/partner-with-us/account-setup/refresh-url",
-        return_url = "https://eatit-anubhav06.vercel.app/partner-with-us/account-setup/return-url",
+        # Get the deployed URL from env variables
+        refresh_url = config('CORS_FRONTEND_HOST') + "/partner-with-us/account-setup/refresh-url",
+        return_url = config('CORS_FRONTEND_HOST') + "/partner-with-us/account-setup/return-url",
         type = "account_onboarding",
     )
     print('RAN CREATE STRIPE ACCOUNT')
@@ -315,8 +316,9 @@ def completeStripeAccount(request):
     # To create an account link. Refer: https://stripe.com/docs/connect/enable-payment-acceptance-guide?platform=web#web-create-account-link
     accountLinkResponse = stripe.AccountLink.create(
         account = getStripeData.accountID,
-        refresh_url = "https://eatit-anubhav06.vercel.app/partner-with-us/account-setup/refresh-url",
-        return_url = "https://eatit-anubhav06.vercel.app/partner-with-us/account-setup/return-url",
+        # Get the hosted URL from env variables
+        refresh_url = config('CORS_FRONTEND_HOST') + "/partner-with-us/account-setup/refresh-url",
+        return_url = config('CORS_FRONTEND_HOST') + "/partner-with-us/account-setup/return-url",
         type = "account_onboarding",
     )
 
@@ -375,8 +377,9 @@ def stripeRefreshURL(request):
         # Refer: https://stripe.com/docs/connect/enable-payment-acceptance-guide?platform=web#web-create-account-link
         accountLinkResponse = stripe.AccountLink.create(
             account = getStripeData.accountID,
-            refresh_url = "https://eatit-anubhav06.vercel.app/partner-with-us/account-setup/refresh-url",
-            return_url = "https://eatit-anubhav06.vercel.app/partner-with-us/account-setup/return-url",
+            # Get the hosted URL from env variables
+            refresh_url = config('CORS_FRONTEND_HOST') + "/partner-with-us/account-setup/refresh-url",
+            return_url = config('CORS_FRONTEND_HOST') + "/partner-with-us/account-setup/return-url",
             type = "account_onboarding",
         )
     except ObjectDoesNotExist:

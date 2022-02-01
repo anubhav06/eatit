@@ -18,7 +18,7 @@ const RestaurantAccountSetup = () => {
         
         // To place an order
         let getAccountInfo = async() =>{
-            let response = await fetch(`https://eatin-django.herokuapp.com/partner-with-us/create-stripe-account/get-details/`, {
+            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/create-stripe-account/get-details/`, {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
@@ -53,7 +53,7 @@ const RestaurantAccountSetup = () => {
     // To place an order
     let createStripeAccount = async() =>{
         setDisabled(true)
-        let response = await fetch(`https://eatin-django.herokuapp.com/partner-with-us/create-stripe-account/`, {
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/create-stripe-account/`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -84,7 +84,7 @@ const RestaurantAccountSetup = () => {
     // To place an order
     let completeStripeAccount = async() =>{
         setDisabled(true)
-        let response = await fetch(`https://eatin-django.herokuapp.com/partner-with-us/complete-stripe-account/`, {
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/complete-stripe-account/`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json',
