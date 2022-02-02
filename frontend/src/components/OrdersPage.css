@@ -118,7 +118,7 @@
   font-size: 25px;
 }
 
-@media only screen and (max-width: 600px){
+@media only screen and (max-width: 759px){
     .order-container-left{
       display: none;
     }

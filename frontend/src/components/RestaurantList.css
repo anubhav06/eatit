@@ -18,9 +18,9 @@
 
 .restaurant-offer-column {
     float: left;
-    padding: 15px;
-    margin: 65px 35px 35px 35px;
-    width: 20%;
+    padding: 15px 4rem;
+    margin: 65px 0px 35px 0px;
+    width: 24%;
     height: 20rem;
     font-size: 24px;
     text-decoration: none;
@@ -46,7 +46,7 @@
 .restaurant-list-column {
     float: left;
     padding: 15px;
-    margin: 0px 35px 35px 35px;
+    margin: 0px 35px 35px 20px;
     width: 20%;
     height: 20rem;
     font-size: 24px;
@@ -61,8 +61,10 @@
 
 .restaurant-image{
     margin-top: 15px;
-    width: 255px;
-    height: 170px;
+    /*width: 255px;
+    height: 170px;*/
+    width: 17vmax;
+    height: 11vmax;
 }
 
 .restaurant-heading{
@@ -78,7 +80,7 @@
 
 
 
-@media only screen and (max-width: 600px){
+@media only screen and (max-width: 700px){
     .restaurant-list-column{
         width: 100%;
         margin: 0px;
@@ -89,23 +91,32 @@
     }
 
     .restaurant-row{
-        margin: 100px 50px 50px 50px;
+        margin: 100px 50px 50px 30px;
+    }
+    
+    .restaurant-image{
+        width: 255px;
+        height: 170px;
     }
 }
 
-@media (min-width:801px) and (max-width:1025px){
+@media (min-width:701px) and (max-width:1025px){
     .restaurant-list-column{
         width: 50%;
         margin: 0px;
     }
 
     .restaurant-offer-column{
-        width: 50%;
-        margin: 35px 0px 0px 0px;
-        padding: 60px;
+        width: 45%;
+        margin-bottom: -50px;
     }
 
     .restaurant-offers-container{
         height: 42rem;
+    }
+
+    .restaurant-image{
+        width: 255px;
+        height: 170px;
     }
 }

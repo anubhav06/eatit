@@ -26,7 +26,6 @@
   float: left;
   padding: 60px 60px 60px 0px;
   width: 60%;
-  margin-left: -5rem; 
 }
 
 .banner-image{
@@ -48,7 +47,7 @@
 @media only screen and (max-width: 600px){
 
   .banner-image{
-    margin-left: 0px; 
+    margin-left: -10px; 
   }
 
   .banner-left{
