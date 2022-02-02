@@ -53,7 +53,6 @@ const ViewFoodItems = ({match}) => {
 
         // To fetch the info of the requested restaurant (like name, address)
         let getRestaurantInfo = async() =>{
-            setLoading(true)
             let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/restaurants/info/${restaurantId}`, {
                 method:'GET',
                 headers:{
@@ -61,7 +60,6 @@ const ViewFoodItems = ({match}) => {
                 }
             })
             let data = await response.json()
-            setLoading(false)
 
             if(response.status === 200){
                 setRestaurantInfo(data)
@@ -73,7 +71,6 @@ const ViewFoodItems = ({match}) => {
 
         // To get the cart items of the logged in user (all the food items added to the user's cart)
         let getCartItems = async() =>{
-            setLoading(true)
             let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/get-cart-items/`, {
                 method:'GET',
                 headers:{
@@ -83,7 +80,6 @@ const ViewFoodItems = ({match}) => {
                 }
             })
             let data = await response.json()
-            setLoading(false)
 
             if(response.status === 200){
                 setCartItems(data)
@@ -217,7 +213,7 @@ const ViewFoodItems = ({match}) => {
 
                 <div className='middle'>
                     
-                    {Object.keys(foodItems).length == 0 ? 
+                    {loading ? 
                     <div> 
                         <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} />
                         <p style={{fontSize:24, marginLeft:25}}> Getting restaurant's food. Please wait . . . </p>

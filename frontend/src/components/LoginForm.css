@@ -50,7 +50,7 @@
 
 .form-input{
     height: 30px;
-    width: 60%;
+    width: 70%;
     padding: 25px;
     font-size: 25px;
     margin: 5px 0px 5px 0px;
@@ -135,10 +135,10 @@
 
     .form-background{
         max-width: 100%;
-        margin: 1rem 2rem 0rem 2rem;
+        margin: 1rem 0.5rem 0rem 0.5rem;
     }
 
     .form-input{
-        width: 90%;
+        width: 100%;
     }
 }
