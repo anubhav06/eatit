@@ -8,11 +8,15 @@ import '../../components/OrdersPage.css'
 import orderImage from '../../assets/Delivery.png'
 import './ManageOrders.css'
 import '../../pages/UserProfile.css'
+import loadingImg from '../../assets/loading.gif'
+
 
 const ManageOrders = () => {
 
     let {restaurant, restaurantAuthTokens} = useContext(RestaurantAuthContext)
     let [orders, setOrders] = useState([])
+
+    let [loading, setLoading] = useState(false)
 
 
 
@@ -26,7 +30,8 @@ const ManageOrders = () => {
         
          // To get the cart items of the logged in user (all the food items added to the user's cart)
          let getOrders = async() =>{
-            let response = await fetch(`https://eatin-django.herokuapp.com/partner-with-us/get-orders/`, {
+            setLoading(true)
+            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/get-orders/`, {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
@@ -35,6 +40,7 @@ const ManageOrders = () => {
                 }
             })
             let data = await response.json()
+            setLoading(false)
 
             if(response.status === 200){
                 //console.log('Active Orders: ', data)
@@ -52,7 +58,8 @@ const ManageOrders = () => {
 
     // To place an order
     let updateOrder = async(id) =>{
-        let response = await fetch(`https://eatin-django.herokuapp.com/partner-with-us/update-order-status/${id}`, {
+        setLoading(true)
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/update-order-status/${id}`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -62,6 +69,7 @@ const ManageOrders = () => {
         })
         
         let data = await response.json()
+        setLoading(false)
 
         if(response.status === 200){
             alert('Order Status Updated ✅')
@@ -91,19 +99,28 @@ const ManageOrders = () => {
                     The joy of getting best
                 </div>
                 <div className='order-container-right'>
-                    <p className='active-order'> ACTIVE ORDERS </p>
-                    <RestaurantOrderPage
-                        orders={orders}
-                        updateOrder={updateOrder}
-                        showBtn={true}
-                    />
-                    <br/><hr/><br/>
-                    <p className='inactive-order'> COMPLETED ORDERS (Inactive) </p>
-                    <RestaurantOrderPage
-                        orders={orders}
-                        updateOrder={updateOrder}
-                        showBtn={false}
-                    />
+                    {loading 
+                    ?   <div>
+                            <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} />
+                            <p style={{marginLeft: 25}}> Getting your orders. Please wait . . .  </p>
+                        </div>
+                    : <div>
+                        <p className='active-order'> ACTIVE ORDERS </p>
+                        <RestaurantOrderPage
+                            orders={orders}
+                            updateOrder={updateOrder}
+                            showBtn={true}
+                        />
+                        <br/><hr/><br/>
+                        <p className='inactive-order'> COMPLETED ORDERS (Inactive) </p>
+                        <RestaurantOrderPage
+                            orders={orders}
+                            updateOrder={updateOrder}
+                            showBtn={false}
+                        />
+                    
+                    </div>
+                    }
                 </div>
             </div>
             

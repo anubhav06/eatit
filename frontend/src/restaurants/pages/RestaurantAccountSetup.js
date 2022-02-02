@@ -4,7 +4,7 @@ import RestaurantHeader from '../components/RestaurantHeader'
 import './RestaurantsAccountSetup.css'
 import bankIcon from '../../assets/bankIcon.png'
 import '../../pages/UserProfile.css'
-import { Link } from 'react-router-dom'
+import loadingImg from '../../assets/loading.gif'
 
 const RestaurantAccountSetup = () => {
 
@@ -12,13 +12,13 @@ const RestaurantAccountSetup = () => {
     let [accountStatus, setAccountStatus] = useState({})
 
     // To disable a submit btn once it's pressed, till it get's back a response
-    let [disabled, setDisabled] = useState(false)
+    let [disabled, setDisabled] = useState(true)
 
     useEffect(() => {
         
         // To place an order
         let getAccountInfo = async() =>{
-            let response = await fetch(`https://eatin-django.herokuapp.com/partner-with-us/create-stripe-account/get-details/`, {
+            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/create-stripe-account/get-details/`, {
                 method:'GET',
                 headers:{
                     'Content-Type':'application/json',
@@ -53,7 +53,7 @@ const RestaurantAccountSetup = () => {
     // To place an order
     let createStripeAccount = async() =>{
         setDisabled(true)
-        let response = await fetch(`https://eatin-django.herokuapp.com/partner-with-us/create-stripe-account/`, {
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/create-stripe-account/`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -84,7 +84,7 @@ const RestaurantAccountSetup = () => {
     // To place an order
     let completeStripeAccount = async() =>{
         setDisabled(true)
-        let response = await fetch(`https://eatin-django.herokuapp.com/partner-with-us/complete-stripe-account/`, {
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/complete-stripe-account/`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -121,6 +121,13 @@ const RestaurantAccountSetup = () => {
                 <p className='user-mail'> Account Setup Page </p>
             </div>
 
+            {Object.keys(accountStatus).length == 0 ? 
+            <div> 
+                <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} />
+                <p style={{fontSize:24 ,marginLeft: 25}}> Getting your account details. Please wait . . . </p>
+            </div> 
+            : (null)}
+
             {accountStatus === 'NotCreated' 
             ?   <div> 
                     <div className='newAccount-setup-center'>
@@ -136,7 +143,8 @@ const RestaurantAccountSetup = () => {
                         <p className='redirect-text'> You'll be redirected to Stripe to complete the onboarding proces.</p>
                         <div className='accountSetup-warning'>
                             NOTE: A test US account will be created with stripe. No real payments will be processed <br/>
-                            Certain test data needs to be entered to trigger the verification. The required data is given below
+                            Certain test data needs to be entered to trigger the verification. The required data is given below <br/>
+                            It's recommended to copy and paste the below data in a text file for reference.
                         </div>
                     </div>
                     <div className='test-section'>

@@ -8,13 +8,15 @@ import LoginForm from '../components/LoginForm'
 const LoginPage = () => {
 
     // Get the login user function from AuthContext 
-    let {user, loginUser, loginCustomUser} = useContext(AuthContext)
+    let {user, loginUser, loginCustomUser, formLoading} = useContext(AuthContext)
     // To store the user's phone number
     let [phoneNo, setPhoneNo] = useState({})
 
     let [userForm ,setUserForm] = useState(false)
     let [mobileForm, setMobileForm] = useState(true)
     let [verificationForm, setVerificationForm] = useState(false)
+    
+    let [loading, setLoading] = useState(false)
 
     // If a restaurant owner is logged in, then tell them to logout and login with a USER ACCOUNT to access the user's login
     if(localStorage.getItem('restaurantAuthTokens') !== null){
@@ -34,9 +36,10 @@ const LoginPage = () => {
         e.preventDefault()
         // To temporarily store the phone number, and pass it for submission along with the main registration form (username, password)
         setPhoneNo(e.target.number.value)
+        setLoading(true)
 
         // Make a post request to the api with the mobile number.
-        let response = await fetch('https://eatin-django.herokuapp.com/api/mobile-send-message/', {
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/mobile-send-message/`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -44,6 +47,7 @@ const LoginPage = () => {
             body:JSON.stringify({'number':e.target.number.value})
         })
         let data = await response.json()
+        setLoading(false)
 
         if(response.status === 200){
             alert(data)
@@ -68,6 +72,8 @@ const LoginPage = () => {
                 userForm = {userForm}
                 mobileForm = {mobileForm}
                 verificationForm = {verificationForm}
+                loading = {loading}
+                formLoading = {formLoading}
                 setPhoneNo = {setPhoneNo}
                 setUserForm = {setUserForm}
                 setMobileForm = {setMobileForm}

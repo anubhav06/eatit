@@ -16,6 +16,9 @@ export const AuthProvider = ({children}) => {
     let [user, setUser] = useState(()=> localStorage.getItem('authTokens') ? jwt_decode(localStorage.getItem('authTokens')) : null)
     let [loading, setLoading] = useState(true)
 
+    // To check the API state, before an API is called, and after the API has returned a response.
+    let [formLoading, setFormLoading] = useState(false)
+
     const history = useHistory()
 
 
@@ -23,11 +26,11 @@ export const AuthProvider = ({children}) => {
     // To login a custom user who wishes to login using mobile authentication (i.e. text SMS verification code)
     let loginCustomUser = async (e)=> {
         e.preventDefault()
-
+        setFormLoading(true)
         // To submit the twilio's sms verification code
 
         // Make a post request to the api with the mobile number.
-        let twilioResponse = await fetch('https://eatin-django.herokuapp.com/api/mobile-verification/', {
+        let twilioResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/mobile-verification/`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -44,12 +47,11 @@ export const AuthProvider = ({children}) => {
             //console.log("ERROR: ", twilioData)
             alert(twilioData)
         }
+        // If verification code is correct, then go on to login the user
         else{
 
-            // If verification code is correct, then go on to login the user
-
             // Make a post request to the api with the user's credentials.
-            let response = await fetch('https://eatin-django.herokuapp.com/api/custom-login/', {
+            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/custom-login/`, {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'
@@ -58,6 +60,7 @@ export const AuthProvider = ({children}) => {
             })
             // Get the access and refresh tokens
             let data = await response.json()
+            setFormLoading(false)
 
             if(response.status === 200){
 
@@ -92,8 +95,10 @@ export const AuthProvider = ({children}) => {
     // Login User method
     let loginUser = async (e )=> {
         e.preventDefault()
+        setFormLoading(true)
+
         // Make a post request to the api with the user's credentials.
-        let response = await fetch('https://eatin-django.herokuapp.com/api/token/', {
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/token/`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -103,6 +108,7 @@ export const AuthProvider = ({children}) => {
         })
         // Get the access and refresh tokens
         let data = await response.json()
+        setFormLoading(false)
 
         if(response.status === 200){
 
@@ -132,15 +138,17 @@ export const AuthProvider = ({children}) => {
         setAuthTokens(null)
         setUser(null)
         localStorage.removeItem('authTokens')
+        history.push('/')
     }
 
 
     // To register a user
     let registerUser = async (e) => {
         e.preventDefault()
+        setFormLoading(true)
 
         // Make a post request to the api with the user's credentials.
-        let response = await fetch('https://eatin-django.herokuapp.com/api/register/', {
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/register/`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
@@ -150,14 +158,14 @@ export const AuthProvider = ({children}) => {
         })
         // Get the access and refresh tokens
         let data = await response.json()
+        setFormLoading(false)
 
-        if(response.status === 200){
-            //console.log('Registered Successfully')
-            alert(data)
-            history.push('/login')
-        }else{
-            //console.log(data)
-            alert(data)
+        // If registration is successfull, then go ahead and login.
+        if(response.status == 200){
+            loginUser(e)
+        }
+        else{
+            alert('ERROR: ', data)
         }
 
     }
@@ -166,6 +174,7 @@ export const AuthProvider = ({children}) => {
     let contextData = {
         user:user,
         authTokens:authTokens,
+        formLoading:formLoading,
 
         loginCustomUser:loginCustomUser,
         loginUser:loginUser,
@@ -188,7 +197,7 @@ export const AuthProvider = ({children}) => {
                 return
             }
             // Make a post request to the api with the refresh token to update the access token
-            let response = await fetch('https://eatin-django.herokuapp.com/api/token/refresh/', {
+            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/token/refresh/`, {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'

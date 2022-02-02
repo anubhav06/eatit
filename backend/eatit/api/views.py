@@ -399,8 +399,9 @@ def checkout(request):
                 cart.checkoutSerializer() for cart in cart
             ],
             mode='payment',
-            success_url='https://eatit-anubhav06.vercel.app/my-account',
-            cancel_url='https://eatit-anubhav06.vercel.app/checkout/cancel',
+            # Get the deployed URL from enviroment variables
+            success_url= config('CORS_FRONTEND_HOST') + '/my-account',
+            cancel_url= config('CORS_FRONTEND_HOST') + '/checkout/cancel',
             stripe_account = str(accountID) ,
             # Passes the metadata to a successfull checkout session by stripe if checkout is completed.
             # The metadata will be used to save order details

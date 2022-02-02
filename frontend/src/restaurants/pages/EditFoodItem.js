@@ -8,7 +8,7 @@ import './RestaurantLoginPage.css'
 const EditFoodItem = ({match}) => {
     let [foodItem, setFoodItem] = useState([])
     let [updateFood , updateFoodItem] = useState(null)
-    let { editFoodItem, deleteFoodItem, restaurantAuthTokens} = useContext(RestaurantAuthContext)
+    let { editFoodItem, deleteFoodItem, restaurantAuthTokens, formLoading} = useContext(RestaurantAuthContext)
 
     let foodId = match.params.id
 
@@ -18,7 +18,7 @@ const EditFoodItem = ({match}) => {
 
     // API Route to update food based on the ID
     let getFood = async () => {
-        let response = await fetch(`https://eatin-django.herokuapp.com/partner-with-us/manage-food-items/${foodId}`, {
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/manage-food-items/${foodId}`, {
             method: 'GET',
             headers:{
                 'Content-Type':'application/json',
@@ -54,13 +54,15 @@ const EditFoodItem = ({match}) => {
                                     <div className='form-file-input-label'> Upload new image only if you want to update the exisiting one: </div>
                                     <input type="file" accept="image/x-png,image/jpeg,image/jpg" name="image" className='form-file-input'/> <br/>
                                     
-                                    <input type="submit" value="UPDATE" className='form-submit-btn'/>
+                                    <input type="submit" disabled={formLoading} value="UPDATE" className='form-submit-btn'/>
+                                    {formLoading ? <p> Updating data. Please wait . . </p> : (null)}
                                 </form>
 
                                 {/* Button to delete the food item */}
-                                <button onClick={deleteFoodItem} name="id" value={food.id} className='edit-food-delete-btn'> 
+                                <button onClick={deleteFoodItem} disabled={formLoading} name="id" value={food.id} className='edit-food-delete-btn'> 
                                     DELETE ITEM 
                                 </button>
+                                {formLoading ? <p> Deleting food. Please wait . . </p> : (null)}
                             </div>
                         ))}
                         

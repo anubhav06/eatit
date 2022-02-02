@@ -19,24 +19,29 @@ export const RestaurantAuthProvider = ({children}) => {
     let [restaurant, setRestaurant] = useState(()=> localStorage.getItem('restaurantAuthTokens') ? jwt_decode(localStorage.getItem('restaurantAuthTokens')) : null)
     let [loading, setLoading] = useState(true)
 
+    // To check the API state, before an API is called, and after the API has returned a response.
+    let [formLoading, setFormLoading] = useState(false)
+
     const history = useHistory()
 
 
     // Login Restaurant method
     let loginRestaurant = async (e )=> {
         e.preventDefault()
+        setFormLoading(true)
 
         // Make a post request to the api with the Restaurant's credentials.
-        let response = await fetch('https://eatin-django.herokuapp.com/partner-with-us/api/token/', {
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/api/token/`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json'
             },
             // 'e.target' is the form, '.username' gets the username field and '.password' gets the password field from wherever it is called (LoginPage.js here)
-            body:JSON.stringify({'username':e.target.username.value, 'password':e.target.password.value})
+            body:JSON.stringify({'username':e.target.email.value, 'password':e.target.password.value})
         })
         // Get the access and refresh tokens
         let data = await response.json()
+        setFormLoading(false)
 
         if(response.status === 200){
 
@@ -74,28 +79,7 @@ export const RestaurantAuthProvider = ({children}) => {
     // To register a Restaurant
     let registerRestaurant = async (e) => {
         e.preventDefault()
-
-        //// Make a post request to the api with the user's credentials.
-        //let response = await fetch('/partner-with-us/register/', {
-        //    method:'POST',
-        //    headers:{
-        //        'Content-Type':'multipart/form-data'
-        //    },
-        //    // 'e.target' is the form, '.username' gets the username field and '.password' gets the password field from wherever it is called (RegisterPage.js here)
-        //    body: { 'email':e.target.email.value, 'password':e.target.password.value, 'confirmPassword':e.target.confirmPassword.value, 'name':e.target.name.value, 'address':e.target.address.value, 'image':e.target.image.files[0]}
-        //})
-        //// Get the access and refresh tokens
-        //let data = await response.json()
-
-        //if(response.status === 200){
-        //    console.log('Registered Successfully')
-        //    alert(data)
-        //    history.push('/restaurants')
-        //}else{
-        //    console.log(data)
-        //    alert(data)
-        //}
-
+        setFormLoading(true)
 
         // Reference: https://medium.com/@emeruchecole9/uploading-images-to-rest-api-backend-in-react-js-b931376b5833
         let form_data = new FormData();
@@ -106,17 +90,19 @@ export const RestaurantAuthProvider = ({children}) => {
         form_data.append('name', e.target.name.value);
         form_data.append('address', e.target.address.value);
 
-        let url = 'https://eatin-django.herokuapp.com/partner-with-us/register/';
+        let url = `${process.env.REACT_APP_BACKEND_URL}/partner-with-us/register/`;
         axios.post(url, form_data, {
             headers: {
                 'content-type': 'multipart/form-data'
             }
         })
         .then(response => {
-          alert(response.data);
-          history.push('/partner-with-us/login')
+          loginRestaurant(e)
+          console.log(response.data)
         })
         .catch(error => alert(error))
+
+        setFormLoading(false)
 
     }
 
@@ -126,6 +112,7 @@ export const RestaurantAuthProvider = ({children}) => {
     // To add a new food item
     let addFoodItem = async (e) => {
         e.preventDefault()
+        setFormLoading(true)
 
         // Reference: https://medium.com/@emeruchecole9/uploading-images-to-rest-api-backend-in-react-js-b931376b5833
         let form_data = new FormData();
@@ -134,7 +121,7 @@ export const RestaurantAuthProvider = ({children}) => {
         form_data.append('description', e.target.description.value);
         form_data.append('price', e.target.price.value);
 
-        let url = 'https://eatin-django.herokuapp.com/partner-with-us/add-food-item/';
+        let url = `${process.env.REACT_APP_BACKEND_URL}/partner-with-us/add-food-item/`;
         axios.post(url, form_data, {
         headers: {
             'content-type': 'multipart/form-data',
@@ -146,6 +133,7 @@ export const RestaurantAuthProvider = ({children}) => {
           history.push('/partner-with-us/manage-food-items')
         })
         .catch(err => alert(err))
+        setFormLoading(false)
         
     }
 
@@ -153,6 +141,7 @@ export const RestaurantAuthProvider = ({children}) => {
     // To edit an exisiting food item
     let editFoodItem = async (e) => {
         e.preventDefault()
+        setFormLoading(true)
 
         // Reference: https://medium.com/@emeruchecole9/uploading-images-to-rest-api-backend-in-react-js-b931376b5833
         let form_data = new FormData();
@@ -162,7 +151,7 @@ export const RestaurantAuthProvider = ({children}) => {
         form_data.append('description', e.target.description.value);
         form_data.append('price', e.target.price.value);
         
-        let url = `https://eatin-django.herokuapp.com/partner-with-us/manage-food-items/${e.target.id.value}/update`;
+        let url = `${process.env.REACT_APP_BACKEND_URL}/partner-with-us/manage-food-items/${e.target.id.value}/update`;
         axios.post(url, form_data, {
         headers: {
             'content-type': 'multipart/form-data',
@@ -174,15 +163,16 @@ export const RestaurantAuthProvider = ({children}) => {
           history.push('/partner-with-us/manage-food-items')
         })
         .catch(err => alert(err))
-        
+        setFormLoading(false)
     }
 
     
      // To delete a food item
      let deleteFoodItem = async (e) => {
         e.preventDefault()
+        setFormLoading(true)
 
-        let response = await fetch(`https://eatin-django.herokuapp.com/partner-with-us/manage-food-items/${e.target.value}/delete`, {
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/manage-food-items/${e.target.value}/delete`, {
             method: 'DELETE',
             headers: {
                 'content-type': 'multipart/form-data',
@@ -190,6 +180,7 @@ export const RestaurantAuthProvider = ({children}) => {
             }
         })
         let data = await response.json()
+        setFormLoading(false)
         alert(data)
         history.push('/partner-with-us/manage-food-items')
     }
@@ -198,6 +189,7 @@ export const RestaurantAuthProvider = ({children}) => {
     let contextData = {
         restaurant:restaurant,
         restaurantAuthTokens:restaurantAuthTokens,
+        formLoading:formLoading,
         loginRestaurant:loginRestaurant,
         logoutRestaurant:logoutRestaurant,
         registerRestaurant:registerRestaurant,
@@ -220,7 +212,7 @@ export const RestaurantAuthProvider = ({children}) => {
                 return
             }
             // Make a post request to the api with the refresh token to update the access token
-            let response = await fetch('https://eatin-django.herokuapp.com/partner-with-us/api/token/refresh/', {
+            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/api/token/refresh/`, {
                 method:'POST',
                 headers:{
                     'Content-Type':'application/json'

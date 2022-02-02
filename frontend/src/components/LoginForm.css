@@ -67,6 +67,17 @@
     font-weight: bold;
 }
 
+.form-submit-btn:disabled{
+    margin-top: 1rem;
+    height: 2rem;
+    width: 7rem;
+    background-color: rgb(94, 94, 94);
+    font-size: 20px;
+    color: white;
+    border-radius: 5px;
+    font-weight: bold;
+}
+
 
 .formRight-heading{
     font-size: 80px;
