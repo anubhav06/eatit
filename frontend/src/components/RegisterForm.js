@@ -14,7 +14,7 @@ const RegisterForm = ({registerUser,phoneNo, mainForm, phoneForm,loading, formLo
                 <div className='form-background'>
                         
                     {/* Form to submit the phone number */}
-                    {phoneForm == true ?
+                    {phoneForm === true ?
                         <div>
                             <div className='form-header'> Registration Form </div>
                             <form onSubmit={submitPhoneNumber }>
@@ -27,7 +27,7 @@ const RegisterForm = ({registerUser,phoneNo, mainForm, phoneForm,loading, formLo
 
 
                     {/*  Form to submit the phone verification number */}
-                    {phoneVerificationForm == true ?
+                    {phoneVerificationForm === true ?
                         <div>
                             <div className='form-header'> Registration Form </div>
                             <form onSubmit={submitVerificationCode}>
@@ -41,7 +41,7 @@ const RegisterForm = ({registerUser,phoneNo, mainForm, phoneForm,loading, formLo
                     
                     
                     {/* The main registration form */}
-                    {mainForm == true ?
+                    {mainForm === true ?
                         <div>
                             <div className='form-header'> Registration Form </div>
                             <form onSubmit={registerUser}>

@@ -1,11 +1,7 @@
-import React, {useContext, useEffect, useState} from 'react'
-import { Redirect, useHistory } from 'react-router-dom'
+import React from 'react'
 
 
 const CheckoutSuccessPage = () => {
-
-    let [returnURLData, setReturnURLData] = useState({})
-    const history = useHistory()
 
 
     return (

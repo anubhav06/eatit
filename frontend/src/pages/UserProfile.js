@@ -1,5 +1,4 @@
-import React, {useState, useEffect, useContext, setState} from 'react'
-import { useHistory } from 'react-router-dom'
+import React, {useState, useEffect, useContext} from 'react'
 import Header from '../components/Header'
 import AuthContext from '../context/AuthContext'
 import './UserProfile.css'
@@ -11,7 +10,6 @@ const UserProfile = ({match}) => {
     let [userInfo, setUserInfo] = useState({})
     let [orders, setOrders] = useState([])
     
-    const history = useHistory()
 
     // Runs the following functions on each load of page
     useEffect(()=> {

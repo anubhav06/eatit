@@ -10,12 +10,12 @@ import RestaurantOffer3 from '../assets/RestaurantOffer3.png'
 import loadingGIF from '../assets/loading.gif'
 
 const HomePage = () => {
-    let [notes, setNotes] = useState([])
     let [restaurants, setRestaurants] = useState([])
-    let {authTokens, logoutUser} = useContext(AuthContext)
+    let {logoutUser} = useContext(AuthContext)
 
 
     useEffect(()=> {
+        
         
         // To fetch all the restaurants
         let getRestaurants = async() =>{
@@ -46,17 +46,17 @@ const HomePage = () => {
             
             {/* OFFERS SECTION */}
             <div className='restaurant-offers-container'> 
-                <div className='restaurant-offer-column'> <img src={RestaurantOffer}/> </div>
-                <div className='restaurant-offer-column'> <img src={RestaurantOffer1}/> </div>
-                <div className='restaurant-offer-column'> <img src={RestaurantOffer2}/> </div>
-                <div className='restaurant-offer-column'> <img src={RestaurantOffer3}/> </div>
+                <div className='restaurant-offer-column'> <img src={RestaurantOffer} alt='offerImg 1'/> </div>
+                <div className='restaurant-offer-column'> <img src={RestaurantOffer1} alt='offerImg 2'/> </div>
+                <div className='restaurant-offer-column'> <img src={RestaurantOffer2} alt='offerImg 3'/> </div>
+                <div className='restaurant-offer-column'> <img src={RestaurantOffer3} alt='offerImg 4'/> </div>
             </div>
             
             {/* RESTAURANT LISTS SECTION */}
             <div className='restaurant-row'>
-                {Object.keys(restaurants).length == 0 
+                {Object.keys(restaurants).length === 0 
                 ?   <div>
-                        <img src={loadingGIF} style={{width: 50, marginTop:25, marginLeft: 25}} />
+                        <img src={loadingGIF} style={{width: 50, marginTop:25, marginLeft: 25}} alt='loading' />
                         <p style={{fontSize: '28px'}}> Getting restaurants for you. Please wait . . .  </p>
                     </div>
                 : <div>
@@ -67,6 +67,7 @@ const HomePage = () => {
                 {restaurants.map(restaurant => (
                     <RestaurantList
                         restaurant={restaurant}
+                        key={restaurant.id}
                     />
                 ))}
 

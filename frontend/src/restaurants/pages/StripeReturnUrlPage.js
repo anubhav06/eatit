@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react'
 import RestaurantAuthContext from '../context/RestaurantAuthContext'
-import RestaurantHeader from '../components/RestaurantHeader'
-import { Redirect, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 
 const StripeReturnUrlPage = () => {

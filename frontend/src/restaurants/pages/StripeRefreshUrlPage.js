@@ -1,7 +1,5 @@
 import React, {useContext, useEffect} from 'react'
 import RestaurantAuthContext from '../context/RestaurantAuthContext'
-import RestaurantHeader from '../components/RestaurantHeader'
-import { Redirect } from 'react-router-dom'
 
 // This page is called when stripe onboarding is not completed
 // Refer: https://stripe.com/docs/connect/enable-payment-acceptance-guide?platform=web#web-refresh-url

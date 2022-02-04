@@ -161,7 +161,7 @@ export const AuthProvider = ({children}) => {
         setFormLoading(false)
 
         // If registration is successfull, then go ahead and login.
-        if(response.status == 200){
+        if(response.status === 200){
             loginUser(e)
         }
         else{

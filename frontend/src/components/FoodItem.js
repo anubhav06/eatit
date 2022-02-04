@@ -21,7 +21,7 @@ const FoodItem = ({food, cartItems, addToCart, removeFromCart}) => {
                 // If food is already added in cart, then display buttons to increase/decrease the quantity 
                 ?   <div key={food.id} className='item-addToCart'>
                         <button name='remove' onClick={ () => removeFromCart(food) } className='item-cartBtn'> - </button>
-                        <p className='item-cartInfo'> {cartItems.find(cart => cart.food.id == food.id).qty} </p>
+                        <p className='item-cartInfo'> {cartItems.find(cart => cart.food.id === food.id).qty} </p>
                         <button name='add' onClick={ () => addToCart(food) } className='item-cartBtn'> + </button>
                     </div> 
                 // Else if item is not in cart, then display an add to cart button

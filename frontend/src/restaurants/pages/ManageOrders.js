@@ -95,13 +95,13 @@ const ManageOrders = () => {
             </div>
             <div className='orders-container'>
                 <div className='order-container-left'>
-                    <img src={orderImage} className='order-img' />
+                    <img src={orderImage} className='order-img' alt='order' />
                     The joy of getting best
                 </div>
                 <div className='order-container-right'>
                     {loading 
                     ?   <div>
-                            <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} />
+                            <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} alt='loading' />
                             <p style={{marginLeft: 25}}> Getting your orders. Please wait . . .  </p>
                         </div>
                     : <div>

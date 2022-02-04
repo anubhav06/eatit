@@ -47,7 +47,7 @@ export const RestaurantAuthProvider = ({children}) => {
 
 
             // If a simple user tries to login, the return without allocating the authTokens
-            if(jwt_decode(data.access)['group'] == 'None'){
+            if(jwt_decode(data.access)['group'] === 'None'){
                 alert('You need to login with a restaurant account')
                 return 
             }

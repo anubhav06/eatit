@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, setState} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import { useHistory } from 'react-router-dom'
 import Header from '../components/Header'
 import AuthContext from '../context/AuthContext'
@@ -162,7 +162,7 @@ const ViewFoodItems = ({match}) => {
 
         if(response.status === 200){
             
-            const exist = cartItems.find((x) => x.food.id == food.id);
+            const exist = cartItems.find((x) => x.food.id === food.id);
 
             // If the food item's qty is 1, then delete the item from cart
             if(exist.qty === 1) {
@@ -207,7 +207,7 @@ const ViewFoodItems = ({match}) => {
             <div className='row'>
                 
                 <div className='left'> 
-                    <img src={cookingImg} className='cookingImg' />
+                    <img src={cookingImg} className='cookingImg' alt='cookingImg' />
                     <p> Good food is foundation of genuine happiness </p>
                 </div>
 
@@ -215,7 +215,7 @@ const ViewFoodItems = ({match}) => {
                     
                     {loading ? 
                     <div> 
-                        <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} />
+                        <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} alt='loading' />
                         <p style={{fontSize:24, marginLeft:25}}> Getting restaurant's food. Please wait . . . </p>
                     </div> 
                     : 
@@ -229,6 +229,7 @@ const ViewFoodItems = ({match}) => {
                             cartItems={cartItems}
                             addToCart={addToCart}
                             removeFromCart={removeFromCart}
+                            key={food.id}
                         />
                     ))}
                     <hr/>

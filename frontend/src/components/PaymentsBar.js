@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import './Header.css'
 import './AddressBar.css'
 import './PaymentsBar.css'
@@ -22,7 +22,7 @@ const PaymentsBar = ({deliveryAddress, checkout, disabled, setPaymentWindow, set
                     <p className='address-subpartDetails'> NOTE: You will be redirected to our payment partner's site </p>
                     <button onClick={checkout} disabled={disabled} className='address-subpartBtn'> Checkout → </button>
                     {/* If checkout button is clicked, then show a redirecting text */}
-                    {disabled == true 
+                    {disabled === true 
                     ?   <div style={{marginTop: '-10px'}}> Please wait. Redirecting . . . </div>
                     : (null)}
                     <div className='testPayment-warning'>

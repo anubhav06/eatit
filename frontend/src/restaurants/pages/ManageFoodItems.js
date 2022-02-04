@@ -57,14 +57,14 @@ const ManageFoodItems = () => {
             <div className='row'>
 
                 <div className='left'> 
-                    <img src={cookingImg} className='cookingImg' />
+                    <img src={cookingImg} className='cookingImg' alt='cooking' />
                     <p> Good food is foundation of genuine happiness </p>
                 </div>
 
                 <div className='middle'>
                     {loading 
                     ?   <div>
-                            <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} />
+                            <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} alt='loading' />
                             <p style={{marginLeft: 25}}> Getting your food. Please wait . . . </p>
                         </div>
                     :   <div>

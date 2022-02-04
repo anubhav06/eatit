@@ -1,5 +1,4 @@
-import React, {useState, useEffect, useContext, setState} from 'react'
-import { Redirect, useHistory } from 'react-router-dom'
+import React, {useState, useEffect, useContext} from 'react'
 import Header from '../components/Header'
 import AuthContext from '../context/AuthContext'
 import './CheckoutPage.css'
@@ -26,7 +25,6 @@ const CheckoutPage = ({match}) => {
     // To disable to checkout btn once clicked on it
     let [disabled, setDisabled] = useState(false)
 
-    const history = useHistory()
 
     // Runs the following functions on each load of page
     useEffect(()=> {
@@ -147,7 +145,7 @@ const CheckoutPage = ({match}) => {
 
         if(response.status === 200){
             
-            const exist = cartItems.find((x) => x.food.id == food.id);
+            const exist = cartItems.find((x) => x.food.id === food.id);
 
             // If the food item's qty is 1, then delete the item from cart
             if(exist.qty === 1) {
