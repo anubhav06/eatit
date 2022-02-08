@@ -13,22 +13,25 @@ const EditFoodItem = ({match}) => {
     let foodId = match.params.id
 
     useEffect(() => {
-        getFood()
-    }, [foodId] )
 
-    // API Route to update food based on the ID
-    let getFood = async () => {
-        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/manage-food-items/${foodId}`, {
-            method: 'GET',
-            headers:{
-                'Content-Type':'application/json',
-                // Provide the authToken when making API request to backend to access the protected route of that user
-                'Authorization':'Bearer ' + String(restaurantAuthTokens.access)
-            }
-        })
-        let data = await response.json()
-        setFoodItem(data)
-    }
+        // API Route to update food based on the ID
+        let getFood = async () => {
+            let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/manage-food-items/${foodId}`, {
+                method: 'GET',
+                headers:{
+                    'Content-Type':'application/json',
+                    // Provide the authToken when making API request to backend to access the protected route of that user
+                    'Authorization':'Bearer ' + String(restaurantAuthTokens.access)
+                }
+            })
+            let data = await response.json()
+            setFoodItem(data)
+        }
+
+        getFood()
+    }, [foodId, restaurantAuthTokens] )
+
+    
 
 
     return (

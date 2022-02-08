@@ -27,7 +27,7 @@ export const AuthProvider = ({children}) => {
     let loginCustomUser = async (e)=> {
         e.preventDefault()
         setFormLoading(true)
-        // To submit the twilio's sms verification code
+        // To submit the twilio's SMS verification code
 
         // Make a post request to the api with the mobile number.
         let twilioResponse = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/mobile-verification/`, {
@@ -153,7 +153,7 @@ export const AuthProvider = ({children}) => {
             headers:{
                 'Content-Type':'application/json'
             },
-            // 'e.target' is the form, '.username' gets the username field and '.password' gets the password field from wherever it is called (LoginPage.js here)
+            // 'e.target' is the form, '.username' gets the username field and '.password' gets the password field from wherever it is called (RegisterPage.js here)
             body:JSON.stringify({'username':e.target.username.value, 'password':e.target.password.value, 'confirmPassword':e.target.confirmPassword.value, 'email':e.target.email.value, 'number': e.target.number.value})
         })
         // Get the access and refresh tokens

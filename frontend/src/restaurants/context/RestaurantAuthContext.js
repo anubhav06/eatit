@@ -36,7 +36,7 @@ export const RestaurantAuthProvider = ({children}) => {
             headers:{
                 'Content-Type':'application/json'
             },
-            // 'e.target' is the form, '.username' gets the username field and '.password' gets the password field from wherever it is called (LoginPage.js here)
+            // 'e.target' is the form, '.username' gets the username field and '.password' gets the password field from wherever it is called (RestaurantLoginPage.js here)
             body:JSON.stringify({'username':e.target.email.value, 'password':e.target.password.value})
         })
         // Get the access and refresh tokens

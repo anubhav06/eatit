@@ -15,10 +15,10 @@ const ManageFoodItems = () => {
 
     let [loading, setLoading] = useState(false)
 
-    // call getNotes on load
+
     useEffect(()=> {
         
-        // To fetch the notes of a user
+        // To fetch the food items of restaurant
         let getFoodItems = async() =>{
             setLoading(true)
             let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/manage-food-items/`, {
@@ -42,7 +42,7 @@ const ManageFoodItems = () => {
 
         getFoodItems()
 
-    }, [])
+    }, [restaurantAuthTokens, logoutRestaurant])
 
 
     return (

@@ -38,7 +38,7 @@ const RegisterPage = () => {
         // To temporarily store the phone number, and pass it for submission along with the main registration form (username, password)
         setPhoneNo(e.target.number.value)
 
-        // Make a post request to the api with the mobile number.
+        // Make a POST request to the API with the mobile number.
         let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/mobile-send-message/`, {
             method:'POST',
             headers:{
@@ -69,7 +69,7 @@ const RegisterPage = () => {
         setLoading(true)
         setPhoneNo(e.target.number.value)
 
-        // Make a post request to the api with the mobile number.
+        // Make a POST request to API api with the mobile number.
         let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/mobile-verification/`, {
             method:'POST',
             headers:{
@@ -90,7 +90,6 @@ const RegisterPage = () => {
             alert(data)
         }
         else{
-            //console.log("ERROR: ", data)
             alert(data)
         }
 

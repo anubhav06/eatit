@@ -4,14 +4,14 @@ import AuthContext from '../context/AuthContext'
 import './UserProfile.css'
 import OrdersPage from '../components/OrdersPage'
 
-const UserProfile = ({match}) => {
+const UserProfile = () => {
 
     let {authTokens} = useContext(AuthContext)
     let [userInfo, setUserInfo] = useState({})
     let [orders, setOrders] = useState([])
     
 
-    // Runs the following functions on each load of page
+    // useEffect runs the following methods on every load of page
     useEffect(()=> {
         
         // To get the cart items of the logged in user (all the food items added to the user's cart)
@@ -46,7 +46,6 @@ const UserProfile = ({match}) => {
             let data = await response.json()
 
             if(response.status === 200){
-                //console.log('Active Orders: ', data)
                 setOrders(data)
             }else {
                 alert('ERROR: While getting active order\ns ', data)
@@ -57,7 +56,7 @@ const UserProfile = ({match}) => {
         // Call these functions on each load of page
         getUserInfo()
         getOrders()
-    }, [])
+    }, [authTokens])
 
 
 

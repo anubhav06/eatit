@@ -44,9 +44,9 @@ function App() {
         </AuthProvider>
 
         <RestaurantAuthProvider>
+          <Route component={RestaurantHomePage} path="/partner-with-us" exact />
           <Route component={RestaurantLoginPage} path="/partner-with-us/login"/>
           <Route component={RestaurantRegisterPage} path="/partner-with-us/register"/>
-          <Route component={RestaurantHomePage} path="/partner-with-us" exact />
           <RestaurantPrivateRoute component={ManageFoodItems} path="/partner-with-us/manage-food-items" exact />
           <RestaurantPrivateRoute component={EditFoodItem} path="/partner-with-us/manage-food-items/:id" exact />
           <RestaurantPrivateRoute component={AddFoodItem} path="/partner-with-us/add-food-item" exact />

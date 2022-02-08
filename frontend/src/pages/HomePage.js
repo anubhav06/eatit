@@ -37,7 +37,7 @@ const HomePage = () => {
         
         getRestaurants()
 
-    }, [])
+    }, [logoutUser])
 
 
     return (
@@ -54,6 +54,7 @@ const HomePage = () => {
             
             {/* RESTAURANT LISTS SECTION */}
             <div className='restaurant-row'>
+                {/* To display a loading symbol until the API gets back a response from backend  */}
                 {Object.keys(restaurants).length === 0 
                 ?   <div>
                         <img src={loadingGIF} style={{width: 50, marginTop:25, marginLeft: 25}} alt='loading' />

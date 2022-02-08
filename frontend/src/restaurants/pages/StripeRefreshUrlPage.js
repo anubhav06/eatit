@@ -24,7 +24,6 @@ const StripeRefreshUrlPage = () => {
 
             // Redirect to the link generated from backend
             if(response.status === 200){
-                //console.log('GET STRIPE REFRESH URL: ', data)
                 window.location.href = `${data}`
 
             } 
@@ -36,7 +35,7 @@ const StripeRefreshUrlPage = () => {
         }
 
         getStripeRefreshURL()
-    }, [])
+    }, [restaurantAuthTokens])
     
     return(
         <div>

@@ -20,7 +20,6 @@ const ManageOrders = () => {
 
 
 
-    // Runs the following functions on each load of page
     useEffect(()=> {
             
         // If a normal user visits (With group=None), then redirect to normal users page
@@ -43,7 +42,6 @@ const ManageOrders = () => {
             setLoading(false)
 
             if(response.status === 200){
-                //console.log('Active Orders: ', data)
                 setOrders(data)
             }else {
                 alert('ERROR: While getting active order\ns ', data)
@@ -53,7 +51,7 @@ const ManageOrders = () => {
         
         // Call these functions on each load of page
         getOrders()
-    }, [])
+    }, [restaurant, restaurantAuthTokens])
 
 
     // To place an order
@@ -78,7 +76,6 @@ const ManageOrders = () => {
 
         } else {
             alert('Error updating order status. ',data)
-            //console.log('ERROR: ', data)
         }
     }
 

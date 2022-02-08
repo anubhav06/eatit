@@ -26,7 +26,7 @@ const ViewFoodItems = ({match}) => {
 
     const history = useHistory()
 
-    // Runs the following functions on each load of page
+    // useEffect runs the following methods on each load of page
     useEffect(()=> {
         
         // To fetch the food items of a restaurant
@@ -83,7 +83,6 @@ const ViewFoodItems = ({match}) => {
 
             if(response.status === 200){
                 setCartItems(data)
-                //console.log('SET CART ITEMS DATA: ', data)
                 // If the user's cart is not empty, then get the cart's total amount from backend and store it
                 if (data[0]?.totalAmount !== undefined){
                     var newTotalAmount = parseFloat(data[0]?.totalAmount)
@@ -100,7 +99,7 @@ const ViewFoodItems = ({match}) => {
         getCartItems()
         getRestaurantInfo()
         getFoodItems()
-    }, [])
+    }, [authTokens, restaurantId])
 
 
 
@@ -143,7 +142,6 @@ const ViewFoodItems = ({match}) => {
 
         } else {
             alert(data)
-            //console.log('ERROR: ', data)
         }
     }
 
@@ -180,19 +178,14 @@ const ViewFoodItems = ({match}) => {
 
             //Update the user's cart's total amount by subtracting the removed food item's price from total amount
             var newTotalAmount = parseFloat(totalAmount) - parseFloat(food.price)
-            //console.log("NEW TOTAL AMOUNT: ", newTotalAmount)
             setTotalAmount(parseFloat(newTotalAmount))
 
         } else {
             alert('ERROR: Removing Item to cart ')
-            //console.log('ERROR: ', response)
         }
     }
 
 
-
-    //console.log('FOOD ITEMS: ', foodItems)
-    //console.log('CART ITEMS: ', cartItems)
 
 
 

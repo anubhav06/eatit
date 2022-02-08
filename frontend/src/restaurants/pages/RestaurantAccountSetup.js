@@ -16,7 +16,7 @@ const RestaurantAccountSetup = () => {
 
     useEffect(() => {
         
-        // To place an order
+        // To get the stripe account info of restaurant
         let getAccountInfo = async() =>{
             let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/create-stripe-account/get-details/`, {
                 method:'GET',
@@ -31,26 +31,24 @@ const RestaurantAccountSetup = () => {
 
             // If restaurant has not created any account yet (probably because landed for first time)
             if(response.status === 200){
-                //console.log('GET STRIPE: ', data)
                 setAccountStatus('NotCreated')
             }
             // If restaurant has created the account but has not provided all details to stripe
             else if(response.status === 230){
-                //console.log('GET STRIPE: ', data)
                 setAccountStatus('NotCompleted')
             } 
             // If restaurant has created the account and provided all the details (i.e. fully connected with stripe)
             else if(response.status === 231) {
-                //console.log('GET STRIPE:', data)
                 setAccountStatus('Completed')
             }
         }
 
         getAccountInfo()
 
-    }, [])
+    }, [restaurantAuthTokens])
 
-    // To place an order
+
+    // To create a stripe account for the restaurant
     let createStripeAccount = async() =>{
         setDisabled(true)
         let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/create-stripe-account/`, {
@@ -65,7 +63,6 @@ const RestaurantAccountSetup = () => {
         let data = await response.json()
 
         if(response.status === 200){
-            //console.log('CREATE STRIPE ACCOUNT DATA: ', data)
             alert('Stripe account created ✅')
             window.location.href = `${data}`
         }
@@ -81,7 +78,7 @@ const RestaurantAccountSetup = () => {
     
 
 
-    // To place an order
+    // To complete the stripe onboarding process (for those who have not completed the process, but have just created the account)
     let completeStripeAccount = async() =>{
         setDisabled(true)
         let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/complete-stripe-account/`, {
@@ -96,13 +93,11 @@ const RestaurantAccountSetup = () => {
         let data = await response.json()
 
         if(response.status === 200){
-            //console.log('CREATE STRIPE ACCOUNT DATA: ', data)
             alert('Stripe account onborading link created ✅')
             window.location.href = `${data}`
         }
         else if(response.status === 412){
             alert(data)
-            //console.log('Account Already Created')
         } 
         else {
             alert('Error creating a stripe account ',data)
@@ -110,7 +105,6 @@ const RestaurantAccountSetup = () => {
         }
     }
     
-    //console.log('account status: ', accountStatus)
 
     return (
         <div>
