@@ -2,7 +2,7 @@
 An online food ordering web application made using React + Django similar to UberEats / Swiggy / Zomato
 
 
-Try Out: https://eatit-anubhav06.vercel.app/
+Try Out: https://eatin.vercel.app/
 
 <img src="https://i.ibb.co/GPyGczM/10.png" alt="EatIN Image" border="0">
 
