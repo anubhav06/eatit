@@ -1,4 +1,3 @@
-from urllib import response
 from django.test import TestCase
 from django.contrib.auth.models import User
 from eatit.api.serializers import AddressSerializer, ActiveOrdersSerializer, UserSerializer, RestaurantSerializer, FoodItemSerializer

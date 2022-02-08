@@ -11,15 +11,20 @@ from rest_framework_simplejwt.views import (
 
 # Refer to the corresponding view function for more detials of the url routes
 urlpatterns = [ 
+    # To display a list of available API routes through DRF
     path('', views.getRoutes, name="index"),
+
+    # User authentication
     path('register/', views.register, name="register" ),
     path('mobile-send-message/', views.mobileSendMessage, name="mobileSendMessage"),
     path('mobile-verification/', views.mobileVerification, name='mobileVerification'),
 
+    # To get all the restaurants, and their data (food, information)
     path('restaurants/', views.restaurants, name="restaurants"),
     path('restaurants/<int:id>', views.restaurantsFood, name="restaurantsFood"),
     path('restaurants/info/<int:id>', views.restaurantsInfo, name="restaurantsInfo"),
     
+    # To get, add or remove item(s) from user's cart
     path('get-cart-items/', views.getCartItems, name="getCartItems"),
     path('add-to-cart/<int:id>', views.addToCart, name="addToCart"),
     path('remove-from-cart/<int:id>', views.removeFromCart, name="removeFromCart"),

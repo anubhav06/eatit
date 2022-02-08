@@ -2,8 +2,6 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.db.utils import Error
 from django.contrib.auth.models import Group
 from django.db import IntegrityError
-from django.http.response import HttpResponseRedirect
-from django.views.generic.base import RedirectView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
@@ -20,7 +18,6 @@ from eatit.api.serializers import ActiveOrdersSerializer
 from restaurants.models import Restaurant, FoodItem, User, Stripe
 from .serializers import FoodItemSerializer
 
-import os
 from decouple import config
 import stripe
 
@@ -68,9 +65,9 @@ def register(request):
 
     # Input validation. Check if all data is provided
     if not email or not name or not address or not password or not confirmation:
-        return Response('All data is required')
+        return Response('All data is required', status=status.HTTP_406_NOT_ACCEPTABLE)
     if len(name) >= 64 or len(address) >= 320:
-        return Response('Max size exceeded! Enter a smaller value')
+        return Response('Max size exceeded! Enter a smaller value', status=status.HTTP_406_NOT_ACCEPTABLE)
 
     # Attempt to create new user
     try:
@@ -86,8 +83,8 @@ def register(request):
         user = User.objects.get(username=email)
         restaurant = Restaurant.objects.create(user=user, name=name, address=address, image=image)
         restaurant.save()
-    except IntegrityError:
-        return Response(IntegrityError)
+    except IntegrityError as e:
+        return Response(e, status=status.HTTP_406_NOT_ACCEPTABLE)
     
     # Add it to the restaurants groups
     group = Group.objects.get(name='Restaurant') 
@@ -98,17 +95,8 @@ def register(request):
 
 
 
-@api_view(['GET'])
-def getRoutes(request):
-    routes = [
-        '/api/token',
-        '/api/token/refresh',
-        '/api/register',
-    ]
 
-    return Response(routes)
-
-    
+# For a restaurant to add a new food item
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def addFoodItem(request):
@@ -120,38 +108,41 @@ def addFoodItem(request):
 
     # Input validation. Check if all data is provided
     if not name or not description or not price or image == 'undefined':
-        return Response('All data is required')
+        return Response('All data is required', status=status.HTTP_406_NOT_ACCEPTABLE)
     if len(name) >= 32 or len(description) >= 320 or len(str(price)) > 6:
-        return Response('Max size exceeded! Enter a smaller value')
+        return Response('Max size exceeded! Enter a smaller value', status=status.HTTP_406_NOT_ACCEPTABLE)
 
     # Get the logged in user's restaurant
     try:
         restaurant = Restaurant.objects.get(user= request.user)
     except Error:
-        return Response('No restaurant is associated with the logged in user')
+        return Response('No restaurant is associated with the logged in user', status=status.HTTP_404_NOT_FOUND)
 
     # Save the details obtained from frontend about food item
     try:
         data = FoodItem(restaurant=restaurant, name=name, description=description, price=price, image=image)
         data.save()
     except Error:
-        return Response('Error while adding the food items')
+        return Response('Error while adding the food items', status=status.HTTP_404_NOT_FOUND)
 
     return Response('✅ Your food item has been succesfully added!')
 
 
 
+# For restaurants to view all the added food items
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def manageFoodItems(request):
 
     restaurant = Restaurant.objects.get(user= request.user)
     foodItems = FoodItem.objects.filter(restaurant=restaurant)
+    # Serialize the data for sending to frontend
     serializer = FoodItemSerializer(foodItems, many=True)
     return Response(serializer.data)
 
 
 
+# To edit the data of an existing food item. Returns the data of the requested food item
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def editFoodItems(request, id):
@@ -163,6 +154,7 @@ def editFoodItems(request, id):
 
 
 
+# To update the data of a food item.
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def updateFoodItem(request, id):
@@ -171,12 +163,6 @@ def updateFoodItem(request, id):
     description = request.data["description"]
     price = request.data["price"]
     image = request.data["image"]
-
-    # Get the logged in user's restaurant
-    try:
-        restaurant = Restaurant.objects.get(user= request.user)
-    except Error:
-        return Response('Error 1')
 
     # Update the details obtained from frontend about food item
     try:
@@ -188,11 +174,12 @@ def updateFoodItem(request, id):
         if image != 'undefined':
             foodItem.image = image
         foodItem.save()
-    except Error:
-        return Response('Error: ', Error)
+    except Error as e:
+        return Response(e, status=status.HTTP_406_NOT_ACCEPTABLE)
 
     return Response('✅ Your food item has been succesfully updated!')
     
+
 
 # To delete a food item
 @api_view(['DELETE'])
@@ -231,9 +218,11 @@ def updateOrderStatus(request, id):
 
     # --- To send the user a text SMS about the updated order status ----
 
+    # Get the mobile number of the user who placed the order
     orderedBy = User.objects.get(id=order.user.id)
     number = MobileNumber.objects.get(user=orderedBy).number
-    # Find your Account SID and Auth Token at twilio.com/console
+
+    # Find your Account SID and Auth Token at https://twilio.com/console
     # and set the environment variables. See http://twil.io/secure
     account_sid = config('TWILIO_ACCOUNT_SID')
     auth_token = config('TWILIO_AUTH_TOKEN')
@@ -246,20 +235,18 @@ def updateOrderStatus(request, id):
                         body="Your order #" + str(order.id) + " has been delivered! Thanks for ordering at EatIN ! " 
                     )
 
-    print('Message sent ✅')
-    print(message.status)
-
+    print('Message sent ✅ ', message.status)
 
     serializer = ActiveOrdersSerializer(order)
     return Response(serializer.data)
 
 
-# To create a stripe account
+# To create a new stripe account
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def createStripeAccount(request):
     
-    print('RUNNING CREATE STRIPE ACCOUNT')
+    # Get the restaurant for which stripe account has to be created
     getRestaurant = Restaurant.objects.get(user=request.user)
 
     stripe.api_key = config('STRIPE_API_KEY')
@@ -279,12 +266,15 @@ def createStripeAccount(request):
         email = request.user.email, 
 
     )
-    # Todo: Add business profile details later like name address etc. 
+    # TODO: Add business profile details later like name address etc. 
     # https://stripe.com/docs/api/accounts/create#create_account-business_profile
+
+    # Store the stripe acccount ID of the restaurant owner
     stripeModel = Stripe.objects.create(restaurant = getRestaurant, accountID=response.id)
     stripeModel.save()
     
-    # To create an account link. Refer: https://stripe.com/docs/connect/enable-payment-acceptance-guide?platform=web#web-create-account-link
+    # To create an account link for user start the onboarding process.
+    # Refer: https://stripe.com/docs/connect/enable-payment-acceptance-guide?platform=web#web-create-account-link
     accountLinkResponse = stripe.AccountLink.create(
         account = response.id,
         # Get the deployed URL from env variables
@@ -292,28 +282,28 @@ def createStripeAccount(request):
         return_url = config('CORS_FRONTEND_HOST') + "/partner-with-us/account-setup/return-url",
         type = "account_onboarding",
     )
-    print('RAN CREATE STRIPE ACCOUNT')
 
     # Return the URL generated by stripe
     return Response({accountLinkResponse.url})
 
 
 
-# To complete a stripe account which already has stripe account created but not completed
+# To complete a stripe account which already has stripe account created but not completed 
+# (all details are not provided as required by stripe)
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def completeStripeAccount(request):
-  
+    
+    # Check if stripe is created.
+    # Only continue if account is created, but onboarding process is not completed
     try:
         getRestaurant = Restaurant.objects.get(user=request.user)
         getStripeData = Stripe.objects.get(restaurant=getRestaurant)
     except ObjectDoesNotExist:
         return Response({'Stripe account not created'}, status=status.HTTP_412_PRECONDITION_FAILED)
 
-    print('STRIPE: ', getStripeData)
-    print('ACCOUNT ID: ', getStripeData.accountID)
-
-    # To create an account link. Refer: https://stripe.com/docs/connect/enable-payment-acceptance-guide?platform=web#web-create-account-link
+    # To create an account link. 
+    # Refer: https://stripe.com/docs/connect/enable-payment-acceptance-guide?platform=web#web-create-account-link
     accountLinkResponse = stripe.AccountLink.create(
         account = getStripeData.accountID,
         # Get the hosted URL from env variables
@@ -353,23 +343,18 @@ def stripeGetDetails(request):
     if details_submitted == False or charges_enabled == False:
         return Response({'Connect Onboarding Process not completed'}, status=230)
     
-    print('stripeAccount: ', stripeAccount)
-    print('details_submitted: ', details_submitted)
-    print('charges_enabled: ', charges_enabled)
+
     # CASE 3: Account is created and all the details have also been provided
     return Response({'Stripe account connected ✅'}, status=231)
 
 
-# In case of stripe onborading is not completed, the following function is called
+# In the case when stripe onborading is not completed, the following function is called
 # Refer: https://stripe.com/docs/connect/enable-payment-acceptance-guide?platform=web#web-refresh-url
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def stripeRefreshURL(request):
 
-    print('STRIPE REFRESH URL CALLED')
-
     getRestaurant = Restaurant.objects.get(user=request.user)
-
 
     try:
         getStripeData  = Stripe.objects.get(restaurant=getRestaurant)
@@ -385,7 +370,6 @@ def stripeRefreshURL(request):
     except ObjectDoesNotExist:
         return Response({'Stripe account not created'})
 
-    print('STRIPE REFRESH URL END')
 
     # Return the URL generated by stripe
     return Response({accountLinkResponse.url})
@@ -395,8 +379,6 @@ def stripeRefreshURL(request):
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def stripeReturnURL(request):
-
-    print('STRIPE RETURN URL CALLED')
 
     stripe.api_key = config('STRIPE_API_KEY')
     
@@ -416,6 +398,30 @@ def stripeReturnURL(request):
     if details_submitted == False or charges_enabled == False:
         return Response({'Connect Onboarding Process not completed'}, status=status.HTTP_412_PRECONDITION_FAILED)
 
-    print('STRIPE RETURN URL FINSIHED')
-
     return Response({'Stripe onboarding process completed successfully ✅'})
+
+
+
+
+# -------- For DRF view -------------------
+@api_view(['GET'])
+def getRoutes(request):
+    routes = [
+        '/api/token/',
+        '/api/token/refresh/',
+        '/api/register/',
+        '/api/add-food-item/',
+        '/api/manage-food-items/',
+        '/api/manage-food-items/<int:id>/',
+        '/api/manage-food-items/<int:id>/update/',
+        '/api/manage-food-items/<int:id>/delete/',
+        '/api/get-orders/',
+        '/api/update-order-status/<int:id>/',
+        '/api/create-stripe-account/',
+        '/api/complete-stripe-account/',
+        '/api/create-stripe-account/get-details/',
+        '/api/create-stripe-account/refresh-url/',
+        '/api/create-stripe-account/return-url/',
+    ]
+
+    return Response(routes)
