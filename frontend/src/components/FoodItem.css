@@ -55,6 +55,10 @@
   color: green;
 }
 
+.item-addToCart:disabled{
+  color: grey;
+}
+
 .item-cartBtn{
   width: 22px;
   margin: 0px;
@@ -66,9 +70,14 @@
   border: 0px;
 }
 
+.item-cartBtn:disabled{
+  color: grey;
+}
+
 .item-cartInfo{
   display: inline;
   font-size: 20px;
+  margin-left: -6px;
 }
 
 @media only screen and (max-width: 600px){

@@ -59,6 +59,10 @@
   border: 0px;
 }
 
+.cart-cartBtn:disabled{
+  color: grey;
+}
+
 .cart-right{
   float: left;
   padding: 15px;

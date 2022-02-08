@@ -2,7 +2,7 @@ import React from 'react'
 import './Header.css'
 import './CartItems.css'
 
-const CartItems = ({cartItems, removeFromCart, addToCart, totalAmount, history}) => {
+const CartItems = ({cartItems, removeFromCart, addToCart, totalAmount, history, disableBtn}) => {
     
 
     return (
@@ -17,9 +17,9 @@ const CartItems = ({cartItems, removeFromCart, addToCart, totalAmount, history})
 
                         <div className='cart-center'>
                             <div className='cart-addToCart'>
-                                <button name='remove' onClick={ () => removeFromCart(cart.food) } className='cart-cartBtn'> - </button>
+                                <button name='remove' onClick={ () => removeFromCart(cart.food) } className='cart-cartBtn' disabled={disableBtn}> - </button>
                                 {cart.qty}  
-                                <button name='add' onClick={ () => addToCart(cart.food) } className='cart-cartBtn'> + </button>
+                                <button name='add' onClick={ () => addToCart(cart.food) } className='cart-cartBtn' disabled={disableBtn}> + </button>
                             </div>
                         </div>    
                         <p className='cart-right'>

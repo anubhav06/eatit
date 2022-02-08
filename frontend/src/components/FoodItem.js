@@ -2,7 +2,7 @@ import React from 'react'
 import './Header.css'
 import './FoodItem.css'
 
-const FoodItem = ({food, cartItems, addToCart, removeFromCart}) => {
+const FoodItem = ({food, cartItems, addToCart, removeFromCart, disableBtn}) => {
     
 
     return (
@@ -20,13 +20,13 @@ const FoodItem = ({food, cartItems, addToCart, removeFromCart}) => {
                 {cartItems.find(cart => cart.food.id === food.id) 
                 // If food is already added in cart, then display buttons to increase/decrease the quantity 
                 ?   <div key={food.id} className='item-addToCart'>
-                        <button name='remove' onClick={ () => removeFromCart(food) } className='item-cartBtn'> - </button>
+                        <button name='remove' onClick={ () => removeFromCart(food) } className='item-cartBtn' disabled={disableBtn}> - </button>
                         <p className='item-cartInfo'> {cartItems.find(cart => cart.food.id === food.id).qty} </p>
-                        <button name='add' onClick={ () => addToCart(food) } className='item-cartBtn'> + </button>
+                        <button name='add' onClick={ () => addToCart(food) } className='item-cartBtn' disabled={disableBtn}> + </button>
                     </div> 
                 // Else if item is not in cart, then display an add to cart button
                 :   <div key={food.id}>
-                        <button name='add' onClick={ () => addToCart(food)} className='item-addToCart'> ADD </button>
+                        <button name='add' onClick={ () => addToCart(food)} className='item-addToCart' disabled={disableBtn}> ADD </button>
                     </div>
                 }  
             
