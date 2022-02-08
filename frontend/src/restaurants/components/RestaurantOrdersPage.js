@@ -1,14 +1,13 @@
 import React from 'react'
 import '../../components/Header.css'
 import '../../components/OrdersPage.css'
-import orderImage from '../../assets/Delivery.png'
 
 const RestaurantOrderPage = ({orders, updateOrder, showBtn}) => {
     
 
     return (
         <div>
-            {orders.length == 0 ? <h2 style={{marginTop: '10px', marginLeft: '10px'}}> No orders so far </h2> : (null)}
+            {orders.length === 0 ? <h2 style={{marginTop: '10px', marginLeft: '10px'}}> No orders so far </h2> : (null)}
             {orders.map(order => (
                 <div key={order.id} className='orders-row'>
                     {order.active === showBtn 
@@ -23,7 +22,7 @@ const RestaurantOrderPage = ({orders, updateOrder, showBtn}) => {
                                     <p className='order-address-heading'> Delivery Address: </p>
                                     <p className='order-address-subheading'> {order.address.area} </p>
                                 </div>
-                                {showBtn == true 
+                                {showBtn === true 
                                 ?   <button onClick={() => updateOrder(order.id)} className='restaurant-orderDeliverBtn'> Mark as delivered </button>
                                 : (null)}
                             </div>

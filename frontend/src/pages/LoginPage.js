@@ -12,6 +12,7 @@ const LoginPage = () => {
     // To store the user's phone number
     let [phoneNo, setPhoneNo] = useState({})
 
+    // To conditionally render UserForm, MobileForm, and MobileVerificationForm
     let [userForm ,setUserForm] = useState(false)
     let [mobileForm, setMobileForm] = useState(true)
     let [verificationForm, setVerificationForm] = useState(false)
@@ -38,7 +39,7 @@ const LoginPage = () => {
         setPhoneNo(e.target.number.value)
         setLoading(true)
 
-        // Make a post request to the api with the mobile number.
+        // Make a post request to the API with the mobile number.
         let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/mobile-send-message/`, {
             method:'POST',
             headers:{
@@ -54,7 +55,6 @@ const LoginPage = () => {
             setMobileForm(false)
             setVerificationForm(true)
         }else{
-            //console.log(data)
             alert(data)
         }
 

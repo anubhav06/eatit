@@ -8,6 +8,7 @@ from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
 
+# Refer to the corresponding view function for detailed explanation of the url routes
 urlpatterns = [ 
     path('', views.getRoutes, name="index"),
     path('register/', views.register, name="restaurantRegister"),
@@ -30,6 +31,7 @@ urlpatterns = [
     path('create-stripe-account/refresh-url/', views.stripeRefreshURL, name='stripeRefreshURL'),
     path('create-stripe-account/return-url/', views.stripeReturnURL, name='stripeReturnURL'),
 
+    # For user authentication
     path('api/token/', MyTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

@@ -1,4 +1,3 @@
-from aifc import Error
 from django.core.exceptions import ObjectDoesNotExist
 from django.db import IntegrityError
 from rest_framework import status
@@ -13,7 +12,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from twilio.rest import Client
 
 from eatit.models import Cart, User, Address, ActiveOrders, MobileNumber
-from eatit.api.serializers import CartSerializer, AddressSerializer, UserSerializer, ActiveOrdersSerializer
+from eatit.api.serializers import AddressSerializer, UserSerializer, ActiveOrdersSerializer
 
 from restaurants.models import Restaurant, FoodItem, Stripe
 from restaurants.api.serializers import RestaurantSerializer, FoodItemSerializer
@@ -96,7 +95,7 @@ def register(request):
     
     # Input validation. Check if all data is provided
     if not email or not username or not password or not confirmation:
-        return Response('All data is required')
+        return Response('All data is required', status=status.HTTP_406_NOT_ACCEPTABLE)
 
 
     # Attempt to create new user
@@ -110,16 +109,14 @@ def register(request):
     return Response('Registered Successfully from backend')
 
 
-
-# Refer: https://www.twilio.com/docs/verify/api?code-sample=code-step-3-check-the-verification-token&code-language=Python&code-sdk-version=7.x
+# Refer: https://www.twilio.com/docs/verify/api?code-sample=code-step-2-send-a-verification-token&code-language=Python&code-sdk-version=7.x
 # To send a text message with verification code to the requested mobile
 @api_view(['POST'])
 def mobileSendMessage(request):
     
     mobileNumber = request.data['number']
-    print("Mobile Number: ", mobileNumber)
 
-    # Find your Account SID and Auth Token at twilio.com/console
+    # Find your Account SID and Auth Token at https://twilio.com/console
     # and set the environment variables. See http://twil.io/secure
     account_sid = config('TWILIO_ACCOUNT_SID')
     auth_token = config('TWILIO_AUTH_TOKEN')
@@ -146,7 +143,7 @@ def mobileSendMessage(request):
 
 
 
-
+# Refer: https://www.twilio.com/docs/verify/api?code-sample=code-step-3-check-the-verification-token&code-language=Python&code-sdk-version=7.x
 # To verify the verification code sent by Twilio to the user's mobile
 @api_view(['POST'])
 def mobileVerification(request):
@@ -154,7 +151,7 @@ def mobileVerification(request):
     mobileNumber = request.data['number']
     verificationCode = request.data['code']
 
-    # Find your Account SID and Auth Token at twilio.com/console
+    # Find your Account SID and Auth Token at https://twilio.com/console
     # and set the environment variables. See http://twil.io/secure
     account_sid = config('TWILIO_ACCOUNT_SID')
     auth_token = config('TWILIO_AUTH_TOKEN')
@@ -165,8 +162,6 @@ def mobileVerification(request):
                                 .services('VA7bedb5bcad76dea67499207e1b8b50f8') \
                                 .verification_checks \
                                 .create(to= '+' + mobileNumber , code= verificationCode )
-        
-        print(verification_check.status)
 
         if verification_check.status == 'approved':
             return Response({'Phone number verified ✅'})
@@ -185,18 +180,6 @@ def mobileVerification(request):
 
 
 
-# ------------------------------------
-@api_view(['GET'])
-def getRoutes(request):
-    routes = [
-        '/api/token',
-        '/api/token/refresh',
-        '/api/register',
-    ]
-
-    return Response(routes)
-
-
 
 # To view all the available/registered restaurants
 @api_view(['GET'])
@@ -204,11 +187,12 @@ def restaurants(request):
     
     # Uses the restaurant model from the 'restaurants' app
     restaurants = Restaurant.objects.all()
+    # Serialize the data for sending to frontend
     serializer = RestaurantSerializer(restaurants, many=True)
     return Response(serializer.data)
     
 
-# To get the food items of the requested restaurant
+# To get the food items of the requested restaurant. (food items added by that restaurant)
 @api_view(['GET'])
 def restaurantsFood(request, id):
 
@@ -218,7 +202,7 @@ def restaurantsFood(request, id):
         # Get the food items of the above restaurant
         restaurantsFood = FoodItem.objects.filter(restaurant = restaurant)
     except :
-        return Response('Not found')
+        return Response('Not found', status=status.HTTP_404_NOT_FOUND)
     
     serializer = FoodItemSerializer(restaurantsFood, many=True)
     return Response(serializer.data)
@@ -232,7 +216,7 @@ def restaurantsInfo(request, id):
         # Get the requested restaurant
         restaurant = Restaurant.objects.filter(id=id)
     except KeyError:
-        return Response('Not found')
+        return Response('Not found', status=status.HTTP_404_NOT_FOUND)
 
     serializer = RestaurantSerializer(restaurant, many=True)
     return Response(serializer.data)
@@ -245,6 +229,7 @@ def restaurantsInfo(request, id):
 def getCartItems(request):
     
     cart = Cart.objects.filter(user=request.user)
+    # Custom serializer function is used for serializing the data. Refer to the Cart Model for more info about the serializer
     return Response([cart.serializer() for cart in cart])
     
 
@@ -267,8 +252,10 @@ def addToCart(request, id):
             if food.restaurant != presentCartFood.restaurant:
                 return Response({'You already have items added to cart from another restaurant'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
         except AttributeError:
+            # If the user has no item added to cart, then pass. The below code is the responsible for adding item to cart.
             pass
 
+        # For adding the item to cart
 
         # If the user's cart contains the requested food item, then increase it's quantity by 1
         try:
@@ -292,16 +279,18 @@ def addToCart(request, id):
     
     # If a request is made with an invalid food ID, i.e food item doesn't exist, then return error
     except KeyError:
-        return Response('Not found')
+        return Response('Not found', status=status.HTTP_404_NOT_FOUND)
     
     # Serialize the cart for sending to frontend in appropriate format
-    serializer = CartSerializer(cart)
     return Response(cart.serializer())
     
 
+
+# To remove a food item from cart
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def removeFromCart(request, id):
+
     # Remove the food item from the user's cart
     try:
         # Get the requested foodItem
@@ -323,12 +312,12 @@ def removeFromCart(request, id):
             # Else throw an error if qty is less than 1
             else :
                 # If food qty is already 0, then return
-                return Response('Food already removed from cart')
+                return Response('Food already removed from cart', status=status.HTTP_406_NOT_ACCEPTABLE)
                 
 
         # If the cart doesn't contain the food, then return
         except ObjectDoesNotExist :
-            return Response('Food is not present in the cart')
+            return Response('Food is not present in the cart', status=status.HTTP_404_NOT_FOUND)
             
         try:
             # Update the cart's totalAmount by subtracting the current food item's price
@@ -339,7 +328,7 @@ def removeFromCart(request, id):
 
     # If a request is made with an invalid food ID, i.e food item doesn't exist, then return error
     except KeyError:
-        return Response('Not found')
+        return Response('Not found', status=status.HTTP_404_NOT_FOUND)
     
     return Response('Removed from cart')
 
@@ -386,9 +375,10 @@ def checkout(request):
     # Get the chosen delivery address passed from the frontend
     addressID = request.data['address'].get('id')
 
-
+    # Get the restaurant, from which the user wishes to buy food from
     getCartFoodID = cart.first().food.id
     getRestaurant = FoodItem.objects.get(id=getCartFoodID).restaurant
+    # Get the associated stripe account ID of the restaurant. (Stored when restaurant signed up with Stripe)
     accountID = Stripe.objects.get(restaurant=getRestaurant).accountID
     
     # To create a stripe checkout session which returns back the checkout session url
@@ -424,8 +414,6 @@ def checkout(request):
 @api_view(['POST'])
 def webhook_received(request):
 
-    print('Running')
-
     stripe.api_key = config('STRIPE_API_KEY')
     endpoint_secret = config('endpoint_secret')
 
@@ -441,11 +429,9 @@ def webhook_received(request):
         )
     except ValueError as e:
         # Invalid payload.
-        print('INVALID PAYLOAD')
         return HttpResponse(status=400)
     except stripe.error.SignatureVerificationError as e:
         # Invalid Signature.
-        print('INVALID SIGNATURE', e)
         return HttpResponse(status=400)
 
     if event["type"] == "checkout.session.completed":
@@ -465,14 +451,7 @@ def webhook_received(request):
 def handle_completed_checkout_session(connected_account_id, session, request):
     # Fulfill the purchase.
     print('Connected account ID: ' + connected_account_id)
-    print(str(session))
-    print('PAYMENT COMPLETED ✅')
-
-    print('Session Metadata:', session.metadata)
-    print('Session Metadata USER:', session.metadata.user)
-    print('Session Metadata ADDRESS ID:', session.metadata.addressID)
-    print('request: ', request)
-    print('request user: ', request.user)
+    print('PAYMENT COMPLETED ✅', str(session))
 
     # ---- Save the order details ----
 
@@ -512,10 +491,18 @@ def handle_completed_checkout_session(connected_account_id, session, request):
                         body="Your order has been successfully placed at EatIN! " + str(cart.count()) + "x item(s) ordered from " + str(restaurant.name) + " with a total amount of " + str(cart.first().totalAmount) +". \n Happy EatIN!"
                     )
 
-    print('Message sent ✅')
-    print(message.status)
+    print('Message sent ✅:', message.status)
 
 
+
+# To get the active orders of the logged in user
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def getOrders(request):
+    
+    activeOrders = ActiveOrders.objects.filter(user=request.user).order_by('-id')
+    serializer = ActiveOrdersSerializer(activeOrders, many=True)
+    return Response(serializer.data)
 
 
 # To get the info of the logged in user like name, email etc.
@@ -527,11 +514,30 @@ def getUserInfo(request):
     return Response(serializer.data)
 
 
-# To get the active orders of the logged in user
+
+
+
+# -------For DRF view --------------
 @api_view(['GET'])
-@permission_classes([IsAuthenticated])
-def getOrders(request):
-    
-    activeOrders = ActiveOrders.objects.filter(user=request.user).order_by('-id')
-    serializer = ActiveOrdersSerializer(activeOrders, many=True)
-    return Response(serializer.data)
+def getRoutes(request):
+    routes = [
+        '/api/token/',
+        '/api/token/refresh/',
+        '/api/mobile-send-message/',
+        '/api/mobile-verification/',
+        '/api/restaurants/',
+        '/api/restaurants/<int:id>/',
+        '/api/restaurants/info/<int:id>/',
+        '/api/get-cart-items/',
+        '/api/add-to-cart/<int:id>/',
+        '/api/remove-from-cart/<int:id>/',
+        '/api/add-address/',
+        '/api/get-address/',
+        '/api/checkout/',
+        '/api/webhook/',
+        '/api/get-orders/',
+        '/api/get-user-info/',
+        '/api/custom-login/',
+    ]
+
+    return Response(routes)

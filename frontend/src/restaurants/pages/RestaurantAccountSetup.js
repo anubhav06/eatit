@@ -16,7 +16,7 @@ const RestaurantAccountSetup = () => {
 
     useEffect(() => {
         
-        // To place an order
+        // To get the stripe account info of restaurant
         let getAccountInfo = async() =>{
             let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/create-stripe-account/get-details/`, {
                 method:'GET',
@@ -27,30 +27,28 @@ const RestaurantAccountSetup = () => {
                 }
             })
             
-            let data = await response.json()
+            await response.json()
 
             // If restaurant has not created any account yet (probably because landed for first time)
             if(response.status === 200){
-                //console.log('GET STRIPE: ', data)
                 setAccountStatus('NotCreated')
             }
             // If restaurant has created the account but has not provided all details to stripe
             else if(response.status === 230){
-                //console.log('GET STRIPE: ', data)
                 setAccountStatus('NotCompleted')
             } 
             // If restaurant has created the account and provided all the details (i.e. fully connected with stripe)
             else if(response.status === 231) {
-                //console.log('GET STRIPE:', data)
                 setAccountStatus('Completed')
             }
         }
 
         getAccountInfo()
 
-    }, [])
+    }, [restaurantAuthTokens])
 
-    // To place an order
+
+    // To create a stripe account for the restaurant
     let createStripeAccount = async() =>{
         setDisabled(true)
         let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/create-stripe-account/`, {
@@ -65,7 +63,6 @@ const RestaurantAccountSetup = () => {
         let data = await response.json()
 
         if(response.status === 200){
-            //console.log('CREATE STRIPE ACCOUNT DATA: ', data)
             alert('Stripe account created ✅')
             window.location.href = `${data}`
         }
@@ -81,7 +78,7 @@ const RestaurantAccountSetup = () => {
     
 
 
-    // To place an order
+    // To complete the stripe onboarding process (for those who have not completed the process, but have just created the account)
     let completeStripeAccount = async() =>{
         setDisabled(true)
         let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/complete-stripe-account/`, {
@@ -96,13 +93,11 @@ const RestaurantAccountSetup = () => {
         let data = await response.json()
 
         if(response.status === 200){
-            //console.log('CREATE STRIPE ACCOUNT DATA: ', data)
             alert('Stripe account onborading link created ✅')
             window.location.href = `${data}`
         }
         else if(response.status === 412){
             alert(data)
-            //console.log('Account Already Created')
         } 
         else {
             alert('Error creating a stripe account ',data)
@@ -110,7 +105,6 @@ const RestaurantAccountSetup = () => {
         }
     }
     
-    //console.log('account status: ', accountStatus)
 
     return (
         <div>
@@ -121,9 +115,9 @@ const RestaurantAccountSetup = () => {
                 <p className='user-mail'> Account Setup Page </p>
             </div>
 
-            {Object.keys(accountStatus).length == 0 ? 
+            {Object.keys(accountStatus).length === 0 ? 
             <div> 
-                <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} />
+                <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} alt='loading' />
                 <p style={{fontSize:24 ,marginLeft: 25}}> Getting your account details. Please wait . . . </p>
             </div> 
             : (null)}
@@ -131,13 +125,13 @@ const RestaurantAccountSetup = () => {
             {accountStatus === 'NotCreated' 
             ?   <div> 
                     <div className='newAccount-setup-center'>
-                        <img src={bankIcon} className='bank-image' /> <br/>
+                        <img src={bankIcon} className='bank-image' alt='bank' /> <br/>
                         <h2>Setup payouts to list on EATIN.</h2> 
                         EATIN partners with Stripe to transfer earnings to your (test) bank account. <br/>
                         All payments are directly transfered to your account after deducting applicable fees <br/>
                         <button className='account-setup-btn' onClick={createStripeAccount} disabled={disabled}> Click here to continue </button>
                         {/* If checkout button is clicked, then show a redirecting text */}
-                        {disabled == true 
+                        {disabled === true 
                         ?   <div style={{marginTop: '-10px'}}> Please wait. Redirecting . . . </div>
                         : (null)}
                         <p className='redirect-text'> You'll be redirected to Stripe to complete the onboarding proces.</p>
@@ -166,11 +160,11 @@ const RestaurantAccountSetup = () => {
 
             {accountStatus === 'NotCompleted'
             ?   <div className='incompleteAccount-setup-center'>
-                    <img src={bankIcon} className='bank-image' /> <br/>
+                    <img src={bankIcon} className='bank-image' alt='bank' /> <br/>
                     Stripe account created but all details are not provided <br/>
                     <button onClick={completeStripeAccount} className='account-setup-btn' disabled={disabled}> Continue to Add details  </button>
                     {/* If checkout button is clicked, then show a redirecting text */}
-                    {disabled == true 
+                    {disabled === true 
                     ?   <div style={{marginTop: '-10px'}}> Please wait. Redirecting . . . </div>
                     : (null)}
                     <p className='redirect-text'> You'll be redirected to Stripe to complete the onboarding proces.</p>
@@ -183,7 +177,7 @@ const RestaurantAccountSetup = () => {
 
             {accountStatus === 'Completed'
             ?   <div className='account-setup-center'>
-                    <img src={bankIcon} className='bank-image' /> <br/>
+                    <img src={bankIcon} className='bank-image' alt='bank'/> <br/>
                     You have completed setting up your account with Stripe. <br/>
                     Now you can directly login with stripe to monitor your payments <br/>
                     <form action='https://stripe.com/'>  

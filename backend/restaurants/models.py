@@ -1,6 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, User
-from django.db.models.fields import NullBooleanField
+from django.contrib.auth.models import User
 
 
 # Restaurant details model. Restaurants will use these details to login
@@ -14,12 +13,14 @@ class Restaurant(models.Model):
         return f"{self.user} : {self.name}"
 
 
+# Stripe model to store the stripe account ID of restaurants
 class Stripe(models.Model):
     restaurant = models.ForeignKey(Restaurant, on_delete=models.CASCADE, related_name='restaurantStripe')
     accountID = models.CharField(max_length=32)
 
     def __str__(self):
         return f"{self.restaurant}"
+
 
 # Model for the food item.
 class FoodItem(models.Model):
@@ -29,7 +30,6 @@ class FoodItem(models.Model):
     description = models.CharField(max_length=320)
     price = models.DecimalField(max_digits=6, decimal_places=2)
     image = models.ImageField()
-    
 
     def __str__(self):
         return f"{self.name}"

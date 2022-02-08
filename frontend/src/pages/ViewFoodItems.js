@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, setState} from 'react'
+import React, {useState, useEffect, useContext} from 'react'
 import { useHistory } from 'react-router-dom'
 import Header from '../components/Header'
 import AuthContext from '../context/AuthContext'
@@ -21,12 +21,14 @@ const ViewFoodItems = ({match}) => {
     
     // To display a user's total cart amount
     let [totalAmount, setTotalAmount] = useState(0.00)
+    // To disable add/remove from cart buttons till API gets back a response
+    let [disableBtn, setDisableBtn] = useState(false)
 
     let [loading, setLoading] = useState(false)
 
     const history = useHistory()
 
-    // Runs the following functions on each load of page
+    // useEffect runs the following methods on each load of page
     useEffect(()=> {
         
         // To fetch the food items of a restaurant
@@ -83,7 +85,6 @@ const ViewFoodItems = ({match}) => {
 
             if(response.status === 200){
                 setCartItems(data)
-                //console.log('SET CART ITEMS DATA: ', data)
                 // If the user's cart is not empty, then get the cart's total amount from backend and store it
                 if (data[0]?.totalAmount !== undefined){
                     var newTotalAmount = parseFloat(data[0]?.totalAmount)
@@ -100,7 +101,7 @@ const ViewFoodItems = ({match}) => {
         getCartItems()
         getRestaurantInfo()
         getFoodItems()
-    }, [])
+    }, [authTokens, restaurantId])
 
 
 
@@ -108,6 +109,9 @@ const ViewFoodItems = ({match}) => {
 
     // To add an item to cart
     let addToCart = async(food) =>{
+        // Disable add to cart btn till the API returns a response
+        setDisableBtn(true)
+
         let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/add-to-cart/${food.id}`, {
             method:'POST',
             headers:{
@@ -116,7 +120,8 @@ const ViewFoodItems = ({match}) => {
                 'Authorization':'Bearer ' + String(authTokens.access)
             }
         })
-        
+
+                
         let data = await response.json()
 
         if(response.status === 200){
@@ -143,13 +148,17 @@ const ViewFoodItems = ({match}) => {
 
         } else {
             alert(data)
-            //console.log('ERROR: ', data)
         }
+
+        setDisableBtn(false)
     }
 
 
      // To remove an item from cart
      let removeFromCart = async(food) =>{
+        // Disable remove from cart btn, till the API returns a response
+        setDisableBtn(true)
+
         let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/remove-from-cart/${food.id}`, {
             method:'POST',
             headers:{
@@ -162,7 +171,7 @@ const ViewFoodItems = ({match}) => {
 
         if(response.status === 200){
             
-            const exist = cartItems.find((x) => x.food.id == food.id);
+            const exist = cartItems.find((x) => x.food.id === food.id);
 
             // If the food item's qty is 1, then delete the item from cart
             if(exist.qty === 1) {
@@ -180,19 +189,16 @@ const ViewFoodItems = ({match}) => {
 
             //Update the user's cart's total amount by subtracting the removed food item's price from total amount
             var newTotalAmount = parseFloat(totalAmount) - parseFloat(food.price)
-            //console.log("NEW TOTAL AMOUNT: ", newTotalAmount)
             setTotalAmount(parseFloat(newTotalAmount))
 
         } else {
             alert('ERROR: Removing Item to cart ')
-            //console.log('ERROR: ', response)
         }
+
+        setDisableBtn(false)
     }
 
 
-
-    //console.log('FOOD ITEMS: ', foodItems)
-    //console.log('CART ITEMS: ', cartItems)
 
 
 
@@ -207,7 +213,7 @@ const ViewFoodItems = ({match}) => {
             <div className='row'>
                 
                 <div className='left'> 
-                    <img src={cookingImg} className='cookingImg' />
+                    <img src={cookingImg} className='cookingImg' alt='cookingImg' />
                     <p> Good food is foundation of genuine happiness </p>
                 </div>
 
@@ -215,7 +221,7 @@ const ViewFoodItems = ({match}) => {
                     
                     {loading ? 
                     <div> 
-                        <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} />
+                        <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} alt='loading' />
                         <p style={{fontSize:24, marginLeft:25}}> Getting restaurant's food. Please wait . . . </p>
                     </div> 
                     : 
@@ -229,6 +235,8 @@ const ViewFoodItems = ({match}) => {
                             cartItems={cartItems}
                             addToCart={addToCart}
                             removeFromCart={removeFromCart}
+                            key={food.id}
+                            disableBtn={disableBtn}
                         />
                     ))}
                     <hr/>
@@ -246,6 +254,7 @@ const ViewFoodItems = ({match}) => {
                         removeFromCart={removeFromCart}
                         totalAmount={totalAmount}
                         history={history}
+                        disableBtn={disableBtn}
                     />
                 </div>
             

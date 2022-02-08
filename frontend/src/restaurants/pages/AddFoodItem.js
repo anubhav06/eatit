@@ -6,7 +6,7 @@ import '../../components/LoginForm.css'
 const AddFoodItem = () => {
 
     let {addFoodItem, formLoading} = useContext(RestaurantAuthContext)
-    console.log('Add food item page')
+    
     return (
         <div>
             <RestaurantHeader/>

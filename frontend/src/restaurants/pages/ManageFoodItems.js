@@ -15,10 +15,10 @@ const ManageFoodItems = () => {
 
     let [loading, setLoading] = useState(false)
 
-    // call getNotes on load
+
     useEffect(()=> {
         
-        // To fetch the notes of a user
+        // To fetch the food items of restaurant
         let getFoodItems = async() =>{
             setLoading(true)
             let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/manage-food-items/`, {
@@ -42,7 +42,7 @@ const ManageFoodItems = () => {
 
         getFoodItems()
 
-    }, [])
+    }, [restaurantAuthTokens, logoutRestaurant])
 
 
     return (
@@ -57,14 +57,14 @@ const ManageFoodItems = () => {
             <div className='row'>
 
                 <div className='left'> 
-                    <img src={cookingImg} className='cookingImg' />
+                    <img src={cookingImg} className='cookingImg' alt='cooking' />
                     <p> Good food is foundation of genuine happiness </p>
                 </div>
 
                 <div className='middle'>
                     {loading 
                     ?   <div>
-                            <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} />
+                            <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} alt='loading' />
                             <p style={{marginLeft: 25}}> Getting your food. Please wait . . . </p>
                         </div>
                     :   <div>

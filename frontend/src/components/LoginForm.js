@@ -14,7 +14,7 @@ const LoginForm = ({loginUser, loginCustomUser, phoneNo, userForm, mobileForm, v
                 <div className='form-background'>
                         
                     {/* username-password login form */}
-                    {userForm == true ?
+                    {userForm === true ?
                         <div>   
                             <div className='form-header'> Login Form </div>
                             <form onSubmit={loginUser}>
@@ -27,7 +27,7 @@ const LoginForm = ({loginUser, loginCustomUser, phoneNo, userForm, mobileForm, v
                     : (null)}
                     
                     {/* login via mobile number form */}
-                    {mobileForm == true ?
+                    {mobileForm === true ?
                         <div>
                             <div className='form-header'> Login Form </div>
                             <form onSubmit={submitPhoneNumber}>
@@ -51,7 +51,7 @@ const LoginForm = ({loginUser, loginCustomUser, phoneNo, userForm, mobileForm, v
                     
                     <br/>
                     {/* To switch methods of login - either with mobile or with password */}
-                    <a href='javascript:void(0)' onClick={() => {setUserForm(!userForm); setMobileForm(!mobileForm); setVerificationForm(false)}}> 
+                    <a href='#' onClick={() => {setUserForm(!userForm); setMobileForm(!mobileForm); setVerificationForm(false)}}> 
                         {userForm === true 
                         ?   <p> Click here to login with mobile instead </p>
                         :   <p> Click here to login with password instead </p>

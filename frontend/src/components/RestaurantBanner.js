@@ -10,7 +10,7 @@ const RestaurantBanner = ({restaurantInfo}) => {
             {restaurantInfo.map(info => (
                 <div key={info.id}>
                     <div className='banner-left'>
-                        <img src={info.image} className='banner-image'/>
+                        <img src={info.image} className='banner-image' alt='restaurant'/>
                     </div>
                     <div className='banner-right'>
                         <p className='banner-heading'> {info.name} </p>

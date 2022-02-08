@@ -10,14 +10,14 @@ const OrdersPage = ({orders}) => {
     return (
         <div className='orders-container'>
             <div className='order-container-left'>
-                <img src={orderImage} className='order-img' />
+                <img src={orderImage} className='order-img' alt='quote'/>
                 The joy of getting best
             </div>
             <div className='order-container-right'>             
 
-                {Object.keys(orders).length == 0 
+                {Object.keys(orders).length === 0 
                 ?   <div>
-                        <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} />
+                        <img src={loadingImg} style={{width: 50, marginTop:25, marginLeft: 25}} alt='loading'/>
                         <p style={{fontSize:24, marginLeft: 25}}> Getting your orders. Please wait . . .  </p>
                     </div>
                 : (null)} 
@@ -26,7 +26,7 @@ const OrdersPage = ({orders}) => {
                     <div key={order.id} className='orders-row'>
                         <div className='orders-row-left'>
                             <div className='order-status'>
-                                {order.active == true 
+                                {order.active === true 
                                 ?   <div>
                                         🍽️ Your order has been placed
                                     </div>

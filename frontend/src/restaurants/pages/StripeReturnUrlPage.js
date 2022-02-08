@@ -1,7 +1,6 @@
 import React, {useContext, useEffect, useState} from 'react'
 import RestaurantAuthContext from '../context/RestaurantAuthContext'
-import RestaurantHeader from '../components/RestaurantHeader'
-import { Redirect, useHistory } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 
 
 const StripeReturnUrlPage = () => {
@@ -12,7 +11,7 @@ const StripeReturnUrlPage = () => {
 
     useEffect(() => {
         
-        // To get the stripe refresh url
+        // To get the stripe return url
         let getStripeReturnURL = async() =>{
             let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/partner-with-us/create-stripe-account/return-url/`, {
                 method:'GET',
@@ -25,22 +24,19 @@ const StripeReturnUrlPage = () => {
             
             let data = await response.json()
 
-            // Redirect to the link generated from backend
             if(response.status === 200){
                 setReturnURLData(true)
-                //console.log('GET STRIPE RETURN URL ', data)
                 alert(data)
 
             } 
             else {
                 setReturnURLData(false)
                 alert(data)
-                //console.log('ERROR: ', data)
             }
         }
 
         getStripeReturnURL()
-    }, [])
+    }, [restaurantAuthTokens])
 
 
     let returnToAccountSetup = async () => {

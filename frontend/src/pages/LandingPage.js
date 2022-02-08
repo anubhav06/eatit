@@ -1,6 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react'
-import AuthContext from '../context/AuthContext'
-import Header from '../components/Header'
+import React from 'react'
 import { Redirect } from 'react-router'
 
 

@@ -19,7 +19,9 @@ class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="cartOwner")
     food = models.ForeignKey(FoodItem, on_delete=models.CASCADE, related_name="cartFood", null=True , blank=True)
     qty = models.IntegerField(default=0)
+    # (Amount = qty * price) for a food item
     amount = models.DecimalField(max_digits=6, decimal_places=2)
+    # Total amount is the in total amount of all the food items in cart of a user. 
     totalAmount = models.DecimalField(max_digits=7, decimal_places=2, default=0)
 
     # For testing: To check if values are positive

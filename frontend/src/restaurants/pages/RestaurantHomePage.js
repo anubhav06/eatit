@@ -1,9 +1,8 @@
-import React, {useState, useEffect, useContext} from 'react'
+import React, {useContext} from 'react'
 import { Redirect } from 'react-router'
 import RestaurantAuthContext from '../context/RestaurantAuthContext'
 import RestaurantHeader from '../components/RestaurantHeader'
 import './RestaurantHomePage.css'
-import bgImage from '../../assets/homePageBGimage.png'
 
 const RestaurantHomePage = () => {
     let {restaurant} = useContext(RestaurantAuthContext)

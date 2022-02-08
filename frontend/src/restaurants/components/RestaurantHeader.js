@@ -56,7 +56,7 @@ const RestaurantHeader = () => {
                         <a href="/partner-with-us/manage-food-items" className='link'> Manage Food Items </a>
                         <a href="/partner-with-us/add-food-item" className='link'> Add Food Item </a>
                         <a href="/partner-with-us/account-setup" className='link'> Account Setup </a>
-                        <a href="" className='link' onClick={logoutRestaurant}> Logout </a>
+                        <a href="#" className='link' onClick={logoutRestaurant}> Logout </a>
                     </nav>
                 :   <nav className='Nav'>
                         {/* If user is logged out */}

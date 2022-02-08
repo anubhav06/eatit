@@ -1,7 +1,5 @@
 import React, {useContext, useEffect} from 'react'
 import RestaurantAuthContext from '../context/RestaurantAuthContext'
-import RestaurantHeader from '../components/RestaurantHeader'
-import { Redirect } from 'react-router-dom'
 
 // This page is called when stripe onboarding is not completed
 // Refer: https://stripe.com/docs/connect/enable-payment-acceptance-guide?platform=web#web-refresh-url
@@ -26,7 +24,6 @@ const StripeRefreshUrlPage = () => {
 
             // Redirect to the link generated from backend
             if(response.status === 200){
-                //console.log('GET STRIPE REFRESH URL: ', data)
                 window.location.href = `${data}`
 
             } 
@@ -38,7 +35,7 @@ const StripeRefreshUrlPage = () => {
         }
 
         getStripeRefreshURL()
-    }, [])
+    }, [restaurantAuthTokens])
     
     return(
         <div>
