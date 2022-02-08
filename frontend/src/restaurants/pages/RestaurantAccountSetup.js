@@ -12,7 +12,7 @@ const RestaurantAccountSetup = () => {
     let [accountStatus, setAccountStatus] = useState({})
 
     // To disable a submit btn once it's pressed, till it get's back a response
-    let [disabled, setDisabled] = useState(true)
+    let [disabled, setDisabled] = useState(false)
 
     useEffect(() => {
         
