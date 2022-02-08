@@ -62,7 +62,7 @@ const RegisterForm = ({registerUser,phoneNo, mainForm, phoneForm,loading, formLo
             
             <div className='form-column-right'>
                 <p className='formRight-heading'> EATIN </p>
-                <p className='formRight-subHeading'> Hungry? Unexpected guests ? </p>
+                <p className='formRight-subHeading'> <span id='spin'/> </p>
                 <p className='formRight-subHeading2'> Order food from your favourite restaurants. </p>
             </div>
         </div>
