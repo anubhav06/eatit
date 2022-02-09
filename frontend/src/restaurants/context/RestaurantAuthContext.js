@@ -91,7 +91,7 @@ export const RestaurantAuthProvider = ({children}) => {
         form_data.append('address', e.target.address.value);
 
         let url = `${process.env.REACT_APP_BACKEND_URL}/partner-with-us/register/`;
-        axios.post(url, form_data, {
+        await axios.post(url, form_data, {
             headers: {
                 'content-type': 'multipart/form-data'
             }
@@ -122,7 +122,7 @@ export const RestaurantAuthProvider = ({children}) => {
         form_data.append('price', e.target.price.value);
 
         let url = `${process.env.REACT_APP_BACKEND_URL}/partner-with-us/add-food-item/`;
-        axios.post(url, form_data, {
+        await axios.post(url, form_data, {
         headers: {
             'content-type': 'multipart/form-data',
             'Authorization':'Bearer ' + String(restaurantAuthTokens.access)
@@ -152,7 +152,7 @@ export const RestaurantAuthProvider = ({children}) => {
         form_data.append('price', e.target.price.value);
         
         let url = `${process.env.REACT_APP_BACKEND_URL}/partner-with-us/manage-food-items/${e.target.id.value}/update`;
-        axios.post(url, form_data, {
+        await axios.post(url, form_data, {
         headers: {
             'content-type': 'multipart/form-data',
             'Authorization':'Bearer ' + String(restaurantAuthTokens.access)

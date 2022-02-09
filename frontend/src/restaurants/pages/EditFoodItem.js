@@ -65,7 +65,6 @@ const EditFoodItem = ({match}) => {
                                 <button onClick={deleteFoodItem} disabled={formLoading} name="id" value={food.id} className='edit-food-delete-btn'> 
                                     DELETE ITEM 
                                 </button>
-                                {formLoading ? <p> Deleting food. Please wait . . </p> : (null)}
                             </div>
                         ))}
                         
