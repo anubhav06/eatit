@@ -1,11 +1,14 @@
-# EATIN
+# EATIN   
+
 An online food ordering web application made using React + Django similar to UberEats / Swiggy / Zomato
 
-Try Out: https://eatin.vercel.app/
+Try Out: https://eatin.vercel.app/  
 
 <img src="https://media.giphy.com/media/aqMpEfrP7w5QgB2jLG/giphy.gif" height="400" width="auto"/>
 
-[![Django CI](https://github.com/anubhav06/eatit/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/anubhav06/eatit/actions/workflows/ci.yml)
+[![Django CI](https://github.com/anubhav06/eatit/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/anubhav06/eatit/actions/workflows/ci.yml)  
+
+<hr>  
 
 ## Test Credentials 🔏
 #### User Account
@@ -18,6 +21,7 @@ Password: eatin-password
 Email: evergreen@example.com
 Password: eatin-restaurant-password
 ```
+<hr>  
 
 ## Features ✨
 - Users can signup and optionally decide to become sellers by on-boarding to Stripe.
@@ -46,8 +50,10 @@ Password: eatin-restaurant-password
 Split the terminal in two and follow the below steps in different terminals
 
 ### Setup Backend 🔨
-1. `cd backend` to go in that directory
-2. Rename `example.env` to `.env` & add respective enviroment variables
+
+1. Download [Python](https://www.python.org/downloads/) if not installed already
+2. `cd backend` to go in that directory
+3. Rename `example.env` to `.env` & add respective enviroment variables
     - [Getting Stripe credentials](https://stripe.com/docs/keys)
     - [Getting AWS S3 buckets credentials](https://docs.aws.amazon.com/AmazonS3/latest/userguide/walkthrough1.html)
     - [Getting Twilio's credentials](https://www.twilio.com/docs/iam/keys/api-key)
@@ -68,10 +74,11 @@ Split the terminal in two and follow the below steps in different terminals
       ```
 
 ### Setup Frontend 🔨
-1. `cd frontend` to go in that directory
-2. Rename `example.env` to `.env`
-3. Run `npm install` to install the dependencies
-4. Run `npm start` to start the server
+1. Download [NodeJS](https://nodejs.org/en/download/) if not installed already
+2. `cd frontend` to go in that directory
+3. Rename `example.env` to `.env`
+4. Run `npm install` to install the dependencies
+5. Run `npm start` to start the server
 
 <hr>
 
