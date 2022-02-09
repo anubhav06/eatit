@@ -129,7 +129,7 @@ const CheckoutPage = () => {
 
      // To remove an item from cart
      let removeFromCart = async(food) =>{
-        let response = await fetch(`${process.env.BACKEND_URL}/api/remove-from-cart/${food.id}`, {
+        let response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/remove-from-cart/${food.id}`, {
             method:'POST',
             headers:{
                 'Content-Type':'application/json',
@@ -137,7 +137,7 @@ const CheckoutPage = () => {
                 'Authorization':'Bearer ' + String(authTokens.access)
             }
         })
-        
+
 
         if(response.status === 200){
             
