@@ -1,6 +1,6 @@
 # EATIN   
 
-An online food ordering web application made using React + Django similar to UberEats / Swiggy / Zomato
+An online food ordering web application similar to UberEats / Swiggy made using React + Django
 
 Try Out: https://eatin.vercel.app/  
 
@@ -82,7 +82,14 @@ Split the terminal in two and follow the below steps in different terminals
 
 <hr>
 
+## Documentation 📖
+A detailed documentation for understanding the project is available [here](https://github.com/anubhav06/eatit/wiki)
+
+
 ## Contributing 💪🏻
 This repository is open to contributions.  
 Feel free to create a [new issue](https://github.com/anubhav06/eatit/issues/new/choose) or work on an [existing issue](https://github.com/anubhav06/eatit/issues)  
 Make sure to read the [contribution guildlines](https://github.com/anubhav06/eatit/blob/main/CONTRIBUTING.md) before jumping into it.
+
+## License ⚖️
+Eatit is released under the [MIT license](https://github.com/anubhav06/eatit/blob/main/LICENSE)
