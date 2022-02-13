@@ -83,7 +83,7 @@ Split the terminal in two and follow the below steps in different terminals
 <hr>
 
 ## Documentation 📖
-A detailed documentation for understanding the project is available [here](https://github.com/anubhav06/eatit/wiki)
+A detailed documentation for understanding the project is available [here](https://github.com/anubhav06/eatit/wiki/Documentation)
 
 
 ## Contributing 💪🏻
