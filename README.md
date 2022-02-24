@@ -89,7 +89,7 @@ A detailed documentation for understanding the project is available [here](https
 ## Contributing 💪🏻
 This repository is open to contributions.  
 Feel free to create a [new issue](https://github.com/anubhav06/eatit/issues/new/choose) or work on an [existing issue](https://github.com/anubhav06/eatit/issues)  
-Make sure to read the [contribution guildlines](https://github.com/anubhav06/eatit/blob/main/CONTRIBUTING.md) before jumping into it.
+Make sure to read the [contribution guildlines](https://github.com/anubhav06/eatit/blob/main/.github/CONTRIBUTING.md) before jumping into it.
 
 ## License ⚖️
 Eatit is released under the [MIT license](https://github.com/anubhav06/eatit/blob/main/LICENSE)
