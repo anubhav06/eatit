@@ -214,6 +214,6 @@ CORS_ALLOWED_ORIGINS = [
 
 
 # https://github.com/heroku/django-heroku/issues/39
-if 'I_AM_HEROKU' in os.environ:
-    import django_heroku
-    django_heroku.settings(locals())
+# if 'I_AM_HEROKU' in os.environ:
+#     import django_heroku
+#     django_heroku.settings(locals())
